@@ -30,7 +30,7 @@ if(isset($_POST['fb_auth']))
 }
 
 
-if(isset($_SESSION['state']) && isset($_REQUEST['state']) && ($_SESSION['state'] === $_REQUEST['state'])) {
+if(isset($_SESSION['state']) && isset($_REQUEST['state']) && ($_SESSION['state'] === $_REQUEST['state']) && get_option("xyz_smap_af")==1) {
 	$token_url = "https://graph.facebook.com/oauth/access_token?"
 	. "client_id=" . $app_id . "&redirect_uri=" . $my_url
 	. "&client_secret=" . $app_secret . "&code=" . $code;
