@@ -138,4 +138,4 @@ Please read the FAQ first if you are having problems.
 
 = Feedback =
 
-We would like to receive your feedback and suggestions about Social Media Auto Publish plugin. You may submit them at our [support desk](http://xyzscripts.com/members/support/ "XYZScripts Support").
+We would like to receive your feedback and suggestions about Social Media Auto Publish plugin. You may submit them at our [support desk](http://xyzscripts.com/support/ "XYZScripts Support").
