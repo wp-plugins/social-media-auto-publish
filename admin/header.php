@@ -1,7 +1,25 @@
-<style>
-	a.xyz_smap_link:hover{text-decoration:underline;} 
-	.xyz_smap_link{text-decoration:none;font-weight: bold;margin-left:8px;} 
-</style>
+<div id="xyz-wp-smap-premium">
+
+	<div style="float: left; padding: 0 5px">
+		<h2 style="vertical-align: middle;">
+			<a target="_blank"
+				href="http://xyzscripts.com/wordpress-plugins/social-media-auto-publish/features">Fully
+				Featured XYZ WP SMAP Premium Plugin</a> - Just 19 USD
+		</h2>
+	</div>
+	<div style="float: left; margin-top: 3px">
+		<a target="_blank"
+			href="http://xyzscripts.com/members/product/purchase/XYZWPSMPPRE"><img class="hoverImages"
+			src="<?php  echo plugins_url("social-media-auto-publish/admin/images/orange_buynow.png"); ?>">
+		</a>
+	</div>
+	<div style="float: left; padding: 0 5px">
+	<h2 style="vertical-align: middle;text-shadow: 1px 1px 1px #686868">
+			( <a 	href="<?php echo admin_url('admin.php?page=social-media-auto-publish-about');?>">Compare Features</a> ) 
+	</h2>		
+	</div>
+</div>
+
 
 <?php 
 if($_POST && isset($_POST['xyz_credit_link']))

@@ -1,7 +1,26 @@
 <?php
 
+function smap_free_network_destroy($networkwide) {
+	global $wpdb;
 
-function smap_destroy()
+	if (function_exists('is_multisite') && is_multisite()) {
+		// check if it is a network activation - if so, run the activation function for each blog id
+		if ($networkwide) {
+			$old_blog = $wpdb->blogid;
+			// Get all blog ids
+			$blogids = $wpdb->get_col("SELECT blog_id FROM $wpdb->blogs");
+			foreach ($blogids as $blog_id) {
+				switch_to_blog($blog_id);
+				smap_free_destroy();
+			}
+			switch_to_blog($old_blog);
+			return;
+		}
+	}
+	smap_free_destroy();
+}
+
+function smap_free_destroy()
 {
 	global $wpdb;
 	
@@ -18,6 +37,7 @@ function smap_destroy()
 	delete_option('xyz_smap_post_permission');
 	delete_option('xyz_smap_current_appln_token');
 	delete_option('xyz_smap_af');
+	delete_option('xyz_smap_pages_ids');
 	
 	
 	delete_option('xyz_smap_twconsumer_secret');
@@ -29,6 +49,21 @@ function smap_destroy()
 	delete_option('xyz_smap_twaccestok_secret');
 	delete_option('xyz_smap_twmessage');
 	
+	delete_option('xyz_smap_application_lnarray');
+	delete_option('xyz_smap_ln_shareprivate');
+	delete_option('xyz_smap_ln_sharingmethod');
+	delete_option('xyz_smap_lnapikey');
+	delete_option('xyz_smap_lnapisecret');
+	
+	delete_option('xyz_smap_lnoauth_verifier');
+	delete_option('xyz_smap_lnoauth_token');
+	delete_option('xyz_smap_lnoauth_secret');
+	delete_option('xyz_smap_lnpost_permission');
+	delete_option('xyz_smap_lnpost_image_permission');
+	delete_option('xyz_smap_lnaf');
+	delete_option('xyz_smap_lnmessage');
+	
+	
 	delete_option('xyz_smap_free_version');
 	
 	delete_option('xyz_smap_include_pages');
@@ -37,7 +72,7 @@ function smap_destroy()
 	
 }
 
-register_uninstall_hook(XYZ_SMAP_PLUGIN_FILE,'smap_destroy');
+register_uninstall_hook(XYZ_SMAP_PLUGIN_FILE,'smap_free_network_destroy');
 
 
 ?>

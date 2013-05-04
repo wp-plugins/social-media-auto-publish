@@ -123,6 +123,7 @@ background-position: left  bottom;
 width: 99%;
 padding:0px;
  border: 1px solid #CCCCCC;
+ border-radius:3px;
 }
 .xyz-premium-comparison td
 {
@@ -185,3 +186,74 @@ cursor: pointer;
     position: absolute;
     z-index: 1200;
 }
+    .xyz_feedback{
+    background: #CEEAF7; /* Old browsers */
+border: 1px solid #64cfe8;
+border-radius:3px;
+width: 98%;    
+height:28px;
+   padding:5px 5px;
+    font-weight: bold;
+    line-height: 20px;
+    
+    }
+    
+    
+    .xyz_feedback a{
+    text-decoration: none
+    }  
+       
+    .xyz_subscribe{
+    background: #bae598; /* Old browsers */
+border: 1px solid #4d8a1d;
+border-radius:3px;
+width: 98%;    
+    padding:5px 5px;
+height:28px;
+    
+    }
+  .xyz_subscribe  td{
+    padding:0;
+    }
+    
+    .xyz_plugins{
+    background: #EDEDED; /* Old browsers */
+border: 1px solid #cccccc;
+border-radius:3px;
+width: 98%;    
+    padding:5px 5px;
+height:28px;
+line-height: 25px;
+    
+    }
+  
+    
+    .submit_smap{
+	background:#25A6E1;
+	background:-moz-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#25A6E1),color-stop(100%,#188BC0));
+	background:-webkit-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:-o-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:-ms-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#25A6E1",endColorstr="#188BC0",GradientType=0);
+	padding:1px 13px;
+	color:#ffffff;
+	font-family:"Helvetica Neue",sans-serif;
+	font-size:13px;
+	cursor:pointer;	
+	color:#FFFFFF !important;border-radius:4px !important;
+	border:1px solid #1A87B9;height: 25px;
+}
+#xyz-wp-smap-premium {
+	border: 1px solid #FCC328;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	background-color: #FFF6D6;
+	height: 50px;
+	padding: 5px;
+	width: 98%;
+	border-radius:3px;
+}
+a.xyz_smap_link:hover{text-decoration:underline;} 
+	.xyz_smap_link{text-decoration:none;font-weight: bold;margin-left:8px;} 

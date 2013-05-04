@@ -44,6 +44,7 @@ function xyz_smap_addpostmetatags()
 <script>
 var fcheckid;
 var tcheckid;
+var lcheckid;
 function displaycheck()
 {
 fcheckid=document.getElementById("xyz_smap_post_permission").value;
@@ -71,6 +72,22 @@ else
 	document.getElementById("twai").style.display='none';		
 }
 
+lcheckid=document.getElementById("xyz_smap_lnpost_permission").value;
+if(lcheckid==1)
+{
+
+	
+    document.getElementById("lnimg").style.display='';
+	document.getElementById("lnmf").style.display='';	
+	document.getElementById("shareprivate").style.display='';	
+}
+else
+{
+    document.getElementById("lnimg").style.display='none';
+	document.getElementById("lnmf").style.display='none';	
+	document.getElementById("shareprivate").style.display='none';		
+}
+
 }
 
 
@@ -85,10 +102,23 @@ function dethide(id)
 	document.getElementById(id).style.display='none';
 }
 
+function drpdisplay()
+{
+	var shmethod= document.getElementById('xyz_smap_ln_sharingmethod').value;
+	if(shmethod==1)	
+	{
+		document.getElementById('shareprivate').style.display="none";
+	}
+	else
+	{
+		document.getElementById('shareprivate').style.display="";
+	}
+}
+
 </script>
 <table>
 	<tr valign="top">
-		<td>Enable auto publish post to my facebook wall
+		<td>Enable auto publish post to my facebook account
 		</td>
 		<td><select id="xyz_smap_post_permission" name="xyz_smap_post_permission"
 			onchange="displaycheck()"><option value="0"
@@ -184,7 +214,61 @@ function dethide(id)
 		<textarea id="xyz_smap_twmessage" name="xyz_smap_twmessage"><?php echo get_option('xyz_smap_twmessage');?></textarea>
 		</td>
 	</tr>
+	
+	<tr valign="top">
+		<td>Enable auto publish	posts to my linkedin account
+		</td>
+		<td><select id="xyz_smap_lnpost_permission" name="xyz_smap_lnpost_permission"
+			onchange="displaycheck()">
+				<option value="0"
+				<?php  if(get_option('xyz_smap_lnpost_permission')==0) echo 'selected';?>>
+					No</option>
+				<option value="1"
+				<?php  if(get_option('xyz_smap_lnpost_permission')==1) echo 'selected';?>>Yes</option>
+		</select>
+		</td>
+	</tr>
+	
+	<tr valign="top" id="lnimg">
+		<td>Attach image to linkedin post
+		</td>
+		<td><select id="xyz_smap_lnpost_image_permission" name="xyz_smap_lnpost_image_permission"
+			onchange="displaycheck()">
+				<option value="0"
+				<?php  if(get_option('xyz_smap_lnpost_image_permission')==0) echo 'selected';?>>
+					No</option>
+				<option value="1"
+				<?php  if(get_option('xyz_smap_lnpost_image_permission')==1) echo 'selected';?>>Yes</option>
+		</select>
+		</td>
+	</tr>
+	
+	<tr valign="top" id="shareprivate">
+	<input type="hidden" name="xyz_smap_ln_sharingmethod" id="xyz_smap_ln_sharingmethod" value="0">
+	<td>Share post content with</td>
+	<td>
+		<select id="xyz_smap_ln_shareprivate" name="xyz_smap_ln_shareprivate" >
+		 <option value="0" <?php  if(get_option('xyz_smap_ln_shareprivate')==0) echo 'selected';?>>
+Public</option><option value="1" <?php  if(get_option('xyz_smap_ln_shareprivate')==1) echo 'selected';?>>Connections only</option></select>
+	</td></tr>
 
+	<tr valign="top" id="lnmf">
+		<td>Message format for posting <img src="<?php echo $heimg?>"
+						onmouseover="detdisplay('xyz_ln')" onmouseout="dethide('xyz_ln')">
+						<div id="xyz_ln" class="informationdiv"
+							style="display: none; font-weight: normal;">
+							{POST_TITLE} - Insert the title of your post.<br />{PERMALINK} -
+							Insert the URL where your post is displayed.<br />{POST_EXCERPT}
+							- Insert the excerpt of your post.<br />{POST_CONTENT} - Insert
+							the description of your post.<br />{BLOG_TITLE} - Insert the name
+							of your blog.
+						</div>
+		</td>
+		<td>
+		<textarea id="xyz_smap_lnmessage" name="xyz_smap_lnmessage"><?php echo get_option('xyz_smap_lnmessage');?></textarea>
+		</td>
+	</tr>
+	
 </table>
 <script type="text/javascript">
 	displaycheck();

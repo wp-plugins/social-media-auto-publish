@@ -2,8 +2,8 @@
 /*
  Plugin Name: Social Media Auto Publish
 Plugin URI: http://xyzscripts.com/wordpress-plugins/social-media-auto-publish/
-Description:   Publish posts automatically from your blog to social media networks like Facebook and Twitter. The plugin supports filtering posts by post-types and categories.
-Version: 1.0
+Description:   Publish posts automatically from your blog to social media networks like Facebook, Twitter and LinkedIn. The plugin supports filtering posts by post-types and categories.
+Version: 1.1
 Author: xyzscripts.com
 Author URI: http://xyzscripts.com/
 License: GPLv2 or later
@@ -32,12 +32,23 @@ if ( !function_exists( 'add_action' ) ) {
 ob_start();
 error_reporting(0);
 define('XYZ_SMAP_PLUGIN_FILE',__FILE__);
+
+mysql_query('SET SQL_MODE=""');
+
 require_once( dirname( __FILE__ ) . '/admin/install.php' );
 require_once( dirname( __FILE__ ) . '/xyz-functions.php' );
 require_once( dirname( __FILE__ ) . '/admin/menu.php' );
-require_once( dirname( __FILE__ ) . '/api/facebook.php' );
 require_once( dirname( __FILE__ ) . '/admin/destruction.php' );
+
+if(!class_exists('Facebook'))
+require_once( dirname( __FILE__ ) . '/api/facebook.php' );
+
+if(!class_exists('TwitterOAuth'))
 require_once( dirname( __FILE__ ) . '/api/twitteroauth.php' );
+
+if(!class_exists('LinkedIn'))
+require_once( dirname( __FILE__ ) . '/api/linkedin_3.2.0.class.php' );
+
 require_once( dirname( __FILE__ ) . '/admin/ajax-backlink.php' );
 require_once( dirname( __FILE__ ) . '/admin/metabox.php' );
 require_once( dirname( __FILE__ ) . '/admin/publish.php' );

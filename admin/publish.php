@@ -37,6 +37,7 @@ function xyz_smap_getimage($post_ID,$description_org)
 	else {
 		$first_img = '';
 		preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $description_org, $matches);
+		if(isset($matches[1][0]))
 		$attachmenturl = $matches[1][0];
 		
 	
@@ -45,13 +46,13 @@ function xyz_smap_getimage($post_ID,$description_org)
 }
 function xyz_link_publish($post_ID) {
 
-
+	
 	global $current_user;
 	get_currentuserinfo();
 	$af=get_option('xyz_smap_af');
-	$id=$current_user->ID;
-
-
+	
+	
+/////////////twitter//////////
 	$tappid=get_option('xyz_smap_twconsumer_id');
 	$tappsecret=get_option('xyz_smap_twconsumer_secret');
 	$twid=get_option('xyz_smap_tw_id');
@@ -72,7 +73,9 @@ function xyz_link_publish($post_ID) {
 	$post_twitter_image_permission=get_option('xyz_smap_twpost_image_permission');
 	if(isset($_POST['xyz_smap_twpost_image_permission']))
 		$post_twitter_image_permission=$_POST['xyz_smap_twpost_image_permission'];
+		////////////////////////
 
+	////////////fb///////////
 	$appsecret=get_option('xyz_smap_application_secret');
 	$useracces_token=get_option('xyz_smap_fb_token');
 
@@ -83,12 +86,43 @@ function xyz_link_publish($post_ID) {
 	$fbid=get_option('xyz_smap_fb_id');
 
 
-	$postpp= get_post($post_ID);
-
+	
 	$posting_method=get_option('xyz_smap_po_method');
 	if(isset($_POST['xyz_smap_po_method']))
 		$posting_method=$_POST['xyz_smap_po_method'];
+		//////////////////////////////
+		
+	////////////linkedin////////////
+	
+	$lnoathtoken=get_option('xyz_smap_lnoauth_token');
+	$lnoathseret=get_option('xyz_smap_lnoauth_secret');
+	$lnappikey=get_option('xyz_smap_lnapikey');
+	$lnapisecret=get_option('xyz_smap_lnapisecret');
+	$lnoauthverifier=get_option('xyz_smap_lnoauth_verifier');
+	$lmessagetopost=get_option('xyz_smap_lnmessage');
+	
+  $xyz_smap_ln_shareprivate=get_option('xyz_smap_ln_shareprivate'); 
+  if(isset($_POST['xyz_smap_ln_shareprivate']))
+  $xyz_smap_ln_shareprivate=$_POST['xyz_smap_ln_shareprivate'];
+ 
+  $xyz_smap_ln_sharingmethod=get_option('xyz_smap_ln_sharingmethod');
+  if(isset($_POST['xyz_smap_ln_sharingmethod']))
+  $xyz_smap_ln_sharingmethod=$_POST['xyz_smap_ln_sharingmethod'];
+  
 
+  $lnpost_permission=get_option('xyz_smap_lnpost_permission');
+  if(isset($_POST['xyz_smap_lnpost_permission']))
+  	$lnpost_permission=$_POST['xyz_smap_lnpost_permission'];
+  
+  $post_ln_image_permission=get_option('xyz_smap_lnpost_image_permission');
+  if(isset($_POST['xyz_smap_lnpost_image_permission']))
+  	$post_ln_image_permission=$_POST['xyz_smap_lnpost_image_permission'];
+
+    $lnaf=get_option('xyz_smap_lnaf');
+	
+	////////////////////////
+	$postpp= get_post($post_ID);
+	
 	if ($postpp->post_status == 'publish')
 	{
 		$posttype=$postpp->post_type;
@@ -138,6 +172,7 @@ function xyz_link_publish($post_ID) {
 			}
 		}
 		$description = $content;
+		
 		$description_org=$description;
 		$attachmenturl=xyz_smap_getimage($post_ID, $description_org);
 		if($attachmenturl!="")
@@ -156,13 +191,15 @@ function xyz_link_publish($post_ID) {
 		$description=strip_tags($description);
 		$description=strip_shortcodes($description);
 
-
+		
 		if($useracces_token!="" && $appsecret!="" && $appid!="" && $post_permissin==1)
 		{
 
 			$user_page_id=get_option('xyz_smap_fb_numericid');
 
 			$xyz_smap_pages_ids=get_option('xyz_smap_pages_ids');
+			if($xyz_smap_pages_ids=="")
+				$xyz_smap_pages_ids=-1;
 
 			$xyz_smap_pages_ids1=explode(",",$xyz_smap_pages_ids);
 
@@ -233,9 +270,13 @@ function xyz_link_publish($post_ID) {
 						
 						if($posting_method==5)
 						{
-							
+							try{
 							$albums = $fb->api("/$page_id/albums", "get", array('access_token'  => $acces_token));
-							
+							}
+							catch(Exception $e)
+							{
+								//echo $e->getmessage();
+							}
 							foreach ($albums["data"] as $album) {
 								if ($album["type"] == "wall") {
 									$timeline_album = $album; break;
@@ -261,16 +302,16 @@ function xyz_link_publish($post_ID) {
 					}
 					
 				}
-				$result = $fb->api('/'.$page_id.'/'.$disp_type.'/', 'post', $attachment);
+				try{
+				$result = $fb->api('/'.$page_id.'/'.$disp_type.'/', 'post', $attachment);}
+							catch(Exception $e)
+							{
+								//echo $e->getmessage();
+							}
 
 			}
 
-			//If the post is not published, print error details
-
-			// 					$content = wp_remote_get($urltopost);
-			// 				print_r($content);
-			// 				die;
-
+			
 
 		}
 
@@ -283,16 +324,19 @@ function xyz_link_publish($post_ID) {
 			
 			if($post_twitter_image_permission==1)
 			{
-
-				$img=array();
+				
+				
+				$img=array();$image_found = 0;
 				if($attachmenturl!="")
 					$img = wp_remote_get($attachmenturl);
 					
-
-				if (isset($img['body'])&& trim($img['body'])!='')
-					$img = $img['body'];
-				else
-					$image_found = 0;
+				if(is_array($img))
+				{
+					if (isset($img['body'])&& trim($img['body'])!='')
+						$img = $img['body'];
+					else
+						$image_found = 0;
+				}
 					
 			}
 			///Twitter upload image end/////
@@ -381,12 +425,102 @@ function xyz_link_publish($post_ID) {
 				
 			if($image_found==1)
 			{
+				try{
 				$resultfrtw = $twobj -> post('http://upload.twitter.com/1/statuses/update_with_media.json', array( 'media[]' => $img, 'status' => $substring), true, true);
+				}
+				catch(Exception $e)
+				{
+				//echo $e->getmessage();
+				}
 			}
 			else
+			{
+				try{
 				$resultfrtw=$twobj->post('statuses/update', array('status' => $substring));
+				}
+				catch(Exception $e)
+				{
+				//echo $e->getmessage();
+				}
+			}
 			//print_r($resultfrtw);
 			//die;
+		}
+		
+		if($lnappikey!="" && $lnapisecret!="" && $lnoathtoken!="" && $lnoathseret!="" && $lnpost_permission==1 && $lnoauthverifier!="" && $lnaf==0)
+		{		
+			$contentln=array();
+			//$s="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+		//	echo mb_strlen($s);die;
+			//$description=str_replace("&nbsp;", "", $description);
+			
+			$description_li=xyz_smap_string_limit($description, 400);
+			$caption_li=xyz_smap_string_limit($caption, 200);
+			$name_li=xyz_smap_string_limit($name, 200);
+				
+			$message1=str_replace('{POST_TITLE}', $name, $lmessagetopost);
+			$message2=str_replace('{BLOG_TITLE}', $caption,$message1);
+			$message3=str_replace('{PERMALINK}', $link, $message2);
+			$message4=str_replace('{POST_EXCERPT}', $excerpt, $message3);
+			$message5=str_replace('{POST_CONTENT}', $description, $message4);
+			
+			//$message5=xyz_smap_string_limit($message5, 700);
+						
+				$contentln['comment'] =$message5;
+				$contentln['title'] = $name_li;
+				$contentln['submitted-url'] = $link;
+				if($attachmenturl!="" && $post_ln_image_permission==1)
+				$contentln['submitted-image-url'] = $attachmenturl;
+				$contentln['description'] = $description_li;
+		
+		
+			$API_CONFIG = array(
+			'appKey'       => $lnappikey,
+			'appSecret'    => $lnapisecret
+			);
+		
+			if($xyz_smap_ln_shareprivate==1)
+			{
+			$private = TRUE;
+		}
+		else
+		{
+		$private = FALSE;
+		}
+		$OBJ_linkedin = new LinkedIn($API_CONFIG);
+		$xyz_smap_application_lnarray=get_option('xyz_smap_application_lnarray');
+	
+		
+		$OBJ_linkedin->setTokenAccess($xyz_smap_application_lnarray);
+		
+		if($xyz_smap_ln_sharingmethod==0)
+		{
+				try{
+			$response2 = $OBJ_linkedin->share('new', $contentln,$private);
+			}
+			catch(Exception $e)
+			{
+			//echo $e->getmessage();
+			}
+		}
+		else
+		{
+		$description_liu=xyz_smap_string_limit($description, 950);
+		try{
+		     $response2=$OBJ_linkedin->updateNetwork($description_liu);
+		   }
+			catch(Exception $e)
+			{
+				//echo $e->getmessage();
+			}
+		}
+		
+		/*if(isset($response2['success']))
+			echo "posted successfully";
+			else
+			echo "posting failed";die;*/
+			
+		
 		}
 	}
 }

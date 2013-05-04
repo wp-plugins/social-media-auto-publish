@@ -1,57 +1,30 @@
 
+<div id="xyz-wp-smap-premium">
+
+	<div style="float: left; padding: 0 5px">
+		<h2 style="vertical-align: middle;">
+			<a target="_blank"
+				href="http://xyzscripts.com/wordpress-plugins/social-media-auto-publish/features">Fully
+				Featured XYZ WP SMAP Premium Plugin</a> - Just 19 USD
+		</h2>
+	</div>
+	<div style="float: left; margin-top: 3px">
+		<a target="_blank"
+			href="http://xyzscripts.com/members/product/purchase/XYZWPSMPPRE"><img class="hoverImages"
+			src="<?php  echo plugins_url("social-media-auto-publish/admin/images/orange_buynow.png"); ?>">
+		</a>
+	</div>
+	<div style="float: left; padding: 0 5px">
+	<h2 style="vertical-align: middle;text-shadow: 1px 1px 1px #686868">
+			( <a 	href="<?php echo admin_url('admin.php?page=social-media-auto-publish-about');?>">Compare Features</a> ) 
+	</h2>		
+	</div>
+</div>
+
 
 <div style="clear: both;"></div>
 
-    <style>
-    
-    .xyz_feedback{
-    background: #CEEAF7; /* Old browsers */
-border: 1px solid #64cfe8;
-border-radius:3px;
-width: 98%;    
-height:28px;
-   padding:5px 5px;
-    font-weight: bold;
-    
-    }
-    
-    
-    .xyz_feedback a{
-    text-decoration: none
-    }  
-       
-    .xyz_subscribe{
-    background: #bae598; /* Old browsers */
-border: 1px solid #4d8a1d;
-border-radius:3px;
-width: 98%;    
-    padding:5px 5px;
-height:28px;
-    
-    }
-  .xyz_subscribe  td{
-    padding:0;
-    }
-    
-    .submit_smap{
-	background:#25A6E1;
-	background:-moz-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
-	background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#25A6E1),color-stop(100%,#188BC0));
-	background:-webkit-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
-	background:-o-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
-	background:-ms-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
-	background:linear-gradient(top,#25A6E1 0%,#188BC0 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#25A6E1",endColorstr="#188BC0",GradientType=0);
-	padding:1px 13px;
-	color:#ffffff;
-	font-family:"Helvetica Neue",sans-serif;
-	font-size:13px;
-	cursor:pointer;	
-	color:#FFFFFF !important;border-radius:4px !important;
-	border:1px solid #1A87B9;height: 25px;
-}
-    
-    </style>
+
 <p></p>
 
 <div style="width: 100%">
@@ -59,11 +32,11 @@ height:28px;
     <div class="xyz_feedback">
 
    
-   <a target="_blank" href="http://xyzscripts.com/donate/1" class="xyz_donate">Donate a dollar</a> - 
-   <a target="_blank" href="http://wordpress.org/support/view/plugin-reviews/social-media-auto-publish" class="xyz_star">Rate this plugin</a> -   
-   <a target="_blank" href="http://xyzscripts.com/support/" class="xyz_suggest">Suggestions</a> - 
-<a target="_blank" href="http://facebook.com/xyzscripts" class="xyz_fbook">Like us on facebook</a> -   
-   <a target="_blank" href="http://twitter.com/xyzscripts" class="xyz_twitt">Follow us on twitter</a> -   
+   <a target="_blank" href="http://xyzscripts.com/donate/1" class="xyz_donate">Donate a dollar</a> ★ 
+   <a target="_blank" href="http://wordpress.org/support/view/plugin-reviews/social-media-auto-publish" class="xyz_star">Rate this plugin</a> ★   
+   <a target="_blank" href="http://xyzscripts.com/support/" class="xyz_suggest">Suggestions</a> ★ 
+<a target="_blank" href="http://facebook.com/xyzscripts" class="xyz_fbook">Like us on facebook</a> ★   
+   <a target="_blank" href="http://twitter.com/xyzscripts" class="xyz_twitt">Follow us on twitter</a> ★   
    <a target="_blank" href="https://plus.google.com/101215320403235276710/" class="xyz_gplus">+1 us on Google+</a>
       
    
@@ -170,12 +143,9 @@ type="text" value="<?php 	echo $current_user->user_email; ?>" /><span style="col
 </div>   
 
 
-    <div style="clear: both;"></div>
- <div style="width: 99%">
-<div style="padding-top: 10px;float:left;">
-Powered by <a href="http://xyzscripts.com" target="_blank">XYZScripts</a>
-</div>
-<div style="padding-top: 10px;float:right ;">
+      <p></p>
+
+<div style="padding-top: ;" class="xyz_plugins">
 See Also : 
 	
 	<a target="_blank"	href="http://wordpress.org/extend/plugins/lightbox-pop/">Lightbox Pop</a> ★
@@ -187,9 +157,11 @@ See Also :
 	<a target="_blank"	href="http://wordpress.org/extend/plugins/newsletter-manager/">Newsletter Manager</a>★
 <a target="_blank"	href="http://wordpress.org/extend/plugins/contact-form-manager/">Contact Form Manager</a>
 </div>
- </div>   
+  
+  <div style="padding-top: 10px;text-align: center;">
+Powered by <a href="http://xyzscripts.com" target="_blank">XYZScripts</a>
+</div>
 
     <div style="clear: both;"></div>
 
 </div>
-    <p style="clear: both;"></p>

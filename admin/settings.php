@@ -10,7 +10,7 @@ $ms2="";
 $ms3="";
 $ms4="";
 $redirecturl=admin_url('admin.php?page=social-media-auto-publish-settings&auth=1');
-$luid=$current_user->ID;
+
 
 require( dirname( __FILE__ ) . '/authorization.php' );
 
@@ -25,7 +25,7 @@ if(isset($_POST['fb']))
 	$smap_pages_list_ids="";
 
 
-	if($ss!="")
+	if($ss!="" && count($ss)>0)
 	{
 		for($i=0;$i<count($ss);$i++)
 		{
@@ -78,6 +78,7 @@ if(isset($_POST['fb']))
 		if($appid!=$applidold || $appsecret!=$applsecretold || $fbidold!=$fbid)
 		{
 			update_option('xyz_smap_af',1);
+			update_option('xyz_smap_fb_token','');
 		}
 		if($messagetopost=="")
 		{
@@ -92,21 +93,21 @@ if(isset($_POST['fb']))
 		update_option('xyz_smap_message',$messagetopost);
 
 		$url = 'https://graph.facebook.com/'.$fbid;
-		$contentget=wp_remote_get($url);
-		//if(isset($contentget))
-		$result1=$contentget['body'];
-		$pagearray = json_decode($result1);
-		if(isset($pagearray->id))
-		$page_id=$pagearray->id;
-		else
-			$page_id="";
+		$contentget=wp_remote_get($url);$page_id="";
+		if(is_array($contentget))
+		{
+			$result1=$contentget['body'];
+			$pagearray = json_decode($result1);
+			if(isset($pagearray->id))
+			$page_id=$pagearray->id;
+		}
+		
+			
 
 		update_option('xyz_smap_fb_numericid',$page_id);
 
 	}
 }
-
-
 
 
 $tms1="";
@@ -116,7 +117,6 @@ $tms4="";
 $tms5="";
 $tms6="";
 $tredirecturl=admin_url('admin.php?page=social-media-auto-publish-settings&authtwit=1');
-$luid=$current_user->ID;
 
 
 $terf=0;
@@ -183,14 +183,74 @@ if(isset($_POST['twit']))
 		update_option('xyz_smap_twmessage',$tmessagetopost);
 		update_option('xyz_smap_twpost_permission',$tposting_permission);
 		update_option('xyz_smap_twpost_image_permission',$tposting_image_permission);
-		?>
-
-
-<?php 
+		
 	}
 }
 
-if((isset($_POST['twit']) && $terf==0)|| (isset($_POST['fb']) && $erf==0))
+$lms1="";
+$lms2="";
+$lms3="";
+$lerf=0;
+
+if(isset($_POST['linkdn']))
+{
+	//$posting_method=$_POST['xyz_smap_po_method'];
+	$lnappikeyold=get_option('xyz_smap_lnapikey');
+	$lnapisecretold=get_option('xyz_smap_lnapisecret');
+
+
+	$lnappikey=$_POST['xyz_smap_lnapikey'];
+	$lnapisecret=$_POST['xyz_smap_lnapisecret'];
+	
+	$lmessagetopost=trim($_POST['xyz_smap_lnmessage']);
+	
+	$lnposting_permission=$_POST['xyz_smap_lnpost_permission'];
+	$xyz_smap_ln_shareprivate=$_POST['xyz_smap_ln_shareprivate'];
+	$xyz_smap_ln_sharingmethod=$_POST['xyz_smap_ln_sharingmethod'];
+	$xyz_smap_lnpost_image_permission=$_POST['xyz_smap_lnpost_image_permission'];
+	if($lnappikey=="" )
+	{
+		$lms1="Please fill linkedin api key";
+		$lerf=1;
+	}
+	elseif($lnapisecret=="" )
+	{
+		$lms2="Please fill linked api secret";
+		$lerf=1;
+	}
+	elseif($lmessagetopost=="" )
+	{
+		$lms3="Please fill mssage format for posting.";
+		$lerf=1;
+	}
+	else
+	{
+
+		$lerf=0;
+		
+		if($lmessagetopost=="")
+		{
+			$lmessagetopost="New post added at {BLOG_TITLE} - {POST_TITLE}";
+		}
+		
+		if($lnappikey!=$lnappikeyold || $lnapisecret!=$lnapisecretold )
+		{
+			update_option('xyz_smap_lnaf',1);
+		}
+
+		
+		update_option('xyz_smap_lnapikey',$lnappikey);
+		update_option('xyz_smap_lnapisecret',$lnapisecret);
+		update_option('xyz_smap_lnpost_permission',$lnposting_permission);
+		update_option('xyz_smap_ln_shareprivate',$xyz_smap_ln_shareprivate);
+		update_option('xyz_smap_ln_sharingmethod',$xyz_smap_ln_sharingmethod);
+		update_option('xyz_smap_lnmessage',$lmessagetopost);
+		update_option('xyz_smap_lnpost_image_permission',$xyz_smap_lnpost_image_permission);
+		
+}	
+}
+
+if((isset($_POST['twit']) && $terf==0) || (isset($_POST['fb']) && $erf==0) || (isset($_POST['linkdn']) && $lerf==0))
 {
 	?>
 
@@ -199,7 +259,16 @@ if((isset($_POST['twit']) && $terf==0)|| (isset($_POST['fb']) && $erf==0))
 		id="system_notice_area_dismiss">Dismiss</span>
 </div>
 <?php }
-if((isset($_POST['twit']) && $terf==1)|| (isset($_POST['fb']) && $erf==1))
+if(isset($_GET['msg']) && $_GET['msg']==1)
+{
+?>
+<div class="system_notice_area_style0" id="system_notice_area">
+	Unable to authorize the linkedin application. Please check the details. &nbsp;&nbsp;&nbsp;<span
+		id="system_notice_area_dismiss">Dismiss</span>
+</div>
+	<?php 
+}
+if((isset($_POST['twit']) && $terf==1)|| (isset($_POST['fb']) && $erf==1) || (isset($_POST['linkdn']) && $lerf==1))
 {
 	?>
 <div class="system_notice_area_style0" id="system_notice_area">
@@ -208,8 +277,13 @@ if((isset($_POST['twit']) && $terf==1)|| (isset($_POST['fb']) && $erf==1))
 	{
 		echo $ms1;echo $ms2;echo $ms3;echo $ms4;
 	}
-	else
-	{echo $tms1;echo $tms2;echo $tms3;echo $tms4;echo $tms5;echo $tms6;
+	else if(isset($_POST['twit']))
+	{
+		echo $tms1;echo $tms2;echo $tms3;echo $tms4;echo $tms5;echo $tms6;
+	}
+	else if(isset($_POST['linkdn']))
+	{
+		echo $lms1;echo $lms2;echo $lms3;
 	}
 	?>
 	&nbsp;&nbsp;&nbsp;<span id="system_notice_area_dismiss">Dismiss</span>
@@ -225,6 +299,18 @@ function dethide(id)
 	document.getElementById(id).style.display='none';
 }
 
+function drpdisplay()
+{
+	var shmethod= document.getElementById('xyz_smap_ln_sharingmethod').value;
+	if(shmethod==1)	
+	{
+		document.getElementById('shareprivate').style.display="none";
+	}
+	else
+	{
+		document.getElementById('shareprivate').style.display="";
+	}
+}
 </script>
 
 <div style="width: 100%">
@@ -246,13 +332,13 @@ function dethide(id)
 	<form method="post">
 
 		<input type="submit" class="submit_smap_new" name="fb_auth"
-			value="Authorize	" /><br><br>
+			value="Authorize" /><br><br>
 
 	</form>
 	<?php }
 
 
-	if(isset($_GET['auth']) && $_GET['auth']==1)
+	if(isset($_GET['auth']) && $_GET['auth']==1 && get_option("xyz_smap_fb_token")!="")
 	{
 		?>
 
@@ -273,7 +359,7 @@ function dethide(id)
 
 		<b>Note :</b> You have to create a Facebook application before filling the following details.
 		<b><a href="https://developers.facebook.com/apps" target="_blank">Click here</a></b> to create new Facebook application. 
-		<br>In the application page in facebook, navigate to <b>Apps > Settings > Edit settings > Website > Site URL</b>. Set the site url as 
+		<br>In the application page in facebook, navigate to <b>Apps > Settings > Edit settings > Website > Site URL</b>. Set the site url as : 
 		<span style="color: red;"><?php echo  (is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST']; ?></span>
 <br>For detailed step by step instructions <b><a href="http://docs.xyzscripts.com/wordpress-plugins/social-media-auto-publish/creating-facebook-application/" target="_blank">Click here</a></b>.
 	</div>
@@ -327,8 +413,7 @@ function dethide(id)
 							of your blog.
 						</div></td>
 					<td><textarea id="xyz_smap_message" name="xyz_smap_message"><?php if($ms4==""){ 
-								echo get_option('xyz_smap_message');
-							}?></textarea>
+								echo get_option('xyz_smap_message');}?></textarea>
 					</td>
 				</tr>
 				<tr valign="top">
@@ -358,7 +443,7 @@ function dethide(id)
 					</td>
 				</tr>
 				<tr valign="top">
-					<td>Enable auto publish post to my facebook wall
+					<td>Enable auto publish post to my facebook account
 					</td>
 					<td><select id="xyz_smap_post_permission"
 						name="xyz_smap_post_permission"><option value="0"
@@ -378,12 +463,14 @@ function dethide(id)
 					$fbid=get_option('xyz_smap_fb_id');
 					do
 					{
-
+						$result1="";$pagearray1="";
 						$pp=wp_remote_get("https://graph.facebook.com/$fbid/accounts?access_token=$xyz_acces_token&limit=$limit&offset=$offset");
-						$result1=$pp['body'];
-						$pagearray1 = json_decode($result1);
-
-						$data = array_merge($data, $pagearray1->data);
+						if(is_array($pp))
+						{
+							$result1=$pp['body'];
+							$pagearray1 = json_decode($result1);                       
+							$data = array_merge($data, $pagearray1->data);
+						}
 						$offset += $limit;
 					}while(array_key_exists("next", $pagearray1->paging));
 
@@ -391,10 +478,7 @@ function dethide(id)
 
 
 					$count=count($data);
-
-
-					if($count>0)
-					{
+					
 						$smap_pages_ids1=get_option('xyz_smap_pages_ids');
 						$smap_pages_ids=array();
 						if($smap_pages_ids1!="")
@@ -430,7 +514,7 @@ function dethide(id)
 				</tr>
 
 
-				<?php }	
+				<?php 
 				}?>
 				<tr><td   id="bottomBorderNone"></td>
 					<td  id="bottomBorderNone">
@@ -540,9 +624,7 @@ function dethide(id)
 							of your blog.
 						</div></td>
 					<td><textarea id="xyz_smap_twmessage" name="xyz_smap_twmessage"	><?php if($tms6=="") {
-								echo get_option('xyz_smap_twmessage');
-							}?>
-						</textarea>
+								echo get_option('xyz_smap_twmessage');}?></textarea>
 					</td>
 				</tr>
 				
@@ -588,6 +670,145 @@ function dethide(id)
 			</table>
 
 	</form>
+
+	
+	<h2>
+		 <img	src="<?php echo plugins_url()?>/social-media-auto-publish/admin/images/linkedin.png" height="16px"> Linkedin Settings
+	</h2>
+	
+
+<?php
+$lnappikey=get_option('xyz_smap_lnapikey');
+$lnapisecret=get_option('xyz_smap_lnapisecret');
+$lmessagetopost=get_option('xyz_smap_lnmessage');
+
+
+$lnaf=get_option('xyz_smap_lnaf');
+	if($lnaf==1 && $lnappikey!="" && $lnapisecret!="" )
+{
+
+	?>
+	
+	<span style="color:red; ">Application needs authorisation</span><br>	
+            <form method="post" >
+			
+			<input type="submit" class="submit_smap_new" name="lnauth" value="Authorize	" />
+			<br><br>
+			</form>
+			<?php  }
+			
+if(isset($_GET['auth']) && $_GET['auth']==3)
+			{
+				if(isset($_GET['auth_problem']))
+					break;
+			?>
+			
+			<br><span style="color: green;">Application is authorized ,go posting </span><br>
+			
+			<?php 	
+			}
+			?>
+			
+			<table class="widefat" style="width: 99%;background-color: #FFFBCC">
+	<tr>
+	<td id="bottomBorderNone">
+	
+	<div>
+
+
+		<b>Note :</b> You have to create a Linkedin application before filling the following details.
+		<b><a href="https://www.linkedin.com/secure/developer?newapp" target="_blank">Click here</a></b> to create new Linkedin application. 
+		<br>Specify the website url for the application as : 
+		<span style="color: red;"><?php echo  (is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST']; ?></span>
+<br>For detailed step by step instructions <b><a href="http://docs.xyzscripts.com/wordpress-plugins/social-media-auto-publish/creating-linkedin-application/" target="_blank">Click here</a></b>.
+	</div>
+
+	</td>
+	</tr>
+	</table>
+
+	
+
+	<form method="post" >
+	
+	
+			
+	
+
+	<div style="font-weight: bold;padding: 3px;">All fields given below are mandatory</div> 
+	
+	<table class="widefat" style="width: 99%">
+	<tr valign="top">
+	<td width="50%">Api key </td>					
+	<td>
+		<input id="xyz_smap_lnapikey" name="xyz_smap_lnapikey" type="text" value="<?php if($lms1=="") {echo get_option('xyz_smap_lnapikey');}?>"/>
+	</td></tr>
+	
+
+	<tr valign="top"><td>Api secret</td>
+	<td>
+		<input id="xyz_smap_lnapisecret" name="xyz_smap_lnapisecret" type="text" value="<?php if($lms2=="") { echo get_option('xyz_smap_lnapisecret'); }?>" />
+	</td></tr>
+	
+	<tr valign="top">
+					<td>Message format for posting <img src="<?php echo $heimg?>"
+						onmouseover="detdisplay('xyz_ln')" onmouseout="dethide('xyz_ln')">
+						<div id="xyz_ln" class="informationdiv"
+							style="display: none; font-weight: normal;">
+							{POST_TITLE} - Insert the title of your post.<br />{PERMALINK} -
+							Insert the URL where your post is displayed.<br />{POST_EXCERPT}
+							- Insert the excerpt of your post.<br />{POST_CONTENT} - Insert
+							the description of your post.<br />{BLOG_TITLE} - Insert the name
+							of your blog.
+						</div></td>
+					<td>
+					
+<textarea id="xyz_smap_lnmessage" name="xyz_smap_lnmessage"	><?php if($lms3==""){echo get_option('xyz_smap_lnmessage');}?></textarea>
+					</td>
+				</tr>
+
+	<tr valign="top">
+					<td>Attach image to linkedin post
+					</td>
+					<td><select id="xyz_smap_lnpost_image_permission"
+						name="xyz_smap_lnpost_image_permission">
+							<option value="0"
+							<?php  if(get_option('xyz_smap_lnpost_image_permission')==0) echo 'selected';?>>
+								No</option>
+							<option value="1"
+							<?php  if(get_option('xyz_smap_lnpost_image_permission')==1) echo 'selected';?>>Yes</option>
+					</select>
+					</td>
+				</tr>
+				
+	<tr valign="top" id="shareprivate">
+	<input type="hidden" name="xyz_smap_ln_sharingmethod" id="xyz_smap_ln_sharingmethod" value="0">
+	<td>Share post content with</td>
+	<td>
+		<select id="xyz_smap_ln_shareprivate" name="xyz_smap_ln_shareprivate" > <option value="0" <?php  if(get_option('xyz_smap_ln_shareprivate')==0) echo 'selected';?>>
+Public</option><option value="1" <?php  if(get_option('xyz_smap_ln_shareprivate')==1) echo 'selected';?>>Connections only</option></select>
+	</td></tr>
+	
+	<tr valign="top"><td>Enable auto publish posts to my linkedin account</td>
+	<td>
+		<select id="xyz_smap_lnpost_permission" class="al2fb_text" name="xyz_smap_lnpost_permission" > <option value="0" <?php  if(get_option('xyz_smap_lnpost_permission')==0) echo 'selected';?>>
+No</option><option value="1" <?php  if(get_option('xyz_smap_lnpost_permission')==1) echo 'selected';?>>Yes</option></select>
+	</td></tr>
+	
+		<tr>
+			<td   id="bottomBorderNone"></td>
+					<td   id="bottomBorderNone">
+							<input type="submit" class="submit_smap_new"
+								style=" margin-top: 10px; "
+								name="linkdn" value="Save" />
+					</td>
+				</tr>
+
+</table>
+
+
+</form>
+
 
 	<?php 
 
@@ -778,6 +999,7 @@ function dethide(id)
 </div>		
 
 	<script type="text/javascript">
+	//drpdisplay();
 var catval='<?php echo $xyz_smap_include_categories; ?>';
 var custtypeval='<?php echo $xyz_smap_include_customposttypes; ?>';
 jQuery(document).ready(function() {
