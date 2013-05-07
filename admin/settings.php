@@ -480,16 +480,20 @@ function drpdisplay()
 					$count=count($data);
 					
 						$smap_pages_ids1=get_option('xyz_smap_pages_ids');
-						$smap_pages_ids=array();
+						$smap_pages_ids0=array();
 						if($smap_pages_ids1!="")
-							$smap_pages_ids=explode(",",$smap_pages_ids1);
-
-
-
-
-
-
-
+							$smap_pages_ids0=explode(",",$smap_pages_ids1);
+						
+						$smap_pages_ids=array();
+						for($i=0;$i<count($smap_pages_ids0);$i++)
+						{
+							if($smap_pages_ids0[$i]!="-1")
+							$smap_pages_ids[$i]=trim(substr($smap_pages_ids0[$i],0,strpos($smap_pages_ids0[$i],"-")));
+						    else
+							$smap_pages_ids[$i]=$smap_pages_ids0[$i];
+						}
+						
+					//$data[$i]->id."-".$data[$i]->access_token
 						?>
 
 				<tr valign="top">
@@ -504,7 +508,10 @@ function drpdisplay()
 								?>
 							<option
 								value="<?php  echo $data[$i]->id."-".$data[$i]->access_token;?>"
-								<?php if(in_array($data[$i]->id."-".$data[$i]->access_token, $smap_pages_ids)) echo "selected" ?>>
+								<?php
+
+								
+								if(in_array($data[$i]->id, $smap_pages_ids)) echo "selected" ?>>
 
 								<?php echo $data[$i]->name; ?>
 							</option>

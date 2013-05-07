@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL);
+error_reporting(0);
 /**
  * This file defines the 'LinkedIn' class. This class is designed to be a 
  * simple, stand-alone implementation of the LinkedIn API functions.
@@ -130,6 +130,7 @@ class LinkedIn {
   // LinkedIn API end-points
 	const _URL_ACCESS                  = 'https://api.linkedin.com/uas/oauth/accessToken';
 	const _URL_API                     = 'https://api.linkedin.com';
+	//const _URL_AUTH                    = 'https://api.linkedin.com/uas/oauth/authorize?oauth_token=';
 	const _URL_AUTH                    = 'https://www.linkedin.com/uas/oauth/authenticate?oauth_token=';
 	const _URL_REQUEST                 = 'https://api.linkedin.com/uas/oauth/requestToken?scope=rw_nus';
 	const _URL_REVOKE                  = 'https://api.linkedin.com/uas/oauth/invalidateToken';
@@ -172,6 +173,7 @@ class LinkedIn {
     }
     $this->setApplicationKey($config['appKey']);
 	  $this->setApplicationSecret($config['appSecret']);
+	  if(isset($config['callbackUrl']))
 	  $this->setCallbackUrl($config['callbackUrl']);
 	 
 	}
@@ -252,14 +254,15 @@ class LinkedIn {
 	 * @return boolean
 	 * 	  TRUE or FALSE depending on if the passed LinkedIn response matches the expected response.
 	 */
+	function xyz_smap_lnkdin_arr($value, $key) {
+		if(!is_int($value)) {
+			throw new LinkedInException('LinkedIn->checkResponse(): $http_code_required must be an integer or an array of integer values');
+		}
+	}
 	private function checkResponse($http_code_required, $response) {
 		// check passed data
     if(is_array($http_code_required)) {
-		  array_walk($http_code_required, function($value, $key) {
-        if(!is_int($value)) {
-    			throw new LinkedInException('LinkedIn->checkResponse(): $http_code_required must be an integer or an array of integer values');
-    		}
-      });
+		  array_walk($http_code_required, 'xyz_smap_lnkdin_arr');
 		} else {
 		  if(!is_int($http_code_required)) {
   			throw new LinkedInException('LinkedIn->checkResponse(): $http_code_required must be an integer or an array of integer values');
@@ -2558,7 +2561,6 @@ class LinkedIn {
       return $this->checkResponse(201, $response);
     } else {
       // profile retrieval failed
-      
       throw new LinkedInException('LinkedIn->updateNetwork(): profile data could not be retrieved.');
     }
 	}

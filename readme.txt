@@ -4,7 +4,7 @@ Donate link: http://xyzscripts.com/donate/
 Tags:  social media auto publish, social media publishing, post to facebook, post to twitter,  social network auto publish,  social media, social network, add link to facebook, add link to twitter
 Requires at least: 2.8
 Tested up to: 3.5.1
-Stable tag: 1.1
+Stable tag: 1.1.1
 License: GPLv2 or later
 
 Publish posts automatically to social media networks like Facebook and Twitter.
@@ -118,6 +118,11 @@ More questions ? [Drop a mail](http://xyzscripts.com/members/support/ "XYZScript
 
 == Changelog ==
 
+= Social Media Auto Publish 1.1.1 =
+* Fix for multiple posting to social media
+* Fixed PHP version compatability issue for versions less than 5.3
+* A few bug fixes 
+
 = Social Media Auto Publish 1.1 =
 * Support for publishing to LinkedIn
 * A few bug fixes 
@@ -126,7 +131,7 @@ More questions ? [Drop a mail](http://xyzscripts.com/members/support/ "XYZScript
 * First official launch.
 
 == Upgrade Notice ==
-If you need to publish automatically to LinkedIn, you must apply this upgrade.
+You must apply this upgrade to fix some issues induced in previous update.
 
 == More Information ==
 

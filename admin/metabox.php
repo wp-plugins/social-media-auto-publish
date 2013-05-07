@@ -8,8 +8,18 @@ function xyz_smap_add_custom_box()
 	if(isset($_GET['post_type']))
 	$posttype=$_GET['post_type'];
 	
-	if(isset($_GET['action']) && $_GET['action']=="edit")
-	return ;
+if(isset($_GET['action']) && $_GET['action']=="edit")
+	{
+		$postid=$_GET['post'];
+		$get_post_meta=get_post_meta($postid,"xyz_smap",true);
+		if($get_post_meta==1)
+			return ;
+		global $wpdb;
+		$table='posts';
+		$accountCount = $wpdb->query( 'SELECT * FROM '.$wpdb->prefix.$table.' WHERE id="'.$postid.'" and post_status!="draft" LIMIT 0,1' ) ;
+		if($accountCount>0)
+		return ;
+	}
 
 	if($posttype=="")
 		$posttype="post";

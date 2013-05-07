@@ -1,6 +1,8 @@
 <?php 
+
 add_action('publish_post', 'xyz_link_publish');
 add_action('publish_page', 'xyz_link_publish');
+
 
 
 $xyz_smap_include_customposttypes=get_option('xyz_smap_include_customposttypes');
@@ -45,8 +47,13 @@ function xyz_smap_getimage($post_ID,$description_org)
 	return $attachmenturl;
 }
 function xyz_link_publish($post_ID) {
-
 	
+	
+	$get_post_meta=get_post_meta($post_ID,"xyz_smap",true);
+	if($get_post_meta!=1)
+		add_post_meta($post_ID, "xyz_smap", "1");
+	else 
+		return;
 	global $current_user;
 	get_currentuserinfo();
 	$af=get_option('xyz_smap_af');
@@ -318,7 +325,7 @@ function xyz_link_publish($post_ID) {
 
 		if($taccess_token!="" && $taccess_token_secret!="" && $tappid!="" && $tappsecret!="" && $post_twitter_permission==1)
 		{
-				
+			
 			////image up start///
 
 			
@@ -450,8 +457,7 @@ function xyz_link_publish($post_ID) {
 		if($lnappikey!="" && $lnapisecret!="" && $lnoathtoken!="" && $lnoathseret!="" && $lnpost_permission==1 && $lnoauthverifier!="" && $lnaf==0)
 		{		
 			$contentln=array();
-			//$s="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
-		//	echo mb_strlen($s);die;
+			
 			//$description=str_replace("&nbsp;", "", $description);
 			
 			$description_li=xyz_smap_string_limit($description, 400);
@@ -519,10 +525,12 @@ function xyz_link_publish($post_ID) {
 			echo "posted successfully";
 			else
 			echo "posting failed";die;*/
-			
+		
 		
 		}
 	}
+	
+
 }
 
 ?>
