@@ -1,0 +1,259 @@
+#system_notice_area {
+	position: fixed;
+	margin-bottom:40px;
+	left:25%;
+	width:50%;
+	height:20px;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	font-weight:bold;
+	display:none;
+	padding:3px;
+	color: #000000;
+	text-align: center;
+	top: 0px;
+	z-index: 100000;
+
+
+	}
+
+
+		.xyz_suggest,.xyz_star,.xyz_donate,.xyz_fbook,.xyz_support,.xyz_twitt,.xyz_gplus{
+	height:16px;
+	background-repeat: no-repeat;
+	background-position: left center;
+	padding-left: 20px;
+	text-decoration: none;
+	
+	vertical-align: middle;
+	display: inline-block;
+	
+	}
+	
+	.xyz_suggest{
+	
+	background-image: url('images/suggest.png');
+}
+	
+	.xyz_star{
+	background-image: url('images/star.png');
+}
+
+.xyz_donate{
+	
+	background-image: url('images/donate.png');
+}
+
+	
+.xyz_fbook{
+	
+	background-image: url('images/facebook.png');
+}
+.xyz_support{
+	
+	background-image: url('images/support.png');
+}
+.xyz_twitt{
+	
+	background-image: url('images/twitter.png');
+}
+.xyz_gplus{
+	
+	background-image: url('images/gplus.png');
+}
+
+
+#social-media-auto-publish .xyz_gplus{
+margin-left: 3px;
+}
+
+#social-media-auto-publish .plugin-version-author-uri {
+	
+	background-color: #F4F4F4;
+	min-height:16px;
+	border-radius:5px;
+	margin-bottom: 10px;
+	font-weight:bold;
+	padding: 5px;
+	color: #111111;
+
+-webkit-box-shadow: 0 8px 6px -6px black;
+	   -moz-box-shadow: 0 8px 6px -6px black;
+	        box-shadow: 0 8px 6px -6px black;
+	        
+}
+#social-media-auto-publish{
+background: #a9e8f5; /* Old browsers */
+
+background: -moz-linear-gradient(top,  #ffffff 0%, #a9e8f5 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#a9e8f5)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #ffffff 0%,#a9e8f5 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #ffffff 0%,#a9e8f5 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #ffffff 0%,#a9e8f5 100%); /* IE10+ */
+background: linear-gradient(top,  #ffffff 0%,#a9e8f5 100%); /* W3C */
+
+
+}
+#social-media-auto-publish .plugin-version-author-uri a,
+#social-media-auto-publish .plugin-version-author-uri a:link,
+#social-media-auto-publish .plugin-version-author-uri a:hover,
+#social-media-auto-publish .plugin-version-author-uri a:active,
+#social-media-auto-publish .plugin-version-author-uri a:visited{
+	
+	
+	color: #111111;
+	text-decoration: none;
+	
+}
+#social-media-auto-publish .plugin-version-author-uri a:hover{
+
+color:#cc811a;
+}
+#social-media-auto-publish .plugin-title{
+
+background-image: url('images/xyz_logo.png');
+background-repeat: no-repeat;
+background-position: left  bottom;
+
+}
+
+.xyz-premium-comparison
+{
+width: 99%;
+padding:0px;
+ border: 1px solid #CCCCCC;
+ border-radius:3px;
+}
+.xyz-premium-comparison td
+{
+ padding: 1px;
+ border: 1px solid #CCCCCC;
+ height: 25px; 
+}
+
+/* Buy Now - button bounce style*/
+img.hoverImages {
+	margin-bottom:20px;
+	-webkit-transition: margin 0.2s ease-out;
+    -moz-transition: margin 0.2s ease-out;
+    -o-transition: margin 0.2s ease-out;
+}
+img.hoverImages:hover {
+	cursor:pointer;
+    margin-top: 5px;
+}
+
+
+#system_notice_area_dismiss{
+color: #FFFFFF;
+cursor: pointer;
+}
+.system_notice_area_style1 {
+	background: #00C348;
+	border: 1px solid green;
+}
+
+.system_notice_area_style0 {
+	background: #FA5A6A;
+	border: 1px solid brown;
+}
+
+.submit_smap_new{
+	background:#25A6E1;
+	background:-moz-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#25A6E1),color-stop(100%,#188BC0));
+	background:-webkit-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:-o-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:-ms-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#25A6E1",endColorstr="#188BC0",GradientType=0);
+	padding:1px 13px;
+	color:#ffffff !important;
+	 border-radius: 4px !important; border: 1px solid #1A87B9 !important;
+	font-family:"Helvetica Neue",sans-serif;
+	font-size:13px;
+	cursor:pointer;
+}
+
+.informationdiv {
+    background: none repeat scroll 0 0 #9FDAEE;
+    border: 1px solid #209BD4;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+    float: left;
+    padding: 10px;
+    position: absolute;
+    z-index: 1200;
+}
+    .xyz_feedback{
+    background: #CEEAF7; /* Old browsers */
+border: 1px solid #64cfe8;
+border-radius:3px;
+width: 98%;    
+height:28px;
+   padding:5px 5px;
+    font-weight: bold;
+    line-height: 20px;
+    
+    }
+    
+    
+    .xyz_feedback a{
+    text-decoration: none
+    }  
+       
+    .xyz_subscribe{
+    background: #bae598; /* Old browsers */
+border: 1px solid #4d8a1d;
+border-radius:3px;
+width: 98%;    
+    padding:5px 5px;
+height:28px;
+    
+    }
+  .xyz_subscribe  td{
+    padding:0;
+    }
+    
+    .xyz_plugins{
+    background: #EDEDED; /* Old browsers */
+border: 1px solid #cccccc;
+border-radius:3px;
+width: 98%;    
+    padding:5px 5px;
+height:28px;
+line-height: 25px;
+    
+    }
+  
+    
+    .submit_smap{
+	background:#25A6E1;
+	background:-moz-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#25A6E1),color-stop(100%,#188BC0));
+	background:-webkit-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:-o-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:-ms-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#25A6E1",endColorstr="#188BC0",GradientType=0);
+	padding:1px 13px;
+	color:#ffffff;
+	font-family:"Helvetica Neue",sans-serif;
+	font-size:13px;
+	cursor:pointer;	
+	color:#FFFFFF !important;border-radius:4px !important;
+	border:1px solid #1A87B9;height: 25px;
+}
+#xyz-wp-smap-premium {
+	border: 1px solid #FCC328;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	background-color: #FFF6D6;
+	height: 50px;
+	padding: 5px;
+	width: 98%;
+	border-radius:3px;
+}
+a.xyz_smap_link:hover{text-decoration:underline;} 
+	.xyz_smap_link{text-decoration:none;font-weight: bold;margin-left:8px;} 
