@@ -433,7 +433,7 @@ function xyz_link_publish($post_ID) {
 			if($image_found==1)
 			{
 				try{
-				$resultfrtw = $twobj -> post('http://upload.twitter.com/1/statuses/update_with_media.json', array( 'media[]' => $img, 'status' => $substring), true, true);
+				$resultfrtw = $twobj -> post('http://api.twitter.com/1.1/statuses/update_with_media.json', array( 'media[]' => $img, 'status' => $substring), true, true);
 				}
 				catch(Exception $e)
 				{
