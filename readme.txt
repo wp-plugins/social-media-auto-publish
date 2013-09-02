@@ -119,6 +119,10 @@ More questions ? [Drop a mail](http://xyzscripts.com/members/support/ "XYZScript
 
 == Changelog ==
 
+= Social Media Auto Publish 1.2 =
+* Support for user nicename in auto publish
+* A few bug fixes 
+
 = Social Media Auto Publish 1.1.1 =
 * Fix for multiple posting to social media
 * Fixed PHP version compatability issue for versions less than 5.3
