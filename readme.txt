@@ -3,8 +3,8 @@ Contributors: f1logic
 Donate link: http://xyzscripts.com/donate/
 Tags:  social media auto publish, social media publishing, post to facebook, post to twitter,  social network auto publish,  social media, social network, add link to facebook, add link to twitter
 Requires at least: 2.8
-Tested up to: 3.5.1
-Stable tag: 1.1.1
+Tested up to: 3.6
+Stable tag: 1.2
 License: GPLv2 or later
 
 Publish posts automatically to social media networks like Facebook and Twitter.
@@ -15,16 +15,16 @@ A quick look into Social Media Auto Publish :
 
 	★ Publish message to Facebook with image
 	★ Attach post or share link  to Facebook
-	★ Publish to Twitter with image
+	★ Publish to Twitter,linkedIn with image
 	★ Filter items  to be published based on categories
 	★ Filter items to be published based on custom post types
 	★ Enable or disable wordpress page publishing
-	★ Customizable  message formats for Twitter and Facebook
+	★ Customizable  message formats for Twitter, LinkedIn and Facebook
 
 
 = Social Media Auto Publish Features in Detail =
 
-The Social Media Auto Publish lets you publish posts automatically from your blog to social media networks like Facebook and Twitter. The plugin supports filtering posts based on  custom post-types as well as categories.
+The Social Media Auto Publish lets you publish posts automatically from your blog to social media networks like Facebook, Twitter and LinkedIn. The plugin supports filtering posts based on  custom post-types as well as categories.
 
 The prominent features of  the social media auto publish plugin are highlighted below.
 
@@ -34,6 +34,7 @@ The various social media supported are listed below.
 
     Facebook
     Twitter
+    LinkedIn
 
 = Filter Settings =
 
@@ -45,8 +46,8 @@ The plugin offers multiple kinds of filters for contents to be published automat
 
 = Message Format Settings =
 
-    Separate message format for Facebook and Twitter
-    Supports post title, description, excerpt, permalink and blog title 
+    Separate message format for Facebook, Twitter and LinkedIn
+    Supports post title, description, excerpt, permalink, blog title and user nicename
 
 = Posting options =
 
@@ -54,7 +55,7 @@ The plugin offers multiple kinds of filters for contents to be published automat
     Attach post to Facebook
     Share link on Facebook
     Post to specific pages on Facebook
-    Post to Twitter with image    
+    Post to Twitter,LinkedIn with image    
 
 
 = About =
@@ -96,14 +97,14 @@ Yes, you can select the pages to which you need to publish after authorizing Fac
 Yes, you can specify the categories which need to be auto published from settings page.
 
 
-= 4. Why do I have to create applications in Facebook and Twitter ? =
+= 4. Why do I have to create applications in Facebook, Twitter and LinkedIn ? =
 
-When you create your own applications, it ensures that the posts to Facebook and Twitter are not shared with any message like "shared via xxx"
+When you create your own applications, it ensures that the posts to Facebook, Twitter and LinkedIn are not shared with any message like "shared via xxx"
 
 
 = 5. Which  all data fields can I send to social networks ? =
 
-You may use post title, content, excerpt, permalink and site title for auto publishing.
+You may use post title, content, excerpt, permalink, site title and user nicename for auto publishing.
 
 
 More questions ? [Drop a mail](http://xyzscripts.com/members/support/ "XYZScripts Support") and we shall get back to you with the answers.

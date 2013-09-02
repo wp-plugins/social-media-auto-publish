@@ -5,7 +5,7 @@
 		<h2 style="vertical-align: middle;">
 			<a target="_blank"
 				href="http://xyzscripts.com/wordpress-plugins/social-media-auto-publish/features">Fully
-				Featured XYZ WP SMAP Premium Plugin</a> - Just 19 USD
+				Featured XYZ WP SMAP Premium Plugin</a> - Just 29 USD
 		</h2>
 	</div>
 	<div style="float: left; margin-top: 3px">

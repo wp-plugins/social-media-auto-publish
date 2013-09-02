@@ -52,22 +52,22 @@ if(isset($_POST['fb']))
 	$appsecret=$_POST['xyz_smap_application_secret'];
 	$messagetopost=$_POST['xyz_smap_message'];
 	$fbid=$_POST['xyz_smap_fb_id'];
-	if($appid=="" )
+	if($appid=="" && $posting_permission==1)
 	{
 		$ms1="Please fill facebook application id.";
 		$erf=1;
 	}
-	elseif($appsecret=="" )
+	elseif($appsecret=="" && $posting_permission==1)
 	{
 		$ms2="Please fill facebook application secret.";
 		$erf=1;
 	}
-	elseif($fbid=="" )
+	elseif($fbid=="" && $posting_permission==1)
 	{
 		$ms3="Please fill facebook user id.";
 		$erf=1;
 	}
-	elseif($messagetopost=="" )
+	elseif($messagetopost=="" && $posting_permission==1)
 	{
 		$ms4="Please fill message format for posting.";
 		$erf=1;
@@ -136,33 +136,33 @@ if(isset($_POST['twit']))
 	$tposting_permission=$_POST['xyz_smap_twpost_permission'];
 	$tposting_image_permission=$_POST['xyz_smap_twpost_image_permission'];
 	$tmessagetopost=$_POST['xyz_smap_twmessage'];
-	if($tappid=="" )
+	if($tappid=="" && $tposting_permission==1)
 	{
 		$terf=1;
 		$tms1="Please fill consumer id.";
 
 	}
-	elseif($tappsecret=="" )
+	elseif($tappsecret=="" && $tposting_permission==1)
 	{
 		$tms2="Please fill consumer secret.";
 		$terf=1;
 	}
-	elseif($twid=="" )
+	elseif($twid=="" && $tposting_permission==1)
 	{
 		$tms3="Please fill twitter username.";
 		$terf=1;
 	}
-	elseif($taccess_token=="")
+	elseif($taccess_token=="" && $tposting_permission==1)
 	{
 		$tms4="Please fill twitter access token.";
 		$terf=1;
 	}
-	elseif($taccess_token_secret=="")
+	elseif($taccess_token_secret=="" && $tposting_permission==1)
 	{
 		$tms5="Please fill twitter access token secret.";
 		$terf=1;
 	}
-	elseif($tmessagetopost=="")
+	elseif($tmessagetopost=="" && $tposting_permission==1)
 	{
 		$tms6="Please fill mssage format for posting.";
 		$terf=1;
@@ -208,17 +208,17 @@ if(isset($_POST['linkdn']))
 	$xyz_smap_ln_shareprivate=$_POST['xyz_smap_ln_shareprivate'];
 	$xyz_smap_ln_sharingmethod=$_POST['xyz_smap_ln_sharingmethod'];
 	$xyz_smap_lnpost_image_permission=$_POST['xyz_smap_lnpost_image_permission'];
-	if($lnappikey=="" )
+	if($lnappikey=="" && $lnposting_permission==1)
 	{
 		$lms1="Please fill linkedin api key";
 		$lerf=1;
 	}
-	elseif($lnapisecret=="" )
+	elseif($lnapisecret=="" && $lnposting_permission==1)
 	{
 		$lms2="Please fill linked api secret";
 		$lerf=1;
 	}
-	elseif($lmessagetopost=="" )
+	elseif($lmessagetopost=="" && $lnposting_permission==1)
 	{
 		$lms3="Please fill mssage format for posting.";
 		$lerf=1;
@@ -382,12 +382,12 @@ function drpdisplay()
 					</td>
 					<td><input id="xyz_smap_application_id"
 						name="xyz_smap_application_id" type="text"
-						value="<?php if($ms1=="") {echo get_option('xyz_smap_application_id');}?>" />
+						value="<?php if($ms1=="") {echo esc_html(get_option('xyz_smap_application_id'));}?>" />
 					</td>
 				</tr>
 
 				<tr valign="top">
-					<td>Application secret<?php   $apsecret=get_option('xyz_smap_application_secret');?>
+					<td>Application secret<?php   $apsecret=esc_html(get_option('xyz_smap_application_secret'));?>
 						
 					</td>
 					<td><input id="xyz_smap_application_secret"
@@ -399,7 +399,7 @@ function drpdisplay()
 					<td>Facebook user id 
 					</td>
 					<td><input id="xyz_smap_fb_id" name="xyz_smap_fb_id" type="text"
-						value="<?php if($ms3=="") {echo get_option('xyz_smap_fb_id');}?>" />
+						value="<?php if($ms3=="") {echo esc_html(get_option('xyz_smap_fb_id'));}?>" />
 					</td>
 				</tr>
 				<tr valign="top">
@@ -410,10 +410,11 @@ function drpdisplay()
 							Insert the URL where your post is displayed.<br />{POST_EXCERPT}
 							- Insert the excerpt of your post.<br />{POST_CONTENT} - Insert
 							the description of your post.<br />{BLOG_TITLE} - Insert the name
-							of your blog.
+							of your blog.<br />{USER_NICENAME} - Insert the nicename
+							of the author.
 						</div></td>
 					<td><textarea id="xyz_smap_message" name="xyz_smap_message"><?php if($ms4==""){ 
-								echo get_option('xyz_smap_message');}?></textarea>
+								echo esc_textarea(get_option('xyz_smap_message'));}?></textarea>
 					</td>
 				</tr>
 				<tr valign="top">
@@ -524,10 +525,10 @@ function drpdisplay()
 				<?php 
 				}?>
 				<tr><td   id="bottomBorderNone"></td>
-					<td  id="bottomBorderNone">
+					<td  id="bottomBorderNone"><div style="height: 50px;">
 							<input type="submit" class="submit_smap_new"
 								style=" margin-top: 10px; "
-								name="fb" value="Save" />
+								name="fb" value="Save" /></div>
 					</td>
 				</tr>
 			</table>
@@ -583,7 +584,7 @@ function drpdisplay()
 					</td>
 					<td><input id="xyz_smap_twconsumer_id"
 						name="xyz_smap_twconsumer_id" type="text"
-						value="<?php if($tms1=="") {echo get_option('xyz_smap_twconsumer_id');}?>" />
+						value="<?php if($tms1=="") {echo esc_html(get_option('xyz_smap_twconsumer_id'));}?>" />
 					</td>
 				</tr>
 
@@ -592,7 +593,7 @@ function drpdisplay()
 					</td>
 					<td><input id="xyz_smap_twconsumer_secret"
 						name="xyz_smap_twconsumer_secret" type="text"
-						value="<?php if($tms2=="") { echo get_option('xyz_smap_twconsumer_secret'); }?>" />
+						value="<?php if($tms2=="") { echo esc_html(get_option('xyz_smap_twconsumer_secret')); }?>" />
 					</td>
 				</tr>
 				<tr valign="top">
@@ -600,7 +601,7 @@ function drpdisplay()
 					</td>
 					<td><input id="xyz_smap_tw_id" class="al2tw_text"
 						name="xyz_smap_tw_id" type="text"
-						value="<?php if($tms3=="") {echo get_option('xyz_smap_tw_id');}?>" />
+						value="<?php if($tms3=="") {echo esc_html(get_option('xyz_smap_tw_id'));}?>" />
 					</td>
 				</tr>
 				<tr valign="top">
@@ -608,7 +609,7 @@ function drpdisplay()
 					</td>
 					<td><input id="xyz_smap_current_twappln_token" class="al2tw_text"
 						name="xyz_smap_current_twappln_token" type="text"
-						value="<?php if($tms4=="") {echo get_option('xyz_smap_current_twappln_token');}?>" />
+						value="<?php if($tms4=="") {echo esc_html(get_option('xyz_smap_current_twappln_token'));}?>" />
 					</td>
 				</tr>
 				<tr valign="top">
@@ -616,7 +617,7 @@ function drpdisplay()
 					</td>
 					<td><input id="xyz_smap_twaccestok_secret" class="al2tw_text"
 						name="xyz_smap_twaccestok_secret" type="text"
-						value="<?php if($tms5=="") {echo get_option('xyz_smap_twaccestok_secret');}?>" />
+						value="<?php if($tms5=="") {echo esc_html(get_option('xyz_smap_twaccestok_secret'));}?>" />
 					</td>
 				</tr>
 				<tr valign="top">
@@ -628,10 +629,11 @@ function drpdisplay()
 							Insert the URL where your post is displayed.<br />{POST_EXCERPT}
 							- Insert the excerpt of your post.<br />{POST_CONTENT} - Insert
 							the description of your post.<br />{BLOG_TITLE} - Insert the name
-							of your blog.
+							of your blog.<br />{USER_NICENAME} - Insert the nicename
+							of the author.
 						</div></td>
 					<td><textarea id="xyz_smap_twmessage" name="xyz_smap_twmessage"	><?php if($tms6=="") {
-								echo get_option('xyz_smap_twmessage');}?></textarea>
+								echo esc_textarea(get_option('xyz_smap_twmessage'));}?></textarea>
 					</td>
 				</tr>
 				
@@ -668,10 +670,10 @@ function drpdisplay()
 
 				<tr>
 			<td   id="bottomBorderNone"></td>
-					<td   id="bottomBorderNone">
+					<td   id="bottomBorderNone"><div style="height: 50px;">
 							<input type="submit" class="submit_smap_new"
 								style=" margin-top: 10px; "
-								name="twit" value="Save" />
+								name="twit" value="Save" /></div>
 					</td>
 				</tr>
 			</table>
@@ -748,13 +750,13 @@ if(isset($_GET['auth']) && $_GET['auth']==3)
 	<tr valign="top">
 	<td width="50%">Api key </td>					
 	<td>
-		<input id="xyz_smap_lnapikey" name="xyz_smap_lnapikey" type="text" value="<?php if($lms1=="") {echo get_option('xyz_smap_lnapikey');}?>"/>
+		<input id="xyz_smap_lnapikey" name="xyz_smap_lnapikey" type="text" value="<?php if($lms1=="") {echo esc_html(get_option('xyz_smap_lnapikey'));}?>"/>
 	</td></tr>
 	
 
 	<tr valign="top"><td>Api secret</td>
 	<td>
-		<input id="xyz_smap_lnapisecret" name="xyz_smap_lnapisecret" type="text" value="<?php if($lms2=="") { echo get_option('xyz_smap_lnapisecret'); }?>" />
+		<input id="xyz_smap_lnapisecret" name="xyz_smap_lnapisecret" type="text" value="<?php if($lms2=="") { echo esc_html(get_option('xyz_smap_lnapisecret')); }?>" />
 	</td></tr>
 	
 	<tr valign="top">
@@ -766,11 +768,12 @@ if(isset($_GET['auth']) && $_GET['auth']==3)
 							Insert the URL where your post is displayed.<br />{POST_EXCERPT}
 							- Insert the excerpt of your post.<br />{POST_CONTENT} - Insert
 							the description of your post.<br />{BLOG_TITLE} - Insert the name
-							of your blog.
+							of your blog.<br />{USER_NICENAME} - Insert the nicename
+							of the author.
 						</div></td>
 					<td>
 					
-<textarea id="xyz_smap_lnmessage" name="xyz_smap_lnmessage"	><?php if($lms3==""){echo get_option('xyz_smap_lnmessage');}?></textarea>
+<textarea id="xyz_smap_lnmessage" name="xyz_smap_lnmessage"	><?php if($lms3==""){echo esc_textarea(get_option('xyz_smap_lnmessage'));}?></textarea>
 					</td>
 				</tr>
 
@@ -804,10 +807,10 @@ No</option><option value="1" <?php  if(get_option('xyz_smap_lnpost_permission')=
 	
 		<tr>
 			<td   id="bottomBorderNone"></td>
-					<td   id="bottomBorderNone">
+					<td   id="bottomBorderNone"><div style="height: 50px;">
 							<input type="submit" class="submit_smap_new"
 								style=" margin-top: 10px; "
-								name="linkdn" value="Save" />
+								name="linkdn" value="Save" /></div>
 					</td>
 				</tr>
 
@@ -994,8 +997,8 @@ No</option><option value="1" <?php  if(get_option('xyz_smap_lnpost_permission')=
 					</td>
 
 					
-<td id="bottomBorderNone">
-<input type="submit" class="submit_smap_new"				style="margin-top: 10px;"					value=" Update Settings" name="bsettngs" /></td>
+<td id="bottomBorderNone"><div style="height: 50px;">
+<input type="submit" class="submit_smap_new" style="margin-top: 10px;"	value=" Update Settings" name="bsettngs" /></div></td>
 				</tr>
 
 

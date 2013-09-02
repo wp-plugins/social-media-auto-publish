@@ -23,7 +23,7 @@
 	height:16px;
 	background-repeat: no-repeat;
 	background-position: left center;
-	padding-left: 20px;
+	padding-left: 15px;
 	text-decoration: none;
 	
 	vertical-align: middle;
@@ -173,7 +173,7 @@ cursor: pointer;
 	 border-radius: 4px !important; border: 1px solid #1A87B9 !important;
 	font-family:"Helvetica Neue",sans-serif;
 	font-size:13px;
-	cursor:pointer;
+	cursor:pointer;height: 25px;
 }
 
 .informationdiv {

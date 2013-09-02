@@ -23,18 +23,21 @@ if(isset($_POST['fb_auth']))
 
 
 	//if(empty($code)) {
-		$_SESSION['state'] = md5(uniqid(rand(), TRUE)); // CSRF protection
+		//$_SESSION['state'] = md5(uniqid(rand(), TRUE)); // CSRF protection
+		
+		$xyz_smap_session_state = md5(uniqid(rand(), TRUE));
+		setcookie("xyz_smap_session_state",$xyz_smap_session_state,"0","/");
 		
 		$dialog_url = "https://www.facebook.com/dialog/oauth?client_id="
 		. $app_id . "&redirect_uri=" . $my_url . "&state="
-		. $_SESSION['state'] . "&scope=read_stream,publish_stream,offline_access,manage_pages";
+		. $xyz_smap_session_state . "&scope=read_stream,publish_stream,offline_access,manage_pages";
 
 		header("Location: " . $dialog_url);
 	//}
 }
 
 
-if(isset($_SESSION['state']) && isset($_REQUEST['state']) && ($_SESSION['state'] === $_REQUEST['state']) && get_option("xyz_smap_af")==1) {
+if(isset($_COOKIE['xyz_smap_session_state']) && isset($_REQUEST['state']) && ($_COOKIE['xyz_smap_session_state'] === $_REQUEST['state']) && get_option("xyz_smap_af")==1) {
 	
 	$token_url = "https://graph.facebook.com/oauth/access_token?"
 	. "client_id=" . $app_id . "&redirect_uri=" . $my_url
@@ -80,7 +83,7 @@ if(isset($_POST['lnauth']))
 	'callbackUrl'  => $redirecturl
 	);
 
-	$OBJ_linkedin = new LinkedIn($API_CONFIG);
+	$OBJ_linkedin = new SMAPLinkedIn($API_CONFIG);
 	$response = $OBJ_linkedin->retrieveTokenRequest();//print_r($response);die;
 	
 	if(isset($response['error']))
@@ -102,7 +105,7 @@ if(isset($_POST['lnauth']))
 
 	update_option('xyz_smap_lnoauth_token', $lnoathtoken);
 	update_option('xyz_smap_lnoauth_secret',$lnoathseret);
-	header('Location: ' . LINKEDIN::_URL_AUTH . $response['linkedin']['oauth_token']);
+	header('Location: ' . SMAPLinkedIn::_URL_AUTH . $response['linkedin']['oauth_token']);
 	
 	die;
 	
@@ -131,7 +134,7 @@ if(isset($_GET['auth']) && $_GET['auth']==3 && get_option("xyz_smap_lnaf")==1)
 			'callbackUrl'  => $lnredirecturl
 	);
 
-	$OBJ_linkedin = new LinkedIn($API_CONFIG);
+	$OBJ_linkedin = new SMAPLinkedIn($API_CONFIG);
 	$response = $OBJ_linkedin->retrieveTokenAccess($lnoathtoken, $lnoathseret, $lnoauth_verifier);
 
 

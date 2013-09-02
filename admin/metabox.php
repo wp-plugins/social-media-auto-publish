@@ -1,9 +1,7 @@
 <?php 
-
-
 add_action( 'add_meta_boxes', 'xyz_smap_add_custom_box' );
 function xyz_smap_add_custom_box()
-{
+{	
 	$posttype="";
 	if(isset($_GET['post_type']))
 	$posttype=$_GET['post_type'];
@@ -42,7 +40,7 @@ if(isset($_GET['action']) && $_GET['action']=="edit")
 			return;
 
 	}
-
+	if((get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="") || (get_option('xyz_smap_twconsumer_id')!="" && get_option('xyz_smap_twconsumer_secret')!="" && get_option('xyz_smap_tw_id')!="" && get_option('xyz_smap_current_twappln_token')!="" && get_option('xyz_smap_twaccestok_secret')!="") || (get_option('xyz_smap_lnaf')==0) )
 	add_meta_box( "xyz_smap", '<strong>Social Media Auto Publish - Post Options</strong>', 'xyz_smap_addpostmetatags') ;
 }
 
@@ -57,46 +55,57 @@ var tcheckid;
 var lcheckid;
 function displaycheck()
 {
-fcheckid=document.getElementById("xyz_smap_post_permission").value;
-if(fcheckid==1)
-{
-	document.getElementById("fpmd").style.display='';	
-	document.getElementById("fpmf").style.display='';	
-}
-else
-{
-	document.getElementById("fpmd").style.display='none';	
-	document.getElementById("fpmf").style.display='none';	
-}
-tcheckid=document.getElementById("xyz_smap_twpost_permission").value;
-if(tcheckid==1)
-{
+	if(document.getElementById("xyz_smap_post_permission"))
+	{
+		fcheckid=document.getElementById("xyz_smap_post_permission").value;
+		if(fcheckid==1)
+		{
+			document.getElementById("fpmd").style.display='';	
+			document.getElementById("fpmf").style.display='';	
+		}
+		else
+		{
+			document.getElementById("fpmd").style.display='none';	
+			document.getElementById("fpmf").style.display='none';	
+		}
+	}
 
-	document.getElementById("twmf").style.display='';
-	document.getElementById("twai").style.display='';	
-}
-else
-{
-	
-	document.getElementById("twmf").style.display='none';
-	document.getElementById("twai").style.display='none';		
-}
+	if(document.getElementById("xyz_smap_twpost_permission"))
+	{
+		tcheckid=document.getElementById("xyz_smap_twpost_permission").value;
+		if(tcheckid==1)
+		{
+		
+			document.getElementById("twmf").style.display='';
+			document.getElementById("twai").style.display='';	
+		}
+		else
+		{
+			
+			document.getElementById("twmf").style.display='none';
+			document.getElementById("twai").style.display='none';		
+		}
+	}
 
-lcheckid=document.getElementById("xyz_smap_lnpost_permission").value;
-if(lcheckid==1)
-{
+	if(document.getElementById("xyz_smap_lnpost_permission"))
+	{
+		lcheckid=document.getElementById("xyz_smap_lnpost_permission").value;
+		if(lcheckid==1)
+		{
+		
+			
+		    document.getElementById("lnimg").style.display='';
+			document.getElementById("lnmf").style.display='';	
+			document.getElementById("shareprivate").style.display='';	
+		}
+		else
+		{
+		    document.getElementById("lnimg").style.display='none';
+			document.getElementById("lnmf").style.display='none';	
+			document.getElementById("shareprivate").style.display='none';		
+		}
+	}
 
-	
-    document.getElementById("lnimg").style.display='';
-	document.getElementById("lnmf").style.display='';	
-	document.getElementById("shareprivate").style.display='';	
-}
-else
-{
-    document.getElementById("lnimg").style.display='none';
-	document.getElementById("lnmf").style.display='none';	
-	document.getElementById("shareprivate").style.display='none';		
-}
 
 }
 
@@ -127,6 +136,12 @@ function drpdisplay()
 
 </script>
 <table>
+<?php 
+
+if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
+{
+
+?>
 	<tr valign="top">
 		<td>Enable auto publish post to my facebook account
 		</td>
@@ -172,14 +187,20 @@ function drpdisplay()
 							Insert the URL where your post is displayed.<br />{POST_EXCERPT}
 							- Insert the excerpt of your post.<br />{POST_CONTENT} - Insert
 							the description of your post.<br />{BLOG_TITLE} - Insert the name
-							of your blog.
+							of your blog.<br />{USER_NICENAME} - Insert the nicename
+							of the author.
 						</div>
 		</td>
 		<td>
-		<textarea id="xyz_smap_message" name="xyz_smap_message"><?php echo get_option('xyz_smap_message');?></textarea>
+		<textarea id="xyz_smap_message" name="xyz_smap_message"><?php echo esc_textarea(get_option('xyz_smap_message'));?></textarea>
 		</td>
 	</tr>
+	<?php }?>
 	
+	<?php 
+	if(get_option('xyz_smap_twconsumer_id')!="" && get_option('xyz_smap_twconsumer_secret')!="" && get_option('xyz_smap_tw_id')!="" && get_option('xyz_smap_current_twappln_token')!="" && get_option('xyz_smap_twaccestok_secret')!="")
+	{
+	?>
 	<tr valign="top">
 		<td>Enable auto publish	posts to my twitter account
 		</td>
@@ -217,14 +238,17 @@ function drpdisplay()
 							Insert the URL where your post is displayed.<br />{POST_EXCERPT}
 							- Insert the excerpt of your post.<br />{POST_CONTENT} - Insert
 							the description of your post.<br />{BLOG_TITLE} - Insert the name
-							of your blog.
+							of your blog.<br />{USER_NICENAME} - Insert the nicename
+							of the author.
 						</div>
 		</td>
 		<td>
-		<textarea id="xyz_smap_twmessage" name="xyz_smap_twmessage"><?php echo get_option('xyz_smap_twmessage');?></textarea>
+		<textarea id="xyz_smap_twmessage" name="xyz_smap_twmessage"><?php echo esc_textarea(get_option('xyz_smap_twmessage'));?></textarea>
 		</td>
 	</tr>
+	<?php }?>
 	
+	<?php if(get_option('xyz_smap_lnaf')==0){?>
 	<tr valign="top">
 		<td>Enable auto publish	posts to my linkedin account
 		</td>
@@ -271,14 +295,15 @@ Public</option><option value="1" <?php  if(get_option('xyz_smap_ln_shareprivate'
 							Insert the URL where your post is displayed.<br />{POST_EXCERPT}
 							- Insert the excerpt of your post.<br />{POST_CONTENT} - Insert
 							the description of your post.<br />{BLOG_TITLE} - Insert the name
-							of your blog.
+							of your blog.<br />{USER_NICENAME} - Insert the nicename
+							of the author.
 						</div>
 		</td>
 		<td>
-		<textarea id="xyz_smap_lnmessage" name="xyz_smap_lnmessage"><?php echo get_option('xyz_smap_lnmessage');?></textarea>
+		<textarea id="xyz_smap_lnmessage" name="xyz_smap_lnmessage"><?php echo esc_textarea(get_option('xyz_smap_lnmessage'));?></textarea>
 		</td>
 	</tr>
-	
+	<?php }?>
 </table>
 <script type="text/javascript">
 	displaycheck();

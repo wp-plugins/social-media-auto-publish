@@ -30,7 +30,7 @@ Social Media Auto Publish automatically publishes posts from your blog to your  
 	</tr>
 	<!-- Supported Media  -->
 	<tr>
-		<td rowspan="3"><h4>Supported Media</h4></td>
+		<td rowspan="5"><h4>Supported Media</h4></td>
 		<td>Facebook</td>
 		<td><img src="<?php echo plugins_url("images/tick.png",__FILE__);?>">
 		</td>
@@ -52,9 +52,23 @@ Social Media Auto Publish automatically publishes posts from your blog to your  
 		<td><img src="<?php echo plugins_url("images/tick.png",__FILE__);?>">
 		</td>
 	</tr>
+	<tr>
+		<td>Pinterest<span style="color: #FF8000;font-size: 14px;font-weight: bold;">*</span></td>
+		<td><img src="<?php echo plugins_url("images/cross.png",__FILE__);?>">
+		</td>
+		<td><img src="<?php echo plugins_url("images/tick.png",__FILE__);?>">
+		</td>
+	</tr>
+	<tr>
+		<td>Google Plus<span style="color: #FF8000;font-size: 14px;font-weight: bold;">*</span></td>
+		<td><img src="<?php echo plugins_url("images/cross.png",__FILE__);?>">
+		</td>
+		<td><img src="<?php echo plugins_url("images/tick.png",__FILE__);?>">
+		</td>
+	</tr>
 	<!-- Posting Options  -->
 	<tr>
-		<td rowspan="11"><h4>Posting Options</h4></td>
+		<td rowspan="15"><h4>Posting Options</h4></td>
 		<td>Publish to facebook profile/pages</td>
 		<td><img src="<?php echo plugins_url("images/tick.png",__FILE__);?>">
 		</td>
@@ -77,9 +91,33 @@ Social Media Auto Publish automatically publishes posts from your blog to your  
 		<td><img src="<?php echo plugins_url("images/tick.png",__FILE__);?>">
 		</td>
 	</tr>
+	
+	<tr>
+		<td>Publish to pinterest boards</td>
+		<td><img src="<?php echo plugins_url("images/cross.png",__FILE__);?>">
+		</td>
+		<td><img src="<?php echo plugins_url("images/tick.png",__FILE__);?>">
+		</td>
+	</tr>
+	
+	<tr>
+		<td>Publish to google plus profile/pages</td>
+		<td><img src="<?php echo plugins_url("images/cross.png",__FILE__);?>">
+		</td>
+		<td><img src="<?php echo plugins_url("images/tick.png",__FILE__);?>">
+		</td>
+	</tr>
 	<tr>
 		<td>Publish images along with post content</td>
 		<td><img src="<?php echo plugins_url("images/tick.png",__FILE__);?>">
+		</td>
+		<td><img src="<?php echo plugins_url("images/tick.png",__FILE__);?>">
+		</td>
+	</tr>
+	
+	<tr>
+		<td>Option to republish existing posts</td>
+		<td><img src="<?php echo plugins_url("images/cross.png",__FILE__);?>">
 		</td>
 		<td><img src="<?php echo plugins_url("images/tick.png",__FILE__);?>">
 		</td>
@@ -102,7 +140,7 @@ Social Media Auto Publish automatically publishes posts from your blog to your  
 	</tr>
 	
 	<tr>
-		<td>Publish to multiple Facebook/Twitter/LinkedIn accounts</td>
+		<td>Publish to multiple social media accounts</td>
 		<td><img src="<?php echo plugins_url("images/cross.png",__FILE__);?>">
 		</td>
 		<td><img src="<?php echo plugins_url("images/tick.png",__FILE__);?>">
@@ -110,7 +148,15 @@ Social Media Auto Publish automatically publishes posts from your blog to your  
 	</tr>
 	
 	<tr>
-		<td>Seperate message formats for publishing to multiple Facebook/Twitter/LinkedIn accounts</td>
+		<td>Seperate message formats for publishing to multiple social media accounts</td>
+		<td><img src="<?php echo plugins_url("images/cross.png",__FILE__);?>">
+		</td>
+		<td><img src="<?php echo plugins_url("images/tick.png",__FILE__);?>">
+		</td>
+	</tr>
+	
+	<tr>
+		<td>Seperate image url for publishing to multiple social media accounts</td>
 		<td><img src="<?php echo plugins_url("images/cross.png",__FILE__);?>">
 		</td>
 		<td><img src="<?php echo plugins_url("images/tick.png",__FILE__);?>">
@@ -179,6 +225,7 @@ Social Media Auto Publish automatically publishes posts from your blog to your  
 </table>
 <br/>
 <div style="clear: both;"></div>
+<span style="color: #FF8000;font-size: 14px;font-weight: bold;"> * </span> Pinterest and Google Plus are added on experimental basis.
 <?php 
 
 ?>

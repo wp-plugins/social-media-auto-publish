@@ -3,7 +3,6 @@ if ( is_admin() )
 {
 
 	add_action('admin_menu', 'xyz_smap_menu');
-	//add_action('admin_print_styles', 'xyz_smap_admin_style');
 	
 	wp_enqueue_script('jquery');
 	wp_register_script( 'xyz_notice_script', plugins_url('social-media-auto-publish/js/notice.js') );
@@ -24,6 +23,11 @@ function xyz_smap_menu()
 
 function xyz_smap_settings()
 {
+	$_POST = stripslashes_deep($_POST);
+	$_GET = stripslashes_deep($_GET);	
+	$_POST = xyz_trim_deep($_POST);
+	$_GET = xyz_trim_deep($_GET);
+	
 	require( dirname( __FILE__ ) . '/header.php' );
 	require( dirname( __FILE__ ) . '/settings.php' );
 	require( dirname( __FILE__ ) . '/footer.php' );
@@ -38,10 +42,5 @@ function xyz_smap_about()
 	require( dirname( __FILE__ ) . '/footer.php' );
 }
 
-function xyz_smap_admin_style()
-{
-	require( dirname( __FILE__ ) . '/style.php' );
-
-}
 
 ?>

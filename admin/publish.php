@@ -46,9 +46,8 @@ function xyz_smap_getimage($post_ID,$description_org)
 	}
 	return $attachmenturl;
 }
+
 function xyz_link_publish($post_ID) {
-	
-	
 	$get_post_meta=get_post_meta($post_ID,"xyz_smap",true);
 	if($get_post_meta!=1)
 		add_post_meta($post_ID, "xyz_smap", "1");
@@ -128,7 +127,10 @@ function xyz_link_publish($post_ID) {
     $lnaf=get_option('xyz_smap_lnaf');
 	
 	////////////////////////
-	$postpp= get_post($post_ID);
+	$postpp= get_post($post_ID);global $wpdb;
+	$entries0 = $wpdb->get_results( 'SELECT user_nicename FROM '.$wpdb->prefix.'users WHERE ID='.$postpp->post_author);
+	foreach( $entries0 as $entry ) {			
+		$user_nicename=$entry->user_nicename;}
 	
 	if ($postpp->post_status == 'publish')
 	{
@@ -175,8 +177,17 @@ function xyz_link_publish($post_ID) {
 		{
 			if($content!="")
 			{
-				$excerpt=implode(' ', array_slice(explode(' ', $content), 0, 50));
+				$content1=$content;
+				$content1=strip_tags($content1);
+				$content1=strip_shortcodes($content1);
+				
+				$excerpt=implode(' ', array_slice(explode(' ', $content1), 0, 50));
 			}
+		}
+		else
+		{
+			$excerpt=strip_tags($excerpt);
+			$excerpt=strip_shortcodes($excerpt);
 		}
 		$description = $content;
 		
@@ -194,8 +205,8 @@ function xyz_link_publish($post_ID) {
 
 		$name=strip_tags($name);
 		$name=strip_shortcodes($name);
-
-		$description=strip_tags($description);
+		
+		$description=strip_tags($description);		
 		$description=strip_shortcodes($description);
 
 		
@@ -224,12 +235,13 @@ function xyz_link_publish($post_ID) {
 				}
 
 					
-				$fb=new Facebook();
+				$fb=new SMAPFacebook();
 				$message1=str_replace('{POST_TITLE}', $name, $message);
 				$message2=str_replace('{BLOG_TITLE}', $caption,$message1);
 				$message3=str_replace('{PERMALINK}', $link, $message2);
 				$message4=str_replace('{POST_EXCERPT}', $excerpt, $message3);
 				$message5=str_replace('{POST_CONTENT}', $description, $message4);
+				$message5=str_replace('{USER_NICENAME}', $user_nicename, $message5);
 
                $disp_type="feed";
 				if($posting_method==1) //attach
@@ -333,14 +345,14 @@ function xyz_link_publish($post_ID) {
 			{
 				
 				
-				$img=array();$image_found = 0;
+				$img=array();
 				if($attachmenturl!="")
 					$img = wp_remote_get($attachmenturl);
 					
 				if(is_array($img))
 				{
 					if (isset($img['body'])&& trim($img['body'])!='')
-						$img = $img['body'];
+					{$img = $img['body'];$image_found = 1;}
 					else
 						$image_found = 0;
 				}
@@ -370,6 +382,9 @@ function xyz_link_publish($post_ID) {
 				{$replace=$excerpt;}
 				if($val=="{BLOG_TITLE}")
 					$replace=$caption;
+
+				if($val=="{USER_NICENAME}")
+					$replace=$user_nicename;
 
 
 
@@ -428,12 +443,13 @@ function xyz_link_publish($post_ID) {
 			//echo $substring;die;
 				
 				
-			$twobj=new TwitterOAuth($tappid, $tappsecret,$taccess_token,$taccess_token_secret);
+			$twobj = new SMAPTwitterOAuth(array( 'consumer_key' => $tappid, 'consumer_secret' => $tappsecret, 'user_token' => $taccess_token, 'user_secret' => $taccess_token_secret,'curl_ssl_verifypeer'   => false));
 				
-			if($image_found==1)
+			if($image_found==1 && $post_twitter_image_permission==1)
 			{
 				try{
-				$resultfrtw = $twobj -> post('http://upload.twitter.com/1/statuses/update_with_media.json', array( 'media[]' => $img, 'status' => $substring), true, true);
+					
+				 $resultfrtw = $twobj -> request('POST', 'http://api.twitter.com/1.1/statuses/update_with_media.json', array( 'media[]' => $img, 'status' => $substring), true, true);
 				}
 				catch(Exception $e)
 				{
@@ -443,13 +459,14 @@ function xyz_link_publish($post_ID) {
 			else
 			{
 				try{
-				$resultfrtw=$twobj->post('statuses/update', array('status' => $substring));
+				$resultfrtw = $twobj->request('POST', $twobj->url('1.1/statuses/update'), array('status' =>$substring));
 				}
 				catch(Exception $e)
 				{
 				//echo $e->getmessage();
 				}
 			}
+			
 			//print_r($resultfrtw);
 			//die;
 		}
@@ -469,6 +486,7 @@ function xyz_link_publish($post_ID) {
 			$message3=str_replace('{PERMALINK}', $link, $message2);
 			$message4=str_replace('{POST_EXCERPT}', $excerpt, $message3);
 			$message5=str_replace('{POST_CONTENT}', $description, $message4);
+			$message5=str_replace('{USER_NICENAME}', $user_nicename, $message5);
 			
 			//$message5=xyz_smap_string_limit($message5, 700);
 						
@@ -493,7 +511,7 @@ function xyz_link_publish($post_ID) {
 		{
 		$private = FALSE;
 		}
-		$OBJ_linkedin = new LinkedIn($API_CONFIG);
+		$OBJ_linkedin = new SMAPLinkedIn($API_CONFIG);
 		$xyz_smap_application_lnarray=get_option('xyz_smap_application_lnarray');
 	
 		
