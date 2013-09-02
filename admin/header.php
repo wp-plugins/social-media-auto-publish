@@ -16,6 +16,7 @@
 	<div style="float: left; padding: 0 5px">
 	<h2 style="vertical-align: middle;text-shadow: 1px 1px 1px #686868">
 			( <a 	href="<?php echo admin_url('admin.php?page=social-media-auto-publish-about');?>">Compare Features</a> ) 
+			<span style="color:red;font-weight:bold; font-size:14px;">* Pinterest and Google Plus added *</span>
 	</h2>		
 	</div>
 </div>
