@@ -7,7 +7,7 @@ Tested up to: 3.6
 Stable tag: 1.2
 License: GPLv2 or later
 
-Publish posts automatically to social media networks like Facebook and Twitter.
+Publish posts automatically to social media networks like Facebook, Twitter and LinkedIn.
 
 == Description ==
 
@@ -15,7 +15,8 @@ A quick look into Social Media Auto Publish :
 
 	★ Publish message to Facebook with image
 	★ Attach post or share link  to Facebook
-	★ Publish to Twitter,linkedIn with image
+	★ Publish to Twitter with image
+	★ Publish to LinkedIn with image
 	★ Filter items  to be published based on categories
 	★ Filter items to be published based on custom post types
 	★ Enable or disable wordpress page publishing
@@ -55,7 +56,8 @@ The plugin offers multiple kinds of filters for contents to be published automat
     Attach post to Facebook
     Share link on Facebook
     Post to specific pages on Facebook
-    Post to Twitter,LinkedIn with image    
+    Post to Twitter with image    
+    Post to LinkedIn with image    
 
 
 = About =
@@ -136,7 +138,7 @@ More questions ? [Drop a mail](http://xyzscripts.com/members/support/ "XYZScript
 * First official launch.
 
 == Upgrade Notice ==
-You must apply this upgrade to fix some issues induced in previous update.
+You must apply this upgrade to get support for user nicename while publishing.
 
 == More Information ==
 
