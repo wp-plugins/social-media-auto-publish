@@ -1,17 +1,19 @@
 <?php
-if ( is_admin() )
-{
 
-	add_action('admin_menu', 'xyz_smap_menu');
-	
+add_action('admin_menu', 'xyz_smap_menu');
+
+function xyz_smap_add_admin_scripts()
+{
 	wp_enqueue_script('jquery');
 	wp_register_script( 'xyz_notice_script', plugins_url('social-media-auto-publish/js/notice.js') );
 	wp_enqueue_script( 'xyz_notice_script' );
 	
 	wp_register_style('xyz_smap_style', plugins_url('social-media-auto-publish/admin/style.css'));
 	wp_enqueue_style('xyz_smap_style');
-
 }
+
+add_action("admin_enqueue_scripts","xyz_smap_add_admin_scripts");
+
 
 function xyz_smap_menu()
 {

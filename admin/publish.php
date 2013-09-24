@@ -37,10 +37,16 @@ function xyz_smap_getimage($post_ID,$description_org)
 		
 	}
 	else {
-		$first_img = '';
-		preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $description_org, $matches);
+		preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/is', $description_org, $matches);
 		if(isset($matches[1][0]))
 		$attachmenturl = $matches[1][0];
+		else
+		{
+			apply_filters('the_content', $description_org);
+			preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/is', $description_org, $matches);
+			if(isset($matches[1][0]))
+				$attachmenturl = $matches[1][0];
+		}
 		
 	
 	}
@@ -192,7 +198,7 @@ function xyz_link_publish($post_ID) {
 		$description = $content;
 		
 		$description_org=$description;
-		$attachmenturl=xyz_smap_getimage($post_ID, $description_org);
+		$attachmenturl=xyz_smap_getimage($post_ID, $postpp->post_content);
 		if($attachmenturl!="")
 			$image_found=1;
 		else
@@ -253,7 +259,8 @@ function xyz_link_publish($post_ID) {
 							'caption' => $caption,
 							'description' => $description,
 							'actions' => array(array('name' => $name,
-									'link' => $link))
+									'link' => $link)),
+							'picture' => $attachmenturl
 
 					);
 				}
@@ -264,7 +271,8 @@ function xyz_link_publish($post_ID) {
 							'link' => $link,
 							'name' => $name,
 							'caption' => $caption,
-							'description' => $description
+							'description' => $description,
+							'picture' => $attachmenturl
 
 
 					);

@@ -472,6 +472,8 @@ function drpdisplay()
 							$pagearray1 = json_decode($result1);                       
 							$data = array_merge($data, $pagearray1->data);
 						}
+						else
+							break;
 						$offset += $limit;
 					}while(array_key_exists("next", $pagearray1->paging));
 

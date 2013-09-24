@@ -656,7 +656,7 @@ class SMAPLinkedIn {
 	  
     try {
 	    // generate OAuth values
-	    $oauth_consumer  = new OAuthConsumer($this->getApplicationKey(), $this->getApplicationSecret(), $this->getCallbackUrl());
+	    $oauth_consumer  = new SMAPOAuthConsumer($this->getApplicationKey(), $this->getApplicationSecret(), $this->getCallbackUrl());
 	    $oauth_token     = $this->getToken();
 	 
 	 

@@ -4,7 +4,7 @@ Donate link: http://xyzscripts.com/donate/
 Tags:  social media auto publish, social media publishing, post to facebook, post to twitter, post to linkedin, social network auto publish, social media, social network, add link to facebook, add link to twitter, add link to linkedin, publish to facebook, publish to twitter, publish to linkedin
 Requires at least: 2.8
 Tested up to: 3.6
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: GPLv2 or later
 
 Publish posts automatically to social media networks like Facebook, Twitter and LinkedIn.
@@ -121,6 +121,11 @@ More questions ? [Drop a mail](http://xyzscripts.com/members/support/ "XYZScript
 
 == Changelog ==
 
+= Social Media Auto Publish 1.2.1 =
+* Default image fetch logic for auto publish updated
+* Thumbnail image logic for facebook updated
+* LinkedIn bug fixed
+
 = Social Media Auto Publish 1.2 =
 * Support for user nicename in auto publish
 * A few bug fixes 
@@ -138,7 +143,9 @@ More questions ? [Drop a mail](http://xyzscripts.com/members/support/ "XYZScript
 * First official launch.
 
 == Upgrade Notice ==
-You must apply this upgrade to get support for user nicename while publishing.
+
+= Social Media Auto Publish 1.2.1 =
+If you had issues  with default image used for auto publishing as well as linkedin publishing, you may apply this upgrade.
 
 == More Information ==
 
