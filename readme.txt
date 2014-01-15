@@ -122,7 +122,7 @@ More questions ? [Drop a mail](http://xyzscripts.com/members/support/ "XYZScript
 == Changelog ==
 
 = Social Media Auto Publish 1.2.2 =
-* Bug fixed for &nbsp; in post
+* Bug fixed for &amp;nbsp; in post
 * Twitter api updated to https
 
 = Social Media Auto Publish 1.2.1 =
