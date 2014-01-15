@@ -469,12 +469,15 @@ function drpdisplay()
 						if(is_array($pp))
 						{
 							$result1=$pp['body'];
-							$pagearray1 = json_decode($result1);                       
+							$pagearray1 = json_decode($result1);
+							if(is_array($pagearray1->data))
 							$data = array_merge($data, $pagearray1->data);
 						}
 						else
 							break;
 						$offset += $limit;
+						if(!is_array($pagearray1->paging))
+							break;
 					}while(array_key_exists("next", $pagearray1->paging));
 
 

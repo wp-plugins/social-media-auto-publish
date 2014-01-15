@@ -214,7 +214,12 @@ function xyz_link_publish($post_ID) {
 		
 		$description=strip_tags($description);		
 		$description=strip_shortcodes($description);
-
+	
+	 	$description=str_replace("&nbsp;","",$description);
+		//$description=str_replace(array("\r\n","\r","\n"), '', $description);
+		
+		$excerpt=str_replace("&nbsp;","",$excerpt);
+		//$excerpt=str_replace(array("\r\n","\r","\n"), '', $excerpt);
 		
 		if($useracces_token!="" && $appsecret!="" && $appid!="" && $post_permissin==1)
 		{
@@ -248,6 +253,9 @@ function xyz_link_publish($post_ID) {
 				$message4=str_replace('{POST_EXCERPT}', $excerpt, $message3);
 				$message5=str_replace('{POST_CONTENT}', $description, $message4);
 				$message5=str_replace('{USER_NICENAME}', $user_nicename, $message5);
+				
+				$message5=str_replace("&nbsp;","",$message5);
+				//$message5=str_replace(array("\r\n","\r","\n"), '', $message5);
 
                $disp_type="feed";
 				if($posting_method==1) //attach
@@ -367,8 +375,10 @@ function xyz_link_publish($post_ID) {
 					
 			}
 			///Twitter upload image end/////
-				
-
+			
+			$messagetopost=str_replace("&nbsp;","",$messagetopost);
+			//$messagetopost=str_replace(array("\r\n","\r","\n"), '', $messagetopost);
+			
 			preg_match_all("/{(.+?)}/i",$messagetopost,$matches);
 			$matches1=$matches[1];$substring="";$islink=0;$issubstr=0;
 			$len=118;
@@ -457,7 +467,7 @@ function xyz_link_publish($post_ID) {
 			{
 				try{
 					
-				 $resultfrtw = $twobj -> request('POST', 'http://api.twitter.com/1.1/statuses/update_with_media.json', array( 'media[]' => $img, 'status' => $substring), true, true);
+				 $resultfrtw = $twobj -> request('POST', 'https://api.twitter.com/1.1/statuses/update_with_media.json', array( 'media[]' => $img, 'status' => $substring), true, true);
 				}
 				catch(Exception $e)
 				{
@@ -485,7 +495,7 @@ function xyz_link_publish($post_ID) {
 			
 			//$description=str_replace("&nbsp;", "", $description);
 			
-			$description_li=xyz_smap_string_limit($description, 400);
+			$description_li=xyz_smap_string_limit($description, 362);
 			$caption_li=xyz_smap_string_limit($caption, 200);
 			$name_li=xyz_smap_string_limit($name, 200);
 				
@@ -495,6 +505,9 @@ function xyz_link_publish($post_ID) {
 			$message4=str_replace('{POST_EXCERPT}', $excerpt, $message3);
 			$message5=str_replace('{POST_CONTENT}', $description, $message4);
 			$message5=str_replace('{USER_NICENAME}', $user_nicename, $message5);
+			
+			$message5=str_replace("&nbsp;","",$message5);
+			//$message5=str_replace(array("\r\n","\r","\n"), '', $message5);
 			
 			//$message5=xyz_smap_string_limit($message5, 700);
 						

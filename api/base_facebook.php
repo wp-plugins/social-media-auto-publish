@@ -223,8 +223,12 @@ abstract class SMAPBaseFacebook
    * @param array $config The application configuration
    */
   public function __construct($config) {
-    $this->setAppId($config['appId']);
-    $this->setAppSecret($config['secret']);
+  	if (isset($config['appId'])) {
+    $this->setAppId($config['appId']);}
+    
+    if (isset($config['secret'])) {
+    $this->setAppSecret($config['secret']);}
+    
     if (isset($config['fileUpload'])) {
       $this->setFileUploadSupport($config['fileUpload']);
     }
