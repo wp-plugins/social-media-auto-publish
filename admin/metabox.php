@@ -9,6 +9,11 @@ function xyz_smap_add_custom_box()
 if(isset($_GET['action']) && $_GET['action']=="edit")
 	{
 		$postid=$_GET['post'];
+		
+		$postpp= get_post($postid);
+		if($postpp->post_status=="publish")
+			add_meta_box("xyz_smap1", ' ', 'xyz_smap_addpostmetatags1') ;
+		
 		$get_post_meta=get_post_meta($postid,"xyz_smap",true);
 		if($get_post_meta==1)
 			return ;
@@ -44,6 +49,16 @@ if(isset($_GET['action']) && $_GET['action']=="edit")
 	add_meta_box( "xyz_smap", '<strong>Social Media Auto Publish - Post Options</strong>', 'xyz_smap_addpostmetatags') ;
 }
 
+function xyz_smap_addpostmetatags1()
+{
+	?>
+	
+	<input type="hidden" name="xyz_smap_hidden_meta" value="1" >
+	<script type="text/javascript">
+		jQuery('#xyz_smap1').hide();
+		</script>
+	<?php 
+}
 function xyz_smap_addpostmetatags()
 {
 	$imgpath= plugins_url()."/social-media-auto-publish/admin/images/";
@@ -135,15 +150,28 @@ function drpdisplay()
 }
 
 </script>
-<table>
+<table class="xyz_smap_metalist_table">
 <?php 
 
 if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 {
 
 ?>
+
+<tr ><td colspan="2" >
+
+<table class="xyz_smap_meta_acclist_table"><!-- FB META -->
+
+
+<tr>
+		<td colspan="2" class="xyz_smap_pleft15 xyz_smap_meta_acclist_table_td"><strong>Facebook</strong>
+		</td>
+</tr>
+
+<tr><td colspan="2" valign="top">&nbsp;</td></tr>
+	
 	<tr valign="top">
-		<td>Enable auto publish post to my facebook account
+		<td class="xyz_smap_pleft15">Enable auto publish post to my facebook account
 		</td>
 		<td><select id="xyz_smap_post_permission" name="xyz_smap_post_permission"
 			onchange="displaycheck()"><option value="0"
@@ -155,7 +183,7 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 		</td>
 	</tr>
 	<tr valign="top" id="fpmd">
-		<td>Posting method
+		<td class="xyz_smap_pleft15">Posting method
 		</td>
 		<td><select id="xyz_smap_po_method" name="xyz_smap_po_method">
 				<option value="3"
@@ -180,7 +208,7 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 		</td>
 	</tr>
 	<tr valign="top" id="fpmf">
-		<td>Message format for posting <img src="<?php echo $heimg?>"
+		<td class="xyz_smap_pleft15">Message format for posting <img src="<?php echo $heimg?>"
 						onmouseover="detdisplay('xyz_fb')" onmouseout="dethide('xyz_fb')">
 						<div id="xyz_fb" class="informationdiv" style="display: none;">
 							{POST_TITLE} - Insert the title of your post.<br />{PERMALINK} -
@@ -191,18 +219,42 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 							of the author.
 						</div>
 		</td>
-		<td>
-		<textarea id="xyz_smap_message" name="xyz_smap_message"><?php echo esc_textarea(get_option('xyz_smap_message'));?></textarea>
-		</td>
-	</tr>
+	<td>
+	<select name="xyz_smap_fb_info" id="xyz_smap_fb_info" onchange="xyz_smap_fb_info_insert(this)">
+		<option value ="0" selected="selected">--Select--</option>
+		<option value ="1">{POST_TITLE}  </option>
+		<option value ="2">{PERMALINK} </option>
+		<option value ="3">{POST_EXCERPT}  </option>
+		<option value ="4">{POST_CONTENT}   </option>
+		<option value ="5">{BLOG_TITLE}   </option>
+		<option value ="6">{USER_NICENAME}   </option>
+		</select> </td></tr><tr><td>&nbsp;</td><td>
+		<textarea id="xyz_smap_message"  name="xyz_smap_message" style="height:80px !important;" ><?php echo esc_textarea(get_option('xyz_smap_message'));?></textarea>
+	</td></tr>
+	
+	</table>
+	</td></tr>
 	<?php }?>
 	
 	<?php 
 	if(get_option('xyz_smap_twconsumer_id')!="" && get_option('xyz_smap_twconsumer_secret')!="" && get_option('xyz_smap_tw_id')!="" && get_option('xyz_smap_current_twappln_token')!="" && get_option('xyz_smap_twaccestok_secret')!="")
 	{
 	?>
+	
+	<tr ><td colspan="2" >
+
+<table class="xyz_smap_meta_acclist_table"><!-- TW META -->
+
+
+<tr>
+		<td colspan="2" class="xyz_smap_pleft15 xyz_smap_meta_acclist_table_td"><strong>Twitter</strong>
+		</td>
+</tr>
+
+<tr><td colspan="2" valign="top">&nbsp;</td></tr>
+	
 	<tr valign="top">
-		<td>Enable auto publish	posts to my twitter account
+		<td class="xyz_smap_pleft15">Enable auto publish posts to my twitter account
 		</td>
 		<td><select id="xyz_smap_twpost_permission" name="xyz_smap_twpost_permission"
 			onchange="displaycheck()">
@@ -216,7 +268,7 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 	</tr>
 	
 	<tr valign="top" id="twai">
-		<td>Attach image to twitter post
+		<td class="xyz_smap_pleft15">Attach image to twitter post
 		</td>
 		<td><select id="xyz_smap_twpost_image_permission" name="xyz_smap_twpost_image_permission"
 			onchange="displaycheck()">
@@ -230,7 +282,7 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 	</tr>
 	
 	<tr valign="top" id="twmf">
-		<td>Message format for posting <img src="<?php echo $heimg?>"
+		<td class="xyz_smap_pleft15">Message format for posting <img src="<?php echo $heimg?>"
 						onmouseover="detdisplay('xyz_tw')" onmouseout="dethide('xyz_tw')">
 						<div id="xyz_tw" class="informationdiv"
 							style="display: none; font-weight: normal;">
@@ -242,15 +294,42 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 							of the author.
 						</div>
 		</td>
-		<td>
-		<textarea id="xyz_smap_twmessage" name="xyz_smap_twmessage"><?php echo esc_textarea(get_option('xyz_smap_twmessage'));?></textarea>
-		</td>
-	</tr>
+		
+		
+	<td>
+	<select name="xyz_smap_tw_info" id="xyz_smap_tw_info" onchange="xyz_smap_tw_info_insert(this)">
+		<option value ="0" selected="selected">--Select--</option>
+		<option value ="1">{POST_TITLE}  </option>
+		<option value ="2">{PERMALINK} </option>
+		<option value ="3">{POST_EXCERPT}  </option>
+		<option value ="4">{POST_CONTENT}   </option>
+		<option value ="5">{BLOG_TITLE}   </option>
+		<option value ="6">{USER_NICENAME}   </option>
+		</select> </td></tr><tr><td>&nbsp;</td><td>
+		<textarea id="xyz_smap_twmessage"  name="xyz_smap_twmessage" style="height:80px !important;" ><?php echo esc_textarea(get_option('xyz_smap_twmessage'));?></textarea>
+	</td></tr>
+	
+	</table>
+	
+	</td></tr>
 	<?php }?>
 	
 	<?php if(get_option('xyz_smap_lnaf')==0){?>
-	<tr valign="top">
-		<td>Enable auto publish	posts to my linkedin account
+	
+	<tr ><td colspan="2" >
+
+<table class="xyz_smap_meta_acclist_table"><!-- LI META -->
+
+
+<tr>
+		<td colspan="2" class="xyz_smap_pleft15 xyz_smap_meta_acclist_table_td"><strong>LinkedIn</strong>
+		</td>
+</tr>
+
+<tr><td colspan="2" valign="top">&nbsp;</td></tr>
+	
+	<tr valign="top" >
+		<td class="xyz_smap_pleft15">Enable auto publish	posts to my linkedin account
 		</td>
 		<td><select id="xyz_smap_lnpost_permission" name="xyz_smap_lnpost_permission"
 			onchange="displaycheck()">
@@ -264,7 +343,7 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 	</tr>
 	
 	<tr valign="top" id="lnimg">
-		<td>Attach image to linkedin post
+		<td class="xyz_smap_pleft15">Attach image to linkedin post
 		</td>
 		<td><select id="xyz_smap_lnpost_image_permission" name="xyz_smap_lnpost_image_permission"
 			onchange="displaycheck()">
@@ -279,7 +358,7 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 	
 	<tr valign="top" id="shareprivate">
 	<input type="hidden" name="xyz_smap_ln_sharingmethod" id="xyz_smap_ln_sharingmethod" value="0">
-	<td>Share post content with</td>
+	<td class="xyz_smap_pleft15">Share post content with</td>
 	<td>
 		<select id="xyz_smap_ln_shareprivate" name="xyz_smap_ln_shareprivate" >
 		 <option value="0" <?php  if(get_option('xyz_smap_ln_shareprivate')==0) echo 'selected';?>>
@@ -287,7 +366,7 @@ Public</option><option value="1" <?php  if(get_option('xyz_smap_ln_shareprivate'
 	</td></tr>
 
 	<tr valign="top" id="lnmf">
-		<td>Message format for posting <img src="<?php echo $heimg?>"
+		<td class="xyz_smap_pleft15">Message format for posting <img src="<?php echo $heimg?>"
 						onmouseover="detdisplay('xyz_ln')" onmouseout="dethide('xyz_ln')">
 						<div id="xyz_ln" class="informationdiv"
 							style="display: none; font-weight: normal;">
@@ -299,14 +378,64 @@ Public</option><option value="1" <?php  if(get_option('xyz_smap_ln_shareprivate'
 							of the author.
 						</div>
 		</td>
-		<td>
-		<textarea id="xyz_smap_lnmessage" name="xyz_smap_lnmessage"><?php echo esc_textarea(get_option('xyz_smap_lnmessage'));?></textarea>
-		</td>
-	</tr>
+	<td>
+	<select name="xyz_smap_ln_info" id="xyz_smap_ln_info" onchange="xyz_smap_ln_info_insert(this)">
+		<option value ="0" selected="selected">--Select--</option>
+		<option value ="1">{POST_TITLE}  </option>
+		<option value ="2">{PERMALINK} </option>
+		<option value ="3">{POST_EXCERPT}  </option>
+		<option value ="4">{POST_CONTENT}   </option>
+		<option value ="5">{BLOG_TITLE}   </option>
+		<option value ="6">{USER_NICENAME}   </option>
+		</select> </td></tr><tr><td>&nbsp;</td><td>
+		<textarea id="xyz_smap_lnmessage"  name="xyz_smap_lnmessage" style="height:80px !important;" ><?php echo esc_textarea(get_option('xyz_smap_lnmessage'));?></textarea>
+	</td></tr>
+	
+	</table>
+	
+	</td></tr>
 	<?php }?>
 </table>
 <script type="text/javascript">
 	displaycheck();
+
+	function xyz_smap_fb_info_insert(inf){
+		
+	    var e = document.getElementById("xyz_smap_fb_info");
+	    var ins_opt = e.options[e.selectedIndex].text;
+	    if(ins_opt=="0")
+	    	ins_opt="";
+	    var str=jQuery("textarea#xyz_smap_message").val()+ins_opt;
+	    jQuery("textarea#xyz_smap_message").val(str);
+	    jQuery('#xyz_smap_fb_info :eq(0)').prop('selected', true);
+	    jQuery("textarea#xyz_smap_message").focus();
+
+	}
+	function xyz_smap_tw_info_insert(inf){
+		
+	    var e = document.getElementById("xyz_smap_tw_info");
+	    var ins_opt = e.options[e.selectedIndex].text;
+	    if(ins_opt=="0")
+	    	ins_opt="";
+	    var str=jQuery("textarea#xyz_smap_twmessage").val()+ins_opt;
+	    jQuery("textarea#xyz_smap_twmessage").val(str);
+	    jQuery('#xyz_smap_tw_info :eq(0)').prop('selected', true);
+	    jQuery("textarea#xyz_smap_twmessage").focus();
+
+	}
+
+	function xyz_smap_ln_info_insert(inf){
+		
+	    var e = document.getElementById("xyz_smap_ln_info");
+	    var ins_opt = e.options[e.selectedIndex].text;
+	    if(ins_opt=="0")
+	    	ins_opt="";
+	    var str=jQuery("textarea#xyz_smap_lnmessage").val()+ins_opt;
+	    jQuery("textarea#xyz_smap_lnmessage").val(str);
+	    jQuery('#xyz_smap_ln_info :eq(0)').prop('selected', true);
+	    jQuery("textarea#xyz_smap_lnmessage").focus();
+
+	}
 	</script>
 <?php 
 }

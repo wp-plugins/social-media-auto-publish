@@ -18,8 +18,9 @@ add_action("admin_enqueue_scripts","xyz_smap_add_admin_scripts");
 function xyz_smap_menu()
 {
 	add_menu_page('Social Media Auto Publish - Manage settings', 'Social Media Auto Publish', 'manage_options', 'social-media-auto-publish-settings', 'xyz_smap_settings');
-	$page=add_submenu_page('social-media-auto-publish-settings', 'Social Media Auto Publish - Manage settings', ' Settings', 'manage_options', 'social-media-auto-publish-settings' ,'xyz_smap_settings'); // 8 for admin
-	add_submenu_page('social-media-auto-publish-settings', 'Social Media Auto Publish - About', 'About', 'manage_options', 'social-media-auto-publish-about' ,'xyz_smap_about'); // 8 for admin
+	$page=add_submenu_page('social-media-auto-publish-settings', 'Social Media Auto Publish - Manage settings', ' Settings', 'manage_options', 'social-media-auto-publish-settings' ,'xyz_smap_settings');
+	add_submenu_page('social-media-auto-publish-settings', 'Social Media Auto Publish - Logs', 'Logs', 'manage_options', 'social-media-auto-publish-log' ,'xyz_smap_logs'); 
+	add_submenu_page('social-media-auto-publish-settings', 'Social Media Auto Publish - About', 'About', 'manage_options', 'social-media-auto-publish-about' ,'xyz_smap_about');
 }
 
 
@@ -44,5 +45,16 @@ function xyz_smap_about()
 	require( dirname( __FILE__ ) . '/footer.php' );
 }
 
+function xyz_smap_logs()
+{
+	$_POST = stripslashes_deep($_POST);
+	$_GET = stripslashes_deep($_GET);
+	$_POST = xyz_trim_deep($_POST);
+	$_GET = xyz_trim_deep($_GET);
+	
+	require( dirname( __FILE__ ) . '/header.php' );
+	require( dirname( __FILE__ ) . '/logs.php' );
+	require( dirname( __FILE__ ) . '/footer.php' );
+}
 
 ?>

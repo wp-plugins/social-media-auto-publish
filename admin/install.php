@@ -22,10 +22,10 @@ function smap_free_network_install($networkwide) {
 function smap_install_free()
 {
 	
-	$pluginName = 'xyz-wp-smap/xyz-wp-smap.php';
+	/*$pluginName = 'xyz-wp-smap/xyz-wp-smap.php';
 	if (is_plugin_active($pluginName)) {
 		wp_die( "The plugin Social Media Auto Publish cannot be activated unless the premium version of this plugin is deactivated. Back to <a href='".admin_url()."plugins.php'>Plugin Installation</a>." );
-	}
+	}*/
 	
 	global $current_user;
 	get_currentuserinfo();
@@ -44,7 +44,6 @@ function smap_install_free()
 	add_option('xyz_smap_af', '1'); //authorization flag
 	add_option('xyz_smap_pages_ids','-1');
 
-
 	add_option('xyz_smap_twconsumer_secret', '');
 	add_option('xyz_smap_twconsumer_id','');
 	add_option('xyz_smap_tw_id', '');
@@ -54,13 +53,11 @@ function smap_install_free()
 	add_option('xyz_smap_twaccestok_secret', '');
 	add_option('xyz_smap_twmessage', '{POST_TITLE} - {PERMALINK}');
 	
-	
 	add_option('xyz_smap_application_lnarray', '');
 	add_option('xyz_smap_ln_shareprivate', '0');
 	add_option('xyz_smap_ln_sharingmethod', '0');
 	add_option('xyz_smap_lnapikey', '');
 	add_option('xyz_smap_lnapisecret', '');
-	
 	add_option('xyz_smap_lnoauth_verifier', '');
 	add_option('xyz_smap_lnoauth_token', '');
 	add_option('xyz_smap_lnoauth_secret', '');
@@ -69,8 +66,6 @@ function smap_install_free()
 	add_option('xyz_smap_lnaf', '1');
 	add_option('xyz_smap_lnmessage', '{POST_TITLE} - {PERMALINK}');
 	
-	
-
 	$version=get_option('xyz_smap_free_version');
 	$currentversion=xyz_smap_plugin_get_version();
 	update_option('xyz_smap_free_version', $currentversion);
@@ -78,6 +73,13 @@ function smap_install_free()
 	add_option('xyz_smap_include_pages', '0');
 	add_option('xyz_smap_include_categories', 'All');
 	add_option('xyz_smap_include_customposttypes', '');
+	
+	add_option('xyz_smap_peer_verification', '1');
+	add_option('xyz_smap_fbap_post_logs', '');
+	add_option('xyz_smap_lnap_post_logs', '');
+	add_option('xyz_smap_twap_post_logs', '');
+	add_option('xyz_smap_premium_version_ads', '1');
+	
 
 }
 

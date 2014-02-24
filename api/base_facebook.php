@@ -936,7 +936,7 @@ abstract class SMAPBaseFacebook
     } else {
       $opts[CURLOPT_HTTPHEADER] = array('Expect:');
     }
-
+    $opts[CURLOPT_SSL_VERIFYPEER]=(get_option('xyz_smap_peer_verification')=='1') ? TRUE : FALSE;
     curl_setopt_array($ch, $opts);
     $result = curl_exec($ch);
 

@@ -1,12 +1,8 @@
 <?php
-
 $app_id = get_option('xyz_smap_application_id');
 $app_secret = get_option('xyz_smap_application_secret');
 $redirecturl=admin_url('admin.php?page=social-media-auto-publish-settings&auth=1');
 $lnredirecturl=admin_url('admin.php?page=social-media-auto-publish-settings&auth=3');
-
-//$redirecturl=trailingslashit($redirecturl);
-//$my_url =  $redirecturl."/";
 $my_url=urlencode($redirecturl);
 
 session_start();
@@ -16,15 +12,6 @@ $code = $_REQUEST["code"];
 
 if(isset($_POST['fb_auth']))
 {
-
-	// $appid=get_option('xyz_smap_application_id');
-	//$appsecret=get_option('xyz_smap_application_secret');
-
-
-
-	//if(empty($code)) {
-		//$_SESSION['state'] = md5(uniqid(rand(), TRUE)); // CSRF protection
-		
 		$xyz_smap_session_state = md5(uniqid(rand(), TRUE));
 		setcookie("xyz_smap_session_state",$xyz_smap_session_state,"0","/");
 		
@@ -33,7 +20,6 @@ if(isset($_POST['fb_auth']))
 		. $xyz_smap_session_state . "&scope=read_stream,publish_stream,offline_access,manage_pages";
 
 		header("Location: " . $dialog_url);
-	//}
 }
 
 
@@ -43,7 +29,6 @@ if(isset($_COOKIE['xyz_smap_session_state']) && isset($_REQUEST['state']) && ($_
 	. "client_id=" . $app_id . "&redirect_uri=" . $my_url
 	. "&client_secret=" . $app_secret . "&code=" . $code;
 
-	//$response = file_get_contents($token_url);
 	$params = null;$access_token="";
 	$response = wp_remote_get($token_url);
 	
@@ -56,14 +41,22 @@ if(isset($_COOKIE['xyz_smap_session_state']) && isset($_REQUEST['state']) && ($_
 			$access_token = $params['access_token'];
 		}
 	}
+	
 	if($access_token!="")
 	{
 		update_option('xyz_smap_fb_token',$access_token);
 		update_option('xyz_smap_af',0);
 	}
+	else {
+		
+		header("Location:".admin_url('admin.php?page=social-media-auto-publish-settings&msg=3'));
+		exit();
+	}
 }
 else {
-	//echo("The state does not match. You may be a victim of CSRF.");
+	
+	//header("Location:".admin_url('admin.php?page=social-media-auto-publish-settings&msg=2'));
+	//exit();
 }
 
 
@@ -71,8 +64,6 @@ if(isset($_POST['lnauth']))
 {
 	
 	$redirecturl=admin_url('admin.php?page=social-media-auto-publish-settings&auth=3');
-	
-	// $redirecturl=trailingslashit($redirecturl);
 	$lnappikey=get_option('xyz_smap_lnapikey');
 	$lnapisecret=get_option('xyz_smap_lnapisecret');
 	
@@ -84,18 +75,13 @@ if(isset($_POST['lnauth']))
 	);
 
 	$OBJ_linkedin = new SMAPLinkedIn($API_CONFIG);
-	$response = $OBJ_linkedin->retrieveTokenRequest();//print_r($response);die;
+	$response = $OBJ_linkedin->retrieveTokenRequest();
 	
 	if(isset($response['error']))
 	{
-		//echo $response['error'];
-			
 		header("Location:".admin_url('admin.php?page=social-media-auto-publish-settings&msg=1'));
 		exit();
 	}
-	
-	
-	//$OBJ_linkedin->setTokenAccess($response['linkedin']);
 
 	$lnoathtoken=$response['linkedin']['oauth_token'];
 	$lnoathseret=$response['linkedin']['oauth_token_secret'];
@@ -106,10 +92,7 @@ if(isset($_POST['lnauth']))
 	update_option('xyz_smap_lnoauth_token', $lnoathtoken);
 	update_option('xyz_smap_lnoauth_secret',$lnoathseret);
 	header('Location: ' . SMAPLinkedIn::_URL_AUTH . $response['linkedin']['oauth_token']);
-	
 	die;
-	
-
 }
 
 if(isset($_GET['auth']) && $_GET['auth']==3 && get_option("xyz_smap_lnaf")==1)
@@ -118,7 +101,6 @@ if(isset($_GET['auth']) && $_GET['auth']==3 && get_option("xyz_smap_lnaf")==1)
 		break;
 	$lnoathtoken=get_option('xyz_smap_lnoauth_token');
 	$lnoathseret=get_option('xyz_smap_lnoauth_secret');
-
 	 
 	$lnappikey=get_option('xyz_smap_lnapikey');
 	$lnapisecret=get_option('xyz_smap_lnapisecret');
@@ -136,7 +118,6 @@ if(isset($_GET['auth']) && $_GET['auth']==3 && get_option("xyz_smap_lnaf")==1)
 
 	$OBJ_linkedin = new SMAPLinkedIn($API_CONFIG);
 	$response = $OBJ_linkedin->retrieveTokenAccess($lnoathtoken, $lnoathseret, $lnoauth_verifier);
-
 
 	# Now we retrieve a request token. It will be set as $linkedin->request_token
 	update_option('xyz_smap_application_lnarray', $response['linkedin']);	

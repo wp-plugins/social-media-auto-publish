@@ -59,7 +59,8 @@ class SMAPTwitterOAuth {
         // for security this should always be set to 2.
         'curl_ssl_verifyhost'        => 2,
         // for security this should always be set to true.
-        'curl_ssl_verifypeer'        => true,
+        //'curl_ssl_verifypeer'        => true,
+      	'curl_ssl_verifypeer'        => (get_option('xyz_smap_peer_verification')=='1') ? true : false,
         // for security this should always be set to true.
         'use_ssl'                    => true,
 

@@ -680,7 +680,8 @@ class SMAPLinkedIn {
       // set cURL options, based on parameters passed
 	    curl_setopt($handle, CURLOPT_CUSTOMREQUEST, $method);
       curl_setopt($handle, CURLOPT_RETURNTRANSFER, TRUE);
-      curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, FALSE);
+      //curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, FALSE);
+      curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, (get_option('xyz_smap_peer_verification')=='1') ? TRUE : FALSE);
       curl_setopt($handle, CURLOPT_URL, $url);
       curl_setopt($handle, CURLOPT_VERBOSE, FALSE);
       

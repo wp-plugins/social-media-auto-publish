@@ -12,53 +12,17 @@ foreach ($carr  as $cstyps ) {
 
 }
 
-
-function xyz_smap_string_limit($string, $limit) {
-	
-	$space=" ";$appendstr=" ...";
-	if(mb_strlen($string) <= $limit) return $string;
-	if(mb_strlen($appendstr) >= $limit) return '';
-	$string = mb_substr($string, 0, $limit-mb_strlen($appendstr));
-	$rpos = mb_strripos($string, $space);
-	if ($rpos===false) 
-		return $string.$appendstr;
-   else 
-	 	return mb_substr($string, 0, $rpos).$appendstr;
-}
-
-function xyz_smap_getimage($post_ID,$description_org)
-{
-	$attachmenturl="";
-	$post_thumbnail_id = get_post_thumbnail_id( $post_ID );
-	if($post_thumbnail_id!="")
-	{
-		$attachmenturl=wp_get_attachment_url($post_thumbnail_id);
-		$attachmentimage=wp_get_attachment_image_src( $post_thumbnail_id, full );
-		
-	}
-	else {
-		preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/is', $description_org, $matches);
-		if(isset($matches[1][0]))
-		$attachmenturl = $matches[1][0];
-		else
-		{
-			apply_filters('the_content', $description_org);
-			preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/is', $description_org, $matches);
-			if(isset($matches[1][0]))
-				$attachmenturl = $matches[1][0];
-		}
-		
-	
-	}
-	return $attachmenturl;
-}
-
 function xyz_link_publish($post_ID) {
+	
+	if(isset($_POST['xyz_smap_hidden_meta']) && $_POST['xyz_smap_hidden_meta']==1)
+	return ;
+	
 	$get_post_meta=get_post_meta($post_ID,"xyz_smap",true);
 	if($get_post_meta!=1)
 		add_post_meta($post_ID, "xyz_smap", "1");
 	else 
 		return;
+	
 	global $current_user;
 	get_currentuserinfo();
 	$af=get_option('xyz_smap_af');
@@ -132,7 +96,6 @@ function xyz_link_publish($post_ID) {
 
     $lnaf=get_option('xyz_smap_lnaf');
 	
-	////////////////////////
 	$postpp= get_post($post_ID);global $wpdb;
 	$entries0 = $wpdb->get_results( 'SELECT user_nicename FROM '.$wpdb->prefix.'users WHERE ID='.$postpp->post_author);
 	foreach( $entries0 as $entry ) {			
@@ -141,7 +104,9 @@ function xyz_link_publish($post_ID) {
 	if ($postpp->post_status == 'publish')
 	{
 		$posttype=$postpp->post_type;
-			
+		$fb_publish_status=array();
+		$ln_publish_status=array();
+		$tw_publish_status=array();
 		if ($posttype=="page")
 		{
 
@@ -216,11 +181,8 @@ function xyz_link_publish($post_ID) {
 		$description=strip_shortcodes($description);
 	
 	 	$description=str_replace("&nbsp;","",$description);
-		//$description=str_replace(array("\r\n","\r","\n"), '', $description);
 		
 		$excerpt=str_replace("&nbsp;","",$excerpt);
-		//$excerpt=str_replace(array("\r\n","\r","\n"), '', $excerpt);
-		
 		if($useracces_token!="" && $appsecret!="" && $appid!="" && $post_permissin==1)
 		{
 
@@ -255,7 +217,6 @@ function xyz_link_publish($post_ID) {
 				$message5=str_replace('{USER_NICENAME}', $user_nicename, $message5);
 				
 				$message5=str_replace("&nbsp;","",$message5);
-				//$message5=str_replace(array("\r\n","\r","\n"), '', $message5);
 
                $disp_type="feed";
 				if($posting_method==1) //attach
@@ -267,7 +228,7 @@ function xyz_link_publish($post_ID) {
 							'caption' => $caption,
 							'description' => $description,
 							'actions' => array(array('name' => $name,
-									'link' => $link)),
+							'link' => $link)),
 							'picture' => $attachmenturl
 
 					);
@@ -287,8 +248,6 @@ function xyz_link_publish($post_ID) {
 				}
 				else if($posting_method==3) //simple text message
 				{
-					//$message6=xyz_smap_string_limit($message5, 900);
-					//$description_li=xyz_smap_string_limit($description, 900);
 						
 					$attachment = array('message' => $message5,
 							'access_token' => $acces_token				
@@ -298,8 +257,6 @@ function xyz_link_publish($post_ID) {
 				}
 				else if($posting_method==4 || $posting_method==5) //text message with image 4 - app album, 5-timeline
 				{
-					//$message6=xyz_smap_string_limit($message5, 900);
-					//$description_li=xyz_smap_string_limit($description, 900);
 					if($attachmenturl!="")
 					{
 						
@@ -310,7 +267,7 @@ function xyz_link_publish($post_ID) {
 							}
 							catch(Exception $e)
 							{
-								//echo $e->getmessage();
+								$fb_publish_status[$page_id."/albums"]=$e->getMessage();
 							}
 							foreach ($albums["data"] as $album) {
 								if ($album["type"] == "wall") {
@@ -341,14 +298,26 @@ function xyz_link_publish($post_ID) {
 				$result = $fb->api('/'.$page_id.'/'.$disp_type.'/', 'post', $attachment);}
 							catch(Exception $e)
 							{
-								//echo $e->getmessage();
+								$fb_publish_status[$page_id."/".$disp_type]=$e->getMessage();
 							}
 
 			}
 
+			if(count($fb_publish_status)>0)
+				$fb_publish_status_insert=serialize($fb_publish_status);
+			else
+				$fb_publish_status_insert=1;
 			
-
-		}
+			$time=time();
+			$post_fb_options=array(
+					'postid'	=>	$post_ID,
+					'acc_type'	=>	"Facebook",
+					'publishtime'	=>	$time,
+					'status'	=>	$fb_publish_status_insert
+			);
+			update_option('xyz_smap_fbap_post_logs', $post_fb_options);
+			
+		}       
 
 
 		if($taccess_token!="" && $taccess_token_secret!="" && $tappid!="" && $tappsecret!="" && $post_twitter_permission==1)
@@ -356,10 +325,9 @@ function xyz_link_publish($post_ID) {
 			
 			////image up start///
 
-			
+			$img_status="";
 			if($post_twitter_image_permission==1)
 			{
-				
 				
 				$img=array();
 				if($attachmenturl!="")
@@ -368,7 +336,16 @@ function xyz_link_publish($post_ID) {
 				if(is_array($img))
 				{
 					if (isset($img['body'])&& trim($img['body'])!='')
-					{$img = $img['body'];$image_found = 1;}
+					{
+						$image_found = 1;
+							if (($img['headers']['content-length']) && trim($img['headers']['content-length'])!='')
+							{
+								$img_size=$img['headers']['content-length']/(1024*1024);
+								if($img_size>3){$image_found=0;$img_status="Image skipped(greater than 3MB)";}
+							}
+							
+						$img = $img['body'];
+					}
 					else
 						$image_found = 0;
 				}
@@ -377,7 +354,6 @@ function xyz_link_publish($post_ID) {
 			///Twitter upload image end/////
 			
 			$messagetopost=str_replace("&nbsp;","",$messagetopost);
-			//$messagetopost=str_replace(array("\r\n","\r","\n"), '', $messagetopost);
 			
 			preg_match_all("/{(.+?)}/i",$messagetopost,$matches);
 			$matches1=$matches[1];$substring="";$islink=0;$issubstr=0;
@@ -458,42 +434,55 @@ function xyz_link_publish($post_ID) {
 
 			if($islink==1)
 				$substring=str_replace('{PERMALINK}', $link, $substring);
-			//echo $substring;die;
-				
 				
 			$twobj = new SMAPTwitterOAuth(array( 'consumer_key' => $tappid, 'consumer_secret' => $tappsecret, 'user_token' => $taccess_token, 'user_secret' => $taccess_token_secret,'curl_ssl_verifypeer'   => false));
 				
 			if($image_found==1 && $post_twitter_image_permission==1)
 			{
-				try{
-					
 				 $resultfrtw = $twobj -> request('POST', 'https://api.twitter.com/1.1/statuses/update_with_media.json', array( 'media[]' => $img, 'status' => $substring), true, true);
+				
+				if($resultfrtw!=200){
+					if($twobj->response['response']!="")
+						$tw_publish_status["statuses/update_with_media"]=print_r($twobj->response['response'], true);
+					else
+						$tw_publish_status["statuses/update_with_media"]=$resultfrtw;
 				}
-				catch(Exception $e)
-				{
-				//echo $e->getmessage();
-				}
+				
 			}
 			else
 			{
-				try{
 				$resultfrtw = $twobj->request('POST', $twobj->url('1.1/statuses/update'), array('status' =>$substring));
+				
+				if($resultfrtw!=200){
+					if($twobj->response['response']!="")
+						$tw_publish_status["statuses/update"]=print_r($twobj->response['response'], true);
+					else
+						$tw_publish_status["statuses/update"]=$resultfrtw;
 				}
-				catch(Exception $e)
-				{
-				//echo $e->getmessage();
-				}
+				else if($img_status!="")
+					$tw_publish_status["statuses/update_with_media"]=$img_status;
+				
+				
 			}
 			
-			//print_r($resultfrtw);
-			//die;
-		}
-		
-		if($lnappikey!="" && $lnapisecret!="" && $lnoathtoken!="" && $lnoathseret!="" && $lnpost_permission==1 && $lnoauthverifier!="" && $lnaf==0)
-		{		
-			$contentln=array();
+			if(count($tw_publish_status)>0)
+				$tw_publish_status_insert=serialize($tw_publish_status);
+			else
+				$tw_publish_status_insert=1;
 			
-			//$description=str_replace("&nbsp;", "", $description);
+			$time=time();
+			$post_tw_options=array(
+					'postid'	=>	$post_ID,
+					'acc_type'	=>	"Twitter",
+					'publishtime'	=>	$time,
+					'status'	=>	$tw_publish_status_insert
+			);
+			update_option('xyz_smap_twap_post_logs', $post_tw_options);
+		}
+	   
+		if($lnappikey!="" && $lnapisecret!="" && $lnoathtoken!="" && $lnoathseret!="" && $lnpost_permission==1 && $lnoauthverifier!="" && $lnaf==0)
+		{	
+			$contentln=array();
 			
 			$description_li=xyz_smap_string_limit($description, 362);
 			$caption_li=xyz_smap_string_limit($caption, 200);
@@ -507,9 +496,6 @@ function xyz_link_publish($post_ID) {
 			$message5=str_replace('{USER_NICENAME}', $user_nicename, $message5);
 			
 			$message5=str_replace("&nbsp;","",$message5);
-			//$message5=str_replace(array("\r\n","\r","\n"), '', $message5);
-			
-			//$message5=xyz_smap_string_limit($message5, 700);
 						
 				$contentln['comment'] =$message5;
 				$contentln['title'] = $name_li;
@@ -532,6 +518,7 @@ function xyz_link_publish($post_ID) {
 		{
 		$private = FALSE;
 		}
+		
 		$OBJ_linkedin = new SMAPLinkedIn($API_CONFIG);
 		$xyz_smap_application_lnarray=get_option('xyz_smap_application_lnarray');
 	
@@ -545,26 +532,40 @@ function xyz_link_publish($post_ID) {
 			}
 			catch(Exception $e)
 			{
-			//echo $e->getmessage();
+				$ln_publish_status["new"]=$e->getMessage();
 			}
+			
+			if(isset($response2['error']) && $response2['error']!="")
+				$ln_publish_status["new"]=$response2['error'];
 		}
 		else
-		{
+		{ 
 		$description_liu=xyz_smap_string_limit($description, 950);
 		try{
 		     $response2=$OBJ_linkedin->updateNetwork($description_liu);
 		   }
 			catch(Exception $e)
 			{
-				//echo $e->getmessage();
+				$ln_publish_status["updateNetwork"]=$e->getMessage();
 			}
+			
+			if(isset($response2['error']) && $response2['error']!="")
+				$ln_publish_status["updateNetwork"]=$response2['error'];
 		}
 		
-		/*if(isset($response2['success']))
-			echo "posted successfully";
-			else
-			echo "posting failed";die;*/
+		if(count($ln_publish_status)>0)
+			$ln_publish_status_insert=serialize($ln_publish_status);
+		else
+			$ln_publish_status_insert=1;
 		
+		$time=time();
+		$post_ln_options=array(
+				'postid'	=>	$post_ID,
+				'acc_type'	=>	"Linkedin",
+				'publishtime'	=>	$time,
+				'status'	=>	$ln_publish_status_insert
+		);
+		update_option('xyz_smap_lnap_post_logs', $post_ln_options);
 		
 		}
 	}

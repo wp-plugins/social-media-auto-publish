@@ -1,3 +1,4 @@
+<?php if(get_option('xyz_smap_premium_version_ads')==1){?>
 <div id="xyz-wp-smap-premium">
 
 	<div style="float: left; padding: 0 5px">
@@ -14,13 +15,13 @@
 		</a>
 	</div>
 	<div style="float: left; padding: 0 5px">
-	<h2 style="vertical-align: middle;text-shadow: 1px 1px 1px #686868">
+	<h4 style="vertical-align: middle;text-shadow: 1px 1px 1px #686868">
 			( <a 	href="<?php echo admin_url('admin.php?page=social-media-auto-publish-about');?>">Compare Features</a> ) 
-			<span style="color:red;font-weight:bold; font-size:14px;">* Pinterest and Google Plus added *</span>
-	</h2>		
+			<span style="color:red;font-weight:bold; font-size:14px;">* Pinterest and Google+ added *</span>
+	</h4>		
 	</div>
 </div>
-
+<?php }?>
 
 <?php 
 if($_POST && isset($_POST['xyz_credit_link']))
@@ -48,7 +49,6 @@ if(get_option('xyz_credit_link')=="0"){
 jQuery(document).ready(function() {
 
 	jQuery('#xyz_smap_backlink').click(function() {
-
 
 		var dataString = { 
 				action: 'xyz_smap_ajax_backlink', 

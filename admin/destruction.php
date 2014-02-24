@@ -38,8 +38,7 @@ function smap_free_destroy()
 	delete_option('xyz_smap_current_appln_token');
 	delete_option('xyz_smap_af');
 	delete_option('xyz_smap_pages_ids');
-	
-	
+		
 	delete_option('xyz_smap_twconsumer_secret');
 	delete_option('xyz_smap_twconsumer_id');
 	delete_option('xyz_smap_tw_id');
@@ -54,7 +53,6 @@ function smap_free_destroy()
 	delete_option('xyz_smap_ln_sharingmethod');
 	delete_option('xyz_smap_lnapikey');
 	delete_option('xyz_smap_lnapisecret');
-	
 	delete_option('xyz_smap_lnoauth_verifier');
 	delete_option('xyz_smap_lnoauth_token');
 	delete_option('xyz_smap_lnoauth_secret');
@@ -63,16 +61,19 @@ function smap_free_destroy()
 	delete_option('xyz_smap_lnaf');
 	delete_option('xyz_smap_lnmessage');
 	
-	
 	delete_option('xyz_smap_free_version');
 	
 	delete_option('xyz_smap_include_pages');
 	delete_option('xyz_smap_include_categories');
 	delete_option('xyz_smap_include_customposttypes');
+	delete_option('xyz_smap_peer_verification');
+	delete_option('xyz_smap_fbap_post_logs');
+	delete_option('xyz_smap_lnap_post_logs');
+	delete_option('xyz_smap_twap_post_logs');
+	delete_option('xyz_smap_premium_version_ads');
 	
 }
 
 register_uninstall_hook(XYZ_SMAP_PLUGIN_FILE,'smap_free_network_destroy');
-
 
 ?>

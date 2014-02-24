@@ -1,5 +1,4 @@
 <?php
-
 global $current_user;
 $auth_varble=0;
 get_currentuserinfo();
@@ -123,10 +122,7 @@ $terf=0;
 if(isset($_POST['twit']))
 {
 
-
-
 	//$posting_method=$_POST['xyz_smap_po_method'];
-
 	$tappid=$_POST['xyz_smap_twconsumer_id'];
 	$tappsecret=$_POST['xyz_smap_twconsumer_secret'];
 	//$messagetopost=$_POST['xyz_smap_twmessage'];
@@ -139,12 +135,12 @@ if(isset($_POST['twit']))
 	if($tappid=="" && $tposting_permission==1)
 	{
 		$terf=1;
-		$tms1="Please fill consumer id.";
+		$tms1="Please fill api key.";
 
 	}
 	elseif($tappsecret=="" && $tposting_permission==1)
 	{
-		$tms2="Please fill consumer secret.";
+		$tms2="Please fill api secret.";
 		$terf=1;
 	}
 	elseif($twid=="" && $tposting_permission==1)
@@ -198,7 +194,6 @@ if(isset($_POST['linkdn']))
 	$lnappikeyold=get_option('xyz_smap_lnapikey');
 	$lnapisecretold=get_option('xyz_smap_lnapisecret');
 
-
 	$lnappikey=$_POST['xyz_smap_lnapikey'];
 	$lnapisecret=$_POST['xyz_smap_lnapisecret'];
 	
@@ -238,7 +233,6 @@ if(isset($_POST['linkdn']))
 			update_option('xyz_smap_lnaf',1);
 		}
 
-		
 		update_option('xyz_smap_lnapikey',$lnappikey);
 		update_option('xyz_smap_lnapisecret',$lnapisecret);
 		update_option('xyz_smap_lnpost_permission',$lnposting_permission);
@@ -267,6 +261,26 @@ if(isset($_GET['msg']) && $_GET['msg']==1)
 		id="system_notice_area_dismiss">Dismiss</span>
 </div>
 	<?php 
+}
+if(isset($_GET['msg']) && $_GET['msg']==2)
+{
+	?>
+<div class="system_notice_area_style0" id="system_notice_area">
+The state does not match. You may be a victim of CSRF. &nbsp;&nbsp;&nbsp;<span
+		id="system_notice_area_dismiss">Dismiss</span>
+</div>
+	
+<?php 
+}
+if(isset($_GET['msg']) && $_GET['msg']==3) //response['body'] not set
+{
+?>
+
+<div class="system_notice_area_style0" id="system_notice_area">
+Unable to authorize the facebook application. Please check your curl/fopen and firewall settings. &nbsp;&nbsp;&nbsp;<span
+		id="system_notice_area_dismiss">Dismiss</span>
+</div>
+<?php 	
 }
 if((isset($_POST['twit']) && $terf==1)|| (isset($_POST['fb']) && $erf==1) || (isset($_POST['linkdn']) && $lerf==1))
 {
@@ -336,6 +350,16 @@ function drpdisplay()
 
 	</form>
 	<?php }
+	if($af==0 && $appid!="" && $appsecret!="" && $fbid!="")
+	{
+		?>
+	<form method="post">
+	
+	<input type="submit" class="submit_smap_new" name="fb_auth"
+	value="Reauthorize" title="Reauthorize the account" /><br><br>
+	
+	</form>
+	<?php }
 
 
 	if(isset($_GET['auth']) && $_GET['auth']==1 && get_option("xyz_smap_fb_token")!="")
@@ -376,7 +400,7 @@ function drpdisplay()
 
 
 			<div style="font-weight: bold;padding: 3px;">All fields given below are mandatory</div> 
-			<table class="widefat" style="width: 99%">
+			<table class="widefat xyz_smap_widefat_table" style="width: 99%">
 				<tr valign="top">
 					<td width="50%">Application id
 					</td>
@@ -413,10 +437,20 @@ function drpdisplay()
 							of your blog.<br />{USER_NICENAME} - Insert the nicename
 							of the author.
 						</div></td>
-					<td><textarea id="xyz_smap_message" name="xyz_smap_message"><?php if($ms4==""){ 
+	<td>
+	<select name="xyz_smap_fb_info" id="xyz_smap_fb_info" onchange="xyz_smap_fb_info_insert(this)">
+		<option value ="0" selected="selected">--Select--</option>
+		<option value ="1">{POST_TITLE}  </option>
+		<option value ="2">{PERMALINK} </option>
+		<option value ="3">{POST_EXCERPT}  </option>
+		<option value ="4">{POST_CONTENT}   </option>
+		<option value ="5">{BLOG_TITLE}   </option>
+		<option value ="6">{USER_NICENAME}   </option>
+		</select> </td></tr><tr><td>&nbsp;</td><td>
+		<textarea id="xyz_smap_message"  name="xyz_smap_message" style="height:80px !important;" ><?php if($ms4==""){ 
 								echo esc_textarea(get_option('xyz_smap_message'));}?></textarea>
-					</td>
-				</tr>
+	</td></tr>
+	
 				<tr valign="top">
 					<td>Posting method
 					</td>
@@ -505,7 +539,7 @@ function drpdisplay()
 				<tr valign="top">
 					<td>Select facebook pages for auto	publish
 					</td>
-					<td><select name="smap_pages_list[]" multiple="multiple">
+					<td><select name="smap_pages_list[]" multiple="multiple" style="height:auto !important;">
 							<option value="-1"
 							<?php if(in_array(-1, $smap_pages_ids)) echo "selected" ?>>Profile	Page</option>
 							<?php 
@@ -583,9 +617,9 @@ function drpdisplay()
 
 
 			<div style="font-weight: bold;padding: 3px;">All fields given below are mandatory</div> 
-			<table class="widefat" style="width: 99%">
+			<table class="widefat xyz_smap_widefat_table" style="width: 99%">
 				<tr valign="top">
-					<td width="50%">Consumer id
+					<td width="50%">API key
 					</td>
 					<td><input id="xyz_smap_twconsumer_id"
 						name="xyz_smap_twconsumer_id" type="text"
@@ -594,7 +628,7 @@ function drpdisplay()
 				</tr>
 
 				<tr valign="top">
-					<td>Consumer secret
+					<td>API secret
 					</td>
 					<td><input id="xyz_smap_twconsumer_secret"
 						name="xyz_smap_twconsumer_secret" type="text"
@@ -637,11 +671,19 @@ function drpdisplay()
 							of your blog.<br />{USER_NICENAME} - Insert the nicename
 							of the author.
 						</div></td>
-					<td><textarea id="xyz_smap_twmessage" name="xyz_smap_twmessage"	><?php if($tms6=="") {
+	<td>
+	<select name="xyz_smap_tw_info" id="xyz_smap_tw_info" onchange="xyz_smap_tw_info_insert(this)">
+		<option value ="0" selected="selected">--Select--</option>
+		<option value ="1">{POST_TITLE}  </option>
+		<option value ="2">{PERMALINK} </option>
+		<option value ="3">{POST_EXCERPT}  </option>
+		<option value ="4">{POST_CONTENT}   </option>
+		<option value ="5">{BLOG_TITLE}   </option>
+		<option value ="6">{USER_NICENAME}   </option>
+		</select> </td></tr><tr><td>&nbsp;</td><td>
+		<textarea id="xyz_smap_twmessage"  name="xyz_smap_twmessage" style="height:80px !important;" ><?php if($tms6=="") {
 								echo esc_textarea(get_option('xyz_smap_twmessage'));}?></textarea>
-					</td>
-				</tr>
-				
+	</td></tr>
 				<tr valign="top">
 					<td>Attach image to twitter post
 					</td>
@@ -710,6 +752,17 @@ $lnaf=get_option('xyz_smap_lnaf');
 			<br><br>
 			</form>
 			<?php  }
+			if($lnaf==0 && $lnappikey!="" && $lnapisecret!="" )
+			{
+			
+				?>
+			
+			<form method="post" >
+			
+			<input type="submit" class="submit_smap_new" name="lnauth" value="Reauthorize" title="Reauthorize the account" />
+			<br><br>
+			</form>
+			<?php  }
 			
 if(isset($_GET['auth']) && $_GET['auth']==3)
 			{
@@ -717,7 +770,7 @@ if(isset($_GET['auth']) && $_GET['auth']==3)
 					break;
 			?>
 			
-			<br><span style="color: green;">Application is authorized ,go posting </span><br>
+			<span style="color: green;">Application is authorized ,go posting </span><br>
 			
 			<?php 	
 			}
@@ -751,7 +804,7 @@ if(isset($_GET['auth']) && $_GET['auth']==3)
 
 	<div style="font-weight: bold;padding: 3px;">All fields given below are mandatory</div> 
 	
-	<table class="widefat" style="width: 99%">
+	<table class="widefat xyz_smap_widefat_table" style="width: 99%">
 	<tr valign="top">
 	<td width="50%">Api key </td>					
 	<td>
@@ -776,11 +829,18 @@ if(isset($_GET['auth']) && $_GET['auth']==3)
 							of your blog.<br />{USER_NICENAME} - Insert the nicename
 							of the author.
 						</div></td>
-					<td>
-					
-<textarea id="xyz_smap_lnmessage" name="xyz_smap_lnmessage"	><?php if($lms3==""){echo esc_textarea(get_option('xyz_smap_lnmessage'));}?></textarea>
-					</td>
-				</tr>
+	<td>
+	<select name="xyz_smap_ln_info" id="xyz_smap_ln_info" onchange="xyz_smap_ln_info_insert(this)">
+		<option value ="0" selected="selected">--Select--</option>
+		<option value ="1">{POST_TITLE}  </option>
+		<option value ="2">{PERMALINK} </option>
+		<option value ="3">{POST_EXCERPT}  </option>
+		<option value ="4">{POST_CONTENT}   </option>
+		<option value ="5">{BLOG_TITLE}   </option>
+		<option value ="6">{USER_NICENAME}   </option>
+		</select> </td></tr><tr><td>&nbsp;</td><td>
+		<textarea id="xyz_smap_lnmessage"  name="xyz_smap_lnmessage" style="height:80px !important;" ><?php if($lms3==""){echo esc_textarea(get_option('xyz_smap_lnmessage'));}?></textarea>
+	</td></tr>
 
 	<tr valign="top">
 					<td>Attach image to linkedin post
@@ -842,7 +902,8 @@ No</option><option value="1" <?php  if(get_option('xyz_smap_lnpost_permission')=
 		
         if(isset($_POST['post_types']))
 		$xyz_customtypes=$_POST['post_types'];
-
+        $xyz_smap_peer_verification=$_POST['xyz_smap_peer_verification'];
+        $xyz_smap_premium_version_ads=$_POST['xyz_smap_premium_version_ads'];
 
 		$smap_customtype_ids="";
 
@@ -860,6 +921,8 @@ No</option><option value="1" <?php  if(get_option('xyz_smap_lnpost_permission')=
 		update_option('xyz_smap_include_pages',$xyz_smap_include_pages);
 		update_option('xyz_smap_include_categories',$smap_category_ids);
 		update_option('xyz_smap_include_customposttypes',$smap_customtype_ids);
+		update_option('xyz_smap_peer_verification',$xyz_smap_peer_verification);
+		update_option('xyz_smap_premium_version_ads',$xyz_smap_premium_version_ads);
 
 	}
 
@@ -867,7 +930,8 @@ No</option><option value="1" <?php  if(get_option('xyz_smap_lnpost_permission')=
 	$xyz_smap_include_pages=get_option('xyz_smap_include_pages');
 	$xyz_smap_include_categories=get_option('xyz_smap_include_categories');
 	$xyz_smap_include_customposttypes=get_option('xyz_smap_include_customposttypes');
-
+	$xyz_smap_peer_verification=esc_html(get_option('xyz_smap_peer_verification'));
+	$xyz_smap_premium_version_ads=esc_html(get_option('xyz_smap_premium_version_ads'));
 
 	?>
 		<h2>Basic Settings</h2>
@@ -875,7 +939,7 @@ No</option><option value="1" <?php  if(get_option('xyz_smap_lnpost_permission')=
 
 		<form method="post">
 
-			<table class="widefat" style="width: 99%">
+			<table class="widefat xyz_smap_widefat_table" style="width: 99%">
 
 				<tr valign="top">
 
@@ -932,7 +996,7 @@ No</option><option value="1" <?php  if(get_option('xyz_smap_lnpost_permission')=
 								'hide_if_empty'      => false );
 
 						if(count(get_categories($args))>0)
-							echo str_replace( "<select", "<select multiple onClick=setcat(this) style='width:200px;height:100px;border:1px solid #cccccc;'", wp_dropdown_categories($args));
+							echo str_replace( "<select", "<select multiple onClick=setcat(this) style='width:200px;height:auto !important;border:1px solid #cccccc;'", wp_dropdown_categories($args));
 						else
 							echo "NIL";
 
@@ -973,11 +1037,19 @@ No</option><option value="1" <?php  if(get_option('xyz_smap_lnpost_permission')=
 						echo 'NA';
 					?>
 					</td>
-				</tr>
+					</tr>
+					<tr valign="top">
+					
+					<td scope="row" colspan="1" width="50%">SSL peer verification	</td><td><select name="xyz_smap_peer_verification" >
+					
+					<option value ="1" <?php if($xyz_smap_peer_verification=='1') echo 'selected'; ?> >Enable </option>
+					
+					<option value ="0" <?php if($xyz_smap_peer_verification=='0') echo 'selected'; ?> >Disable </option>
+					</select> 
+					</td></tr>
+									
 
-
-
-				<tr valign="top" id="xyz_smap">
+				<tr valign="top">
 
 					<td  colspan="1">Enable credit link to author
 					</td>
@@ -989,6 +1061,22 @@ No</option><option value="1" <?php  if(get_option('xyz_smap_lnpost_permission')=
 							<option
 								value="<?php echo $xyz_credit_link!='smap'?$xyz_credit_link:0;?>"
 								<?php if($xyz_credit_link!='smap') echo 'selected'; ?>>No</option>
+					</select>
+					</td>
+				</tr>
+				
+				<tr valign="top">
+
+					<td  colspan="1">Enable premium version ads
+					</td>
+					<td><select name="xyz_smap_premium_version_ads" id="xyz_smap_premium_version_ads">
+
+							<option value="1"
+							<?php if($xyz_smap_premium_version_ads=='1') echo 'selected'; ?>>Yes</option>
+
+							<option
+								value="0"
+								<?php if($xyz_smap_premium_version_ads=='0') echo 'selected'; ?>>No</option>
 					</select>
 					</td>
 				</tr>
@@ -1061,6 +1149,44 @@ function rd_cat_chn(val,act)
 		  jQuery("#cat_dropdown_span").show();
 	}
 	
+}
+
+function xyz_smap_fb_info_insert(inf){
+	
+    var e = document.getElementById("xyz_smap_fb_info");
+    var ins_opt = e.options[e.selectedIndex].text;
+    if(ins_opt=="0")
+    	ins_opt="";
+    var str=jQuery("textarea#xyz_smap_message").val()+ins_opt;
+    jQuery("textarea#xyz_smap_message").val(str);
+    jQuery('#xyz_smap_fb_info :eq(0)').prop('selected', true);
+    jQuery("textarea#xyz_smap_message").focus();
+
+}
+function xyz_smap_tw_info_insert(inf){
+	
+    var e = document.getElementById("xyz_smap_tw_info");
+    var ins_opt = e.options[e.selectedIndex].text;
+    if(ins_opt=="0")
+    	ins_opt="";
+    var str=jQuery("textarea#xyz_smap_twmessage").val()+ins_opt;
+    jQuery("textarea#xyz_smap_twmessage").val(str);
+    jQuery('#xyz_smap_tw_info :eq(0)').prop('selected', true);
+    jQuery("textarea#xyz_smap_twmessage").focus();
+
+}
+
+function xyz_smap_ln_info_insert(inf){
+	
+    var e = document.getElementById("xyz_smap_ln_info");
+    var ins_opt = e.options[e.selectedIndex].text;
+    if(ins_opt=="0")
+    	ins_opt="";
+    var str=jQuery("textarea#xyz_smap_lnmessage").val()+ins_opt;
+    jQuery("textarea#xyz_smap_lnmessage").val(str);
+    jQuery('#xyz_smap_ln_info :eq(0)').prop('selected', true);
+    jQuery("textarea#xyz_smap_lnmessage").focus();
+
 }
 </script>
 	<?php 

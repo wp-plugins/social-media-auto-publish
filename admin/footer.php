@@ -1,4 +1,4 @@
-
+<?php if(get_option('xyz_smap_premium_version_ads')==1){?>
 <div id="xyz-wp-smap-premium">
 
 	<div style="float: left; padding: 0 5px">
@@ -15,14 +15,14 @@
 		</a>
 	</div>
 	<div style="float: left; padding: 0 5px">
-	<h2 style="vertical-align: middle;text-shadow: 1px 1px 1px #686868">
+	<h4 style="vertical-align: middle;text-shadow: 1px 1px 1px #686868">
 			( <a 	href="<?php echo admin_url('admin.php?page=social-media-auto-publish-about');?>">Compare Features</a> ) 
-			<span style="color:red;font-weight:bold; font-size:14px;">* Pinterest and Google Plus added *</span>
+			<span style="color:red;font-weight:bold; font-size:14px;">* Pinterest and Google+ added *</span>
 
-	</h2>		
+	</h4>		
 	</div>
 </div>
-
+<?php }?>
 
 <div style="clear: both;"></div>
 
@@ -39,7 +39,7 @@
    <a target="_blank" href="http://xyzscripts.com/support/" class="xyz_suggest">Suggestions</a> ★ 
 <a target="_blank" href="http://facebook.com/xyzscripts" class="xyz_fbook">Like us on facebook</a> ★   
    <a target="_blank" href="http://twitter.com/xyzscripts" class="xyz_twitt">Follow us on twitter</a> ★   
-   <a target="_blank" href="https://plus.google.com/101215320403235276710/" class="xyz_gplus">+1 us on Google+</a>
+   <a target="_blank" href="https://plus.google.com/+Xyzscripts" class="xyz_gplus">+1 us on Google+</a>
       
    
     </div>
@@ -115,7 +115,7 @@ function verify_fields()
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 Name  : 
-<input style="border: 1px solid #3fafe3; margin-right:10px;" type="text" name="field1" value="<?php  
+<input style="border: 1px solid #3fafe3; margin-right:10px;padding:5px;" type="text" name="field1" value="<?php  
 if ($current_user->user_firstname != "" || $current_user->user_lastname != "") 
 {
 	echo $current_user->user_firstname . " " . $current_user->user_lastname; 
@@ -131,7 +131,7 @@ else if (strcasecmp($current_user->user_login ,"admin")!=0 && strcasecmp($curren
 ?>"  >
 
 Email Address : 
-<input style="border: 1px solid #3fafe3;" name="email"
+<input style="border: 1px solid #3fafe3;padding:5px;" name="email"
 type="text" value="<?php 	echo $current_user->user_email; ?>" /><span style="color:#FF0000">*</span>           
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -148,16 +148,21 @@ type="text" value="<?php 	echo $current_user->user_email; ?>" /><span style="col
       <p></p>
 
 <div style="padding-top: ;" class="xyz_plugins">
-See Also : 
+Our Plugins : 
 	
-	<a target="_blank"	href="http://wordpress.org/extend/plugins/lightbox-pop/">Lightbox Pop</a> ★
-	<a target="_blank"	href="http://wordpress.org/extend/plugins/full-screen-popup/">Full Screen Popup</a> ★
-	<a target="_blank"	href="http://wordpress.org/extend/plugins/popup-dialog-box/">Popup Dialog Box</a> ★
-	<a target="_blank"	href="http://wordpress.org/extend/plugins/quick-bar/">Quick Bar</a> ★
-	<a target="_blank"	href="http://wordpress.org/extend/plugins/quick-box-popup/">Quick Box Popup</a> ★
-	<a target="_blank"	href="http://wordpress.org/extend/plugins/insert-html-snippet/">Insert HTML Snippet</a> ★
-	<a target="_blank"	href="http://wordpress.org/extend/plugins/newsletter-manager/">Newsletter Manager</a>★
-<a target="_blank"	href="http://wordpress.org/extend/plugins/contact-form-manager/">Contact Form Manager</a>
+	<a target="_blank"	href="http://wordpress.org/plugins/contact-form-manager/">Contact Form Manager</a> ★
+	<a target="_blank"	href="http://wordpress.org/plugins/facebook-auto-publish/">Facebook Auto Publish</a> ★
+	<a target="_blank"	href="http://wordpress.org/plugins/full-screen-popup/">Full Screen Popup</a> ★
+	<a target="_blank"	href="http://wordpress.org/plugins/insert-html-snippet/">Insert HTML Snippet</a> ★
+	<a target="_blank"	href="http://wordpress.org/plugins/insert-php-code-snippet/">Insert PHP Code Snippet</a> ★
+	<a target="_blank"	href="http://wordpress.org/plugins/lightbox-pop/">Lightbox Pop</a> ★
+	<a target="_blank"	href="http://wordpress.org/plugins/linkedin-auto-publish/">LinkedIn Auto Publish</a> ★
+	<a target="_blank"	href="http://wordpress.org/plugins/newsletter-manager/">Newsletter Manager</a>★
+	<a target="_blank"	href="http://wordpress.org/plugins/popup-dialog-box/">Popup Dialog Box</a> ★
+	<a target="_blank"	href="http://wordpress.org/plugins/quick-bar/">Quick Bar</a> ★
+	<a target="_blank"	href="http://wordpress.org/plugins/quick-box-popup/">Quick Box Popup</a> ★
+	<a target="_blank"	href="http://wordpress.org/plugins/social-media-auto-publish/">Social Media Auto Publish</a> ★
+	<a target="_blank"	href="http://wordpress.org/plugins/twitter-auto-publish/">Twitter Auto Publish</a>
 </div>
   
   <div style="padding-top: 10px;text-align: center;">
