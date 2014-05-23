@@ -78,13 +78,14 @@ if(isset($_COOKIE['xyz_smap_session_state']) && isset($_REQUEST['state']) && ($_
 		if($smap_pages_ids1!="")
 			$smap_pages_ids0=explode(",",$smap_pages_ids1);
 		
-		$smap_pages_ids=array();
+		$smap_pages_ids=array();$profile_flg=0;
 		for($i=0;$i<count($smap_pages_ids0);$i++)
 		{
 		if($smap_pages_ids0[$i]!="-1")
 			$smap_pages_ids[$i]=trim(substr($smap_pages_ids0[$i],0,strpos($smap_pages_ids0[$i],"-")));
-			else
-			$smap_pages_ids[$i]=$smap_pages_ids0[$i];
+			else{
+			$smap_pages_ids[$i]=$smap_pages_ids0[$i];$profile_flg=1;
+			}
 		}
 		
 		for($i=0;$i<$count;$i++)
@@ -93,13 +94,18 @@ if(isset($_COOKIE['xyz_smap_session_state']) && isset($_REQUEST['state']) && ($_
 			$newpgs.=$data[$i]->id."-".$data[$i]->access_token.",";
 		}
 					$newpgs=rtrim($newpgs,",");
-		
+					if($profile_flg==1)
+						$newpgs=$newpgs.",-1";
 					update_option('xyz_smap_pages_ids',$newpgs);
 	}
 	else {
 		
-		header("Location:".admin_url('admin.php?page=social-media-auto-publish-settings&msg=3'));
-		exit();
+		$xyz_smap_af=get_option('xyz_smap_af');
+		
+		if($xyz_smap_af==1){
+			header("Location:".admin_url('admin.php?page=social-media-auto-publish-settings&msg=3'));
+			exit();
+		}
 	}
 }
 else {
