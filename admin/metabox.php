@@ -77,11 +77,13 @@ function displaycheck()
 		{
 			document.getElementById("fpmd").style.display='';	
 			document.getElementById("fpmf").style.display='';	
+			document.getElementById("fpmftarea").style.display='';	
 		}
 		else
 		{
 			document.getElementById("fpmd").style.display='none';	
-			document.getElementById("fpmf").style.display='none';	
+			document.getElementById("fpmf").style.display='none';		
+			document.getElementById("fpmftarea").style.display='none';	
 		}
 	}
 
@@ -90,15 +92,17 @@ function displaycheck()
 		tcheckid=document.getElementById("xyz_smap_twpost_permission").value;
 		if(tcheckid==1)
 		{
-		
+			
 			document.getElementById("twmf").style.display='';
+			document.getElementById("twmftarea").style.display='';	
 			document.getElementById("twai").style.display='';	
 		}
 		else
 		{
 			
 			document.getElementById("twmf").style.display='none';
-			document.getElementById("twai").style.display='none';		
+			document.getElementById("twmftarea").style.display='none';
+			document.getElementById("twai").style.display='none';			
 		}
 	}
 
@@ -108,15 +112,16 @@ function displaycheck()
 		if(lcheckid==1)
 		{
 		
-			
 		    document.getElementById("lnimg").style.display='';
 			document.getElementById("lnmf").style.display='';	
+			document.getElementById("lnmftarea").style.display='';	
 			document.getElementById("shareprivate").style.display='';	
 		}
 		else
 		{
 		    document.getElementById("lnimg").style.display='none';
 			document.getElementById("lnmf").style.display='none';	
+			document.getElementById("lnmftarea").style.display='none';	
 			document.getElementById("shareprivate").style.display='none';		
 		}
 	}
@@ -171,9 +176,9 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 <tr><td colspan="2" valign="top">&nbsp;</td></tr>
 	
 	<tr valign="top">
-		<td class="xyz_smap_pleft15">Enable auto publish post to my facebook account
+		<td class="xyz_smap_pleft15" width="60%">Enable auto publish post to my facebook account
 		</td>
-		<td><select id="xyz_smap_post_permission" name="xyz_smap_post_permission"
+		<td width="40%"><select id="xyz_smap_post_permission" name="xyz_smap_post_permission"
 			onchange="displaycheck()"><option value="0"
 			<?php  if(get_option('xyz_smap_post_prmission')==0) echo 'selected';?>>
 					No</option>
@@ -228,7 +233,9 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 		<option value ="4">{POST_CONTENT}   </option>
 		<option value ="5">{BLOG_TITLE}   </option>
 		<option value ="6">{USER_NICENAME}   </option>
-		</select> </td></tr><tr><td>&nbsp;</td><td>
+		</select> </td></tr>
+		
+		<tr id="fpmftarea"><td>&nbsp;</td><td>
 		<textarea id="xyz_smap_message"  name="xyz_smap_message" style="height:80px !important;" ><?php echo esc_textarea(get_option('xyz_smap_message'));?></textarea>
 	</td></tr>
 	
@@ -254,9 +261,9 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 <tr><td colspan="2" valign="top">&nbsp;</td></tr>
 	
 	<tr valign="top">
-		<td class="xyz_smap_pleft15">Enable auto publish posts to my twitter account
+		<td class="xyz_smap_pleft15" width="60%">Enable auto publish posts to my twitter account
 		</td>
-		<td><select id="xyz_smap_twpost_permission" name="xyz_smap_twpost_permission"
+		<td width="40%"><select id="xyz_smap_twpost_permission" name="xyz_smap_twpost_permission"
 			onchange="displaycheck()">
 				<option value="0"
 				<?php  if(get_option('xyz_smap_twpost_permission')==0) echo 'selected';?>>
@@ -305,7 +312,9 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 		<option value ="4">{POST_CONTENT}   </option>
 		<option value ="5">{BLOG_TITLE}   </option>
 		<option value ="6">{USER_NICENAME}   </option>
-		</select> </td></tr><tr><td>&nbsp;</td><td>
+		</select> </td></tr>
+		
+		<tr id="twmftarea"><td>&nbsp;</td><td>
 		<textarea id="xyz_smap_twmessage"  name="xyz_smap_twmessage" style="height:80px !important;" ><?php echo esc_textarea(get_option('xyz_smap_twmessage'));?></textarea>
 	</td></tr>
 	
@@ -329,9 +338,9 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 <tr><td colspan="2" valign="top">&nbsp;</td></tr>
 	
 	<tr valign="top" >
-		<td class="xyz_smap_pleft15">Enable auto publish	posts to my linkedin account
+		<td class="xyz_smap_pleft15" width="60%">Enable auto publish	posts to my linkedin account
 		</td>
-		<td><select id="xyz_smap_lnpost_permission" name="xyz_smap_lnpost_permission"
+		<td width="40%"><select id="xyz_smap_lnpost_permission" name="xyz_smap_lnpost_permission"
 			onchange="displaycheck()">
 				<option value="0"
 				<?php  if(get_option('xyz_smap_lnpost_permission')==0) echo 'selected';?>>
@@ -387,7 +396,9 @@ Public</option><option value="1" <?php  if(get_option('xyz_smap_ln_shareprivate'
 		<option value ="4">{POST_CONTENT}   </option>
 		<option value ="5">{BLOG_TITLE}   </option>
 		<option value ="6">{USER_NICENAME}   </option>
-		</select> </td></tr><tr><td>&nbsp;</td><td>
+		</select> </td></tr>
+		
+		<tr id="lnmftarea"><td>&nbsp;</td><td>
 		<textarea id="xyz_smap_lnmessage"  name="xyz_smap_lnmessage" style="height:80px !important;" ><?php echo esc_textarea(get_option('xyz_smap_lnmessage'));?></textarea>
 	</td></tr>
 	

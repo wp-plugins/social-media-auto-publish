@@ -3,7 +3,7 @@
  Plugin Name: Social Media Auto Publish
 Plugin URI: http://xyzscripts.com/wordpress-plugins/social-media-auto-publish/
 Description:   Publish posts automatically from your blog to social media networks like Facebook, Twitter and LinkedIn. The plugin supports filtering posts by post-types and categories.
-Version: 1.3
+Version: 1.3.1
 Author: xyzscripts.com
 Author URI: http://xyzscripts.com/
 License: GPLv2 or later
@@ -32,8 +32,17 @@ if ( !function_exists( 'add_action' ) ) {
 ob_start();
 //error_reporting(0);
 define('XYZ_SMAP_PLUGIN_FILE',__FILE__);
+define('XYZ_SMAP_FB_API_VERSION','v2.0');
 
-mysql_query('SET SQL_MODE=""');
+define('XYZ_SMAP_FB_api','https://api.facebook.com/'.XYZ_SMAP_FB_API_VERSION.'/');
+define('XYZ_SMAP_FB_api_video','https://api-video.facebook.com/'.XYZ_SMAP_FB_API_VERSION.'/');
+define('XYZ_SMAP_FB_api_read','https://api-read.facebook.com/'.XYZ_SMAP_FB_API_VERSION.'/');
+define('XYZ_SMAP_FB_graph','https://graph.facebook.com/'.XYZ_SMAP_FB_API_VERSION.'/');
+define('XYZ_SMAP_FB_graph_video','https://graph-video.facebook.com/'.XYZ_SMAP_FB_API_VERSION.'/');
+define('XYZ_SMAP_FB_www','https://www.facebook.com/'.XYZ_SMAP_FB_API_VERSION.'/');
+
+global $wpdb;
+$wpdb->query('SET SQL_MODE=""');
 
 require_once( dirname( __FILE__ ) . '/admin/install.php' );
 require_once( dirname( __FILE__ ) . '/xyz-functions.php' );
