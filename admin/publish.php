@@ -101,7 +101,7 @@ function xyz_link_publish($post_ID) {
 	foreach( $entries0 as $entry ) {			
 		$user_nicename=$entry->user_nicename;}
 	
-	if ($postpp->post_status == 'publish')
+	if ($postpp->post_status == 'publish' || $postpp->post_status == 'future')
 	{
 		$posttype=$postpp->post_type;
 		$fb_publish_status=array();
@@ -137,7 +137,7 @@ function xyz_link_publish($post_ID) {
 			}
 		}
 
-
+		include_once ABSPATH.'wp-admin/includes/plugin.php';
 		$pluginName = 'bitly/bitly.php';
 		
 		if (is_plugin_active($pluginName)) {
