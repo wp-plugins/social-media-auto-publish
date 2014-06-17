@@ -1,5 +1,4 @@
 <?php
-error_reporting(0);
 /**
  * This file defines the 'LinkedIn' class. This class is designed to be a 
  * simple, stand-alone implementation of the LinkedIn API functions.
