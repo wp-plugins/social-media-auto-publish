@@ -304,6 +304,10 @@ width: 100%;
 .xyz_smap_meta_acclist_table{
 	width: 100%;border: 1px solid #DFDFDF;border-radius:3px; margin-top: 8px;padding-bottom: 5px;
 }
+.xyz_smap_meta_acclist_table select ,.xyz_smap_meta_acclist_table textarea{
+    width: 200px;padding: 5px !important;height: 2.35em !important;
+}
+
 .xyz_smap_meta_acclist_table_td{
 	background: linear-gradient(to top, #ECECEC, #F9F9F9) repeat scroll 0 0 #F1F1F1;border-bottom: 1px solid #DFDFDF;height: 25px;
 }

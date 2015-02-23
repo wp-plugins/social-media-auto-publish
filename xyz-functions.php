@@ -91,13 +91,13 @@ function xyz_smap_getimage($post_ID,$description_org)
 
 	}
 	else {
-		preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/is', $description_org, $matches);
+		preg_match_all('/< *img[^>]*src *= *["\']?([^"\']*)/is', $description_org, $matches);
 		if(isset($matches[1][0]))
 			$attachmenturl = $matches[1][0];
 		else
 		{
 			apply_filters('the_content', $description_org);
-			preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/is', $description_org, $matches);
+			preg_match_all('/< *img[^>]*src *= *["\']?([^"\']*)/is', $description_org, $matches);
 			if(isset($matches[1][0]))
 				$attachmenturl = $matches[1][0];
 		}

@@ -1,37 +1,48 @@
 <?php 
 add_action( 'add_meta_boxes', 'xyz_smap_add_custom_box' );
+$GLOBALS['edit_flag']=0;
 function xyz_smap_add_custom_box()
 {	
 	$posttype="";
 	if(isset($_GET['post_type']))
-	$posttype=$_GET['post_type'];
+		$posttype=$_GET['post_type'];
+	
+	if($posttype=="")
+		$posttype="post";
 	
 if(isset($_GET['action']) && $_GET['action']=="edit")
 	{
 		$postid=$_GET['post'];
 		
-		$postpp= get_post($postid);
-		if($postpp->post_status=="publish")
-			add_meta_box("xyz_smap1", ' ', 'xyz_smap_addpostmetatags1') ;
 		
 		$get_post_meta=get_post_meta($postid,"xyz_smap",true);
-		if($get_post_meta==1)
-			return ;
+		if($get_post_meta==1){
+			$GLOBALS['edit_flag']=1;
+		}
+			
 		global $wpdb;
 		$table='posts';
 		$accountCount = $wpdb->query( 'SELECT * FROM '.$wpdb->prefix.$table.' WHERE id="'.$postid.'" and post_status!="draft" LIMIT 0,1' ) ;
-		if($accountCount>0)
-		return ;
+		
+		if($accountCount>0){
+			$GLOBALS['edit_flag']=1;
+			}
+		$posttype=get_post_type($postid);
 	}
 
-	if($posttype=="")
-		$posttype="post";
+	
 
 	if ($posttype=="page")
 	{
 
 		$xyz_smap_include_pages=get_option('xyz_smap_include_pages');
 		if($xyz_smap_include_pages==0)
+			return;
+	}
+	else if($posttype=="post")
+	{
+		$xyz_smap_include_posts=get_option('xyz_smap_include_posts');
+		if($xyz_smap_include_posts==0)
 			return;
 	}
 	else if($posttype!="post")
@@ -45,24 +56,17 @@ if(isset($_GET['action']) && $_GET['action']=="edit")
 			return;
 
 	}
-	if((get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="") || (get_option('xyz_smap_twconsumer_id')!="" && get_option('xyz_smap_twconsumer_secret')!="" && get_option('xyz_smap_tw_id')!="" && get_option('xyz_smap_current_twappln_token')!="" && get_option('xyz_smap_twaccestok_secret')!="") || (get_option('xyz_smap_lnaf')==0) )
-	add_meta_box( "xyz_smap", '<strong>Social Media Auto Publish - Post Options</strong>', 'xyz_smap_addpostmetatags') ;
+	
+	if((get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="" && get_option('xyz_smap_post_permission')==1) || (get_option('xyz_smap_twconsumer_id')!="" && get_option('xyz_smap_twconsumer_secret')!="" && get_option('xyz_smap_tw_id')!="" && get_option('xyz_smap_current_twappln_token')!="" && get_option('xyz_smap_twaccestok_secret')!="" && get_option('xyz_smap_twpost_permission')==1) || (get_option('xyz_smap_lnaf')==0 && get_option('xyz_smap_lnpost_permission')==1) )
+	add_meta_box( "xyz_smap", '<strong>Social Media Auto Publish </strong>', 'xyz_smap_addpostmetatags') ;
+	
 }
 
-function xyz_smap_addpostmetatags1()
-{
-	?>
-	
-	<input type="hidden" name="xyz_smap_hidden_meta" value="1" >
-	<script type="text/javascript">
-		jQuery('#xyz_smap1').hide();
-		</script>
-	<?php 
-}
 function xyz_smap_addpostmetatags()
 {
 	$imgpath= plugins_url()."/social-media-auto-publish/admin/images/";
 	$heimg=$imgpath."support.png";
+	$xyz_smap_catlist=get_option('xyz_smap_include_categories');
 	?>
 <script>
 var fcheckid;
@@ -154,8 +158,92 @@ function drpdisplay()
 	}
 }
 
+jQuery(document).ready(function() {
+
+	jQuery('#category-all').bind("DOMSubtreeModified",function(){
+		get_categorylist(1);
+		});
+	
+	get_categorylist(1);
+	jQuery('#category-all').on("click",'input[name="post_category[]"]',function() {
+		get_categorylist(1);
+				});
+
+	jQuery('#category-pop').on("click",'input[type="checkbox"]',function() {
+		get_categorylist(2);
+				});
+});
+
+function get_categorylist(val)
+{
+	var cat_list="";var chkdArray=new Array();var cat_list_array=new Array();
+	var posttype="<?php echo get_post_type() ;?>";
+	if(val==1){
+	 jQuery('input[name="post_category[]"]:checked').each(function() {
+		 cat_list+=this.value+",";
+		});
+	}else if(val==2)
+	{
+		jQuery('#category-pop input[type="checkbox"]:checked').each(function() {
+			
+			cat_list+=this.value+",";
+		});
+	}
+	 if (cat_list.charAt(cat_list.length - 1) == ',') {
+		 cat_list = cat_list.substr(0, cat_list.length - 1);
+		}
+		jQuery('#cat_list').val(cat_list);
+		
+		var xyz_smap_catlist="<?php echo $xyz_smap_catlist;?>";
+		if(xyz_smap_catlist!="All")
+		{
+			cat_list_array=xyz_smap_catlist.split(',');
+			var show_flag=1;
+			var chkdcatvals=jQuery('#cat_list').val();
+			chkdArray=chkdcatvals.split(',');
+			
+			for(var x=0;x<chkdArray.length;x++) { 
+				
+				if(inArray(chkdArray[x], cat_list_array))
+				{
+					show_flag=1;
+					break;
+				}
+				else
+				{
+					show_flag=0;
+					continue;
+				}
+				
+			}
+
+			if(show_flag==0 && posttype=="post")
+			{
+				jQuery('#xyz_fbMetabox').hide();
+				jQuery('#xyz_twMetabox').hide();
+				jQuery('#xyz_lnMetabox').hide();
+			}
+			else
+			{
+				jQuery('#xyz_fbMetabox').show();
+				jQuery('#xyz_twMetabox').show();
+				jQuery('#xyz_lnMetabox').show();
+			}
+		}
+}
+function inArray(needle, haystack) {
+    var length = haystack.length;
+    for(var i = 0; i < length; i++) {
+        if(haystack[i] == needle) return true;
+    }
+    return false;
+}
+
+
 </script>
 <table class="xyz_smap_metalist_table">
+<input type="hidden" name="cat_list" id="cat_list" value="">
+<input type="hidden" name="xyz_smap_post" id="xyz_smap_post" value="0" >
 <?php 
 
 if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
@@ -163,8 +251,8 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 
 ?>
 
-<tr ><td colspan="2" >
-
+<tr id="xyz_fbMetabox"><td colspan="2" >
+<?php  if(get_option('xyz_smap_post_permission')==1) {?>
 <table class="xyz_smap_meta_acclist_table"><!-- FB META -->
 
 
@@ -179,11 +267,9 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 		<td class="xyz_smap_pleft15" width="60%">Enable auto publish post to my facebook account
 		</td>
 		<td width="40%"><select id="xyz_smap_post_permission" name="xyz_smap_post_permission"
-			onchange="displaycheck()"><option value="0"
-			<?php  if(get_option('xyz_smap_post_prmission')==0) echo 'selected';?>>
+			onchange="displaycheck()"><option value="0" >
 					No</option>
-				<option value="1"
-				<?php  if(get_option('xyz_smap_post_permission')==1) echo 'selected';?>>Yes</option>
+				<option value="1"<?php echo 'selected';?>>Yes</option>
 		</select>
 		</td>
 	</tr>
@@ -239,7 +325,7 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 		<textarea id="xyz_smap_message"  name="xyz_smap_message" style="height:80px !important;" ><?php echo esc_textarea(get_option('xyz_smap_message'));?></textarea>
 	</td></tr>
 	
-	</table>
+	</table><?php }?>
 	</td></tr>
 	<?php }?>
 	
@@ -248,8 +334,8 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 	{
 	?>
 	
-	<tr ><td colspan="2" >
-
+	<tr id="xyz_twMetabox"><td colspan="2" >
+<?php  if(get_option('xyz_smap_twpost_permission')==1) {?>
 <table class="xyz_smap_meta_acclist_table"><!-- TW META -->
 
 
@@ -265,11 +351,10 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 		</td>
 		<td width="40%"><select id="xyz_smap_twpost_permission" name="xyz_smap_twpost_permission"
 			onchange="displaycheck()">
-				<option value="0"
-				<?php  if(get_option('xyz_smap_twpost_permission')==0) echo 'selected';?>>
+				<option value="0">
 					No</option>
 				<option value="1"
-				<?php  if(get_option('xyz_smap_twpost_permission')==1) echo 'selected';?>>Yes</option>
+				<?php echo 'selected';?>>Yes</option>
 		</select>
 		</td>
 	</tr>
@@ -319,14 +404,14 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 	</td></tr>
 	
 	</table>
-	
+	<?php }?>
 	</td></tr>
 	<?php }?>
 	
 	<?php if(get_option('xyz_smap_lnaf')==0){?>
 	
-	<tr ><td colspan="2" >
-
+	<tr id="xyz_lnMetabox"><td colspan="2" >
+<?php  if(get_option('xyz_smap_lnpost_permission')==1) {?>
 <table class="xyz_smap_meta_acclist_table"><!-- LI META -->
 
 
@@ -342,11 +427,10 @@ if(get_option('xyz_smap_af')==0 && get_option('xyz_smap_fb_token')!="")
 		</td>
 		<td width="40%"><select id="xyz_smap_lnpost_permission" name="xyz_smap_lnpost_permission"
 			onchange="displaycheck()">
-				<option value="0"
-				<?php  if(get_option('xyz_smap_lnpost_permission')==0) echo 'selected';?>>
+				<option value="0">
 					No</option>
 				<option value="1"
-				<?php  if(get_option('xyz_smap_lnpost_permission')==1) echo 'selected';?>>Yes</option>
+				<?php echo 'selected';?>>Yes</option>
 		</select>
 		</td>
 	</tr>
@@ -403,12 +487,62 @@ Public</option><option value="1" <?php  if(get_option('xyz_smap_ln_shareprivate'
 	</td></tr>
 	
 	</table>
-	
+	<?php }?>
 	</td></tr>
 	<?php }?>
 </table>
 <script type="text/javascript">
 	displaycheck();
+
+
+
+	var edit_flag="<?php echo $GLOBALS['edit_flag'];?>";
+	if(edit_flag==1)
+		load_edit_action();
+	
+	function load_edit_action()
+	{
+		document.getElementById("xyz_smap_post").value=1;
+		var xyz_smap_default_selection_edit="<?php echo get_option('xyz_smap_default_selection_edit');?>";
+		if(xyz_smap_default_selection_edit=="")
+			xyz_smap_default_selection_edit=0;
+		if(xyz_smap_default_selection_edit==1)
+			return;
+		
+		//FB 
+				if(document.getElementById("xyz_smap_post_permission"))
+				{
+					document.getElementById("xyz_smap_post_permission").value=0;
+					document.getElementById("fpmd").style.display='none';	
+					document.getElementById("fpmf").style.display='none';
+					document.getElementById("fpmftarea").style.display='none';
+				}
+
+				
+        //TW 
+				if(document.getElementById("xyz_smap_twpost_permission"))
+				{
+					document.getElementById("xyz_smap_twpost_permission").value=0;
+					document.getElementById("twmf").style.display='none';
+					document.getElementById("twai").style.display='none';
+					document.getElementById("twmftarea").style.display='none';
+				}
+
+
+		//LN								
+				if(document.getElementById("xyz_smap_lnpost_permission"))
+				{
+					document.getElementById("xyz_smap_lnpost_permission").value=0;
+					document.getElementById("lnimg").style.display='none';
+					document.getElementById("lnmf").style.display='none';
+					document.getElementById("shareprivate").style.display='none';
+					document.getElementById("lnmftarea").style.display='none';
+				}
+
+	}
+
+
+	
 
 	function xyz_smap_fb_info_insert(inf){
 		
@@ -447,6 +581,9 @@ Public</option><option value="1" <?php  if(get_option('xyz_smap_ln_shareprivate'
 	    jQuery("textarea#xyz_smap_lnmessage").focus();
 
 	}
+	
+
+	
 	</script>
 <?php 
 }

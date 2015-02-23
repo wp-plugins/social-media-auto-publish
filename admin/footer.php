@@ -162,7 +162,8 @@ Our Plugins :
 	<a target="_blank"	href="http://wordpress.org/plugins/quick-bar/">Quick Bar</a> ★
 	<a target="_blank"	href="http://wordpress.org/plugins/quick-box-popup/">Quick Box Popup</a> ★
 	<a target="_blank"	href="http://wordpress.org/plugins/social-media-auto-publish/">Social Media Auto Publish</a> ★
-	<a target="_blank"	href="http://wordpress.org/plugins/twitter-auto-publish/">Twitter Auto Publish</a>
+	<a target="_blank"	href="http://wordpress.org/plugins/twitter-auto-publish/">Twitter Auto Publish</a> ★
+	<a target="_blank"	href="http://wordpress.org/plugins/custom-field-manager/">Custom Field Manager</a>
 </div>
   
   <div style="padding-top: 10px;text-align: center;">

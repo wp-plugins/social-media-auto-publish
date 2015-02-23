@@ -64,6 +64,7 @@ function smap_free_destroy()
 	delete_option('xyz_smap_free_version');
 	
 	delete_option('xyz_smap_include_pages');
+	delete_option('xyz_smap_include_posts');
 	delete_option('xyz_smap_include_categories');
 	delete_option('xyz_smap_include_customposttypes');
 	delete_option('xyz_smap_peer_verification');
@@ -71,7 +72,7 @@ function smap_free_destroy()
 	delete_option('xyz_smap_lnap_post_logs');
 	delete_option('xyz_smap_twap_post_logs');
 	delete_option('xyz_smap_premium_version_ads');
-	
+	delete_option('xyz_smap_default_selection_edit');
 }
 
 register_uninstall_hook(XYZ_SMAP_PLUGIN_FILE,'smap_free_network_destroy');

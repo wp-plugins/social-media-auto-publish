@@ -146,7 +146,9 @@ if(isset($_POST['lnauth']))
 
 	update_option('xyz_smap_lnoauth_token', $lnoathtoken);
 	update_option('xyz_smap_lnoauth_secret',$lnoathseret);
-	header('Location: ' . SMAPLinkedIn::_URL_AUTH . $response['linkedin']['oauth_token']);
+
+	wp_redirect( SMAPLinkedIn::_URL_AUTH . $response['linkedin']['oauth_token']);
+echo "<script>document.location.href='".SMAPLinkedIn::_URL_AUTH . $response['linkedin']['oauth_token']."'</script>";
 	die;
 }
 
