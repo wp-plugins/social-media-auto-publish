@@ -407,6 +407,7 @@ function drpdisplay()
 					<td><input id="xyz_smap_application_id"
 						name="xyz_smap_application_id" type="text"
 						value="<?php if($ms1=="") {echo esc_html(get_option('xyz_smap_application_id'));}?>" />
+						<a href="http://docs.xyzscripts.com/wordpress-plugins/social-media-auto-publish/creating-facebook-application" target="_blank">How can I create a Facebook Application?</a>
 					</td>
 				</tr>
 
@@ -424,6 +425,7 @@ function drpdisplay()
 					</td>
 					<td><input id="xyz_smap_fb_id" name="xyz_smap_fb_id" type="text"
 						value="<?php if($ms3=="") {echo esc_html(get_option('xyz_smap_fb_id'));}?>" />
+						<a href="http://kb.xyzscripts.com/how-can-i-find-my-facebook-user-id" target="_blank">How can I find my Facebook user id?</a>
 					</td>
 				</tr>
 				<tr valign="top">
@@ -624,6 +626,7 @@ function drpdisplay()
 					<td><input id="xyz_smap_twconsumer_id"
 						name="xyz_smap_twconsumer_id" type="text"
 						value="<?php if($tms1=="") {echo esc_html(get_option('xyz_smap_twconsumer_id'));}?>" />
+						<a href="http://docs.xyzscripts.com/wordpress-plugins/social-media-auto-publish/creating-twitter-application" target="_blank">How can I create a Twitter Application?</a>
 					</td>
 				</tr>
 
@@ -810,6 +813,7 @@ if(isset($_GET['auth']) && $_GET['auth']==3)
 	<td width="50%">Api key </td>					
 	<td>
 		<input id="xyz_smap_lnapikey" name="xyz_smap_lnapikey" type="text" value="<?php if($lms1=="") {echo esc_html(get_option('xyz_smap_lnapikey'));}?>"/>
+		<a href="http://docs.xyzscripts.com/wordpress-plugins/social-media-auto-publish/creating-linkedin-application" target="_blank">How can I create a Linkedin Application?</a>
 	</td></tr>
 	
 

@@ -22,14 +22,14 @@ function xyz_link_publish($post_ID) {
 	$_POST_CPY=$_POST;
 	$_POST=stripslashes_deep($_POST);
 	
-	if(isset($_POST['xyz_smap_hidden_meta']) && $_POST['xyz_smap_hidden_meta']==1)
-	{$_POST=$_POST_CPY;return ;}
+// 	if(isset($_POST['xyz_smap_hidden_meta']) && $_POST['xyz_smap_hidden_meta']==1)
+// 	{$_POST=$_POST_CPY;return ;}
 	
 	$get_post_meta=get_post_meta($post_ID,"xyz_smap",true);
 	if($get_post_meta!=1)
 		add_post_meta($post_ID, "xyz_smap", "1");
-	else 
-	{$_POST=$_POST_CPY;return;}
+// 	else 
+// 	{$_POST=$_POST_CPY;return;}
 	
 	global $current_user;
 	get_currentuserinfo();
@@ -84,6 +84,8 @@ function xyz_link_publish($post_ID) {
 	$lnapisecret=get_option('xyz_smap_lnapisecret');
 	$lnoauthverifier=get_option('xyz_smap_lnoauth_verifier');
 	$lmessagetopost=get_option('xyz_smap_lnmessage');
+	if(isset($_POST['xyz_smap_lnmessage']))
+		$lmessagetopost=$_POST['xyz_smap_lnmessage'];
 	
   $xyz_smap_ln_shareprivate=get_option('xyz_smap_ln_shareprivate'); 
   if(isset($_POST['xyz_smap_ln_shareprivate']))
@@ -161,7 +163,7 @@ function xyz_link_publish($post_ID) {
 
 
 
-		$content = $postpp->post_content;apply_filters('the_content', $content);
+		$content = $postpp->post_content;$content = apply_filters('the_content', $content);
 
 		$excerpt = $postpp->post_excerpt;apply_filters('the_excerpt', $excerpt);
 		if($excerpt=="")
