@@ -2,7 +2,7 @@
 
 add_action('publish_post', 'xyz_link_publish');
 add_action('publish_page', 'xyz_link_publish');
-add_action('future_to_publish', 'xyz_link_smap_future_to_publish');
+//add_action('future_to_publish', 'xyz_link_smap_future_to_publish');
 
 function xyz_link_smap_future_to_publish($post){
 	$postid =$post->ID;
@@ -165,7 +165,7 @@ function xyz_link_publish($post_ID) {
 
 		$content = $postpp->post_content;$content = apply_filters('the_content', $content);
 
-		$excerpt = $postpp->post_excerpt;apply_filters('the_excerpt', $excerpt);
+		$excerpt = $postpp->post_excerpt;$excerpt = apply_filters('the_excerpt', $excerpt);
 		if($excerpt=="")
 		{
 			if($content!="")
@@ -194,7 +194,7 @@ function xyz_link_publish($post_ID) {
 
 		$name = html_entity_decode(get_the_title($postpp->ID), ENT_QUOTES, get_bloginfo('charset'));
 		$caption = html_entity_decode(get_bloginfo('title'), ENT_QUOTES, get_bloginfo('charset'));
-		apply_filters('the_title', $name);
+		$name = apply_filters('the_title', $name);
 
 		$name=strip_tags($name);
 		$name=strip_shortcodes($name);
