@@ -1014,7 +1014,6 @@ No</option><option value="1" <?php  if(get_option('xyz_smap_lnpost_permission')=
 								'echo'               => 0,
 								'selected'           => '1 3',
 								'hierarchical'       => 1,
-								'name'               => 'xyz_smap_catlist',
 								'id'                 => 'xyz_smap_catlist',
 								'class'              => 'postform',
 								'depth'              => 0,
@@ -1023,7 +1022,10 @@ No</option><option value="1" <?php  if(get_option('xyz_smap_lnpost_permission')=
 								'hide_if_empty'      => false );
 
 						if(count(get_categories($args))>0)
+						{
+							$args['name']='xyz_smap_catlist';
 							echo str_replace( "<select", "<select multiple onClick=setcat(this) style='width:200px;height:auto !important;border:1px solid #cccccc;'", wp_dropdown_categories($args));
+						}
 						else
 							echo "NIL";
 
