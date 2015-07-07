@@ -94,7 +94,7 @@ Social Media Auto Publish automatically publishes posts from your blog to your  
 	</tr>
 	
 	<tr>
-		<td>Publish to linkedin company pages/groups</td>
+		<td>Publish to linkedin company pages</td>
 		<td><img src="<?php echo plugins_url("images/cross.png",__FILE__);?>">
 		</td>
 		<td><img src="<?php echo plugins_url("images/tick.png",__FILE__);?>">
