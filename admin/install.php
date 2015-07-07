@@ -34,6 +34,12 @@ function smap_install_free()
 		add_option("xyz_credit_link", '0');
 	}
 
+	
+	$smap_installed_date = get_option('smap_installed_date');
+	if ($smap_installed_date=="") {
+		$smap_installed_date = time();
+		update_option('smap_installed_date', $smap_installed_date);
+	}
 	add_option('xyz_smap_application_id','');
 	add_option('xyz_smap_application_secret', '');
 	add_option('xyz_smap_fb_id', '');
@@ -58,14 +64,15 @@ function smap_install_free()
 	add_option('xyz_smap_ln_sharingmethod', '0');
 	add_option('xyz_smap_lnapikey', '');
 	add_option('xyz_smap_lnapisecret', '');
-	add_option('xyz_smap_lnoauth_verifier', '');
-	add_option('xyz_smap_lnoauth_token', '');
-	add_option('xyz_smap_lnoauth_secret', '');
+// 	add_option('xyz_smap_lnoauth_verifier', '');
+// 	add_option('xyz_smap_lnoauth_token', '');
+// 	add_option('xyz_smap_lnoauth_secret', '');
 	add_option('xyz_smap_lnpost_permission', '1');
 	add_option('xyz_smap_lnpost_image_permission', '1');
 	add_option('xyz_smap_lnaf', '1');
 	add_option('xyz_smap_lnmessage', '{POST_TITLE} - {PERMALINK}');
-	
+	add_option('xyz_smap_std_future_to_publish', '1');
+	add_option('xyz_smap_std_apply_filters', '');
 	$version=get_option('xyz_smap_free_version');
 	$currentversion=xyz_smap_plugin_get_version();
 	update_option('xyz_smap_free_version', $currentversion);

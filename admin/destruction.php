@@ -53,14 +53,15 @@ function smap_free_destroy()
 	delete_option('xyz_smap_ln_sharingmethod');
 	delete_option('xyz_smap_lnapikey');
 	delete_option('xyz_smap_lnapisecret');
-	delete_option('xyz_smap_lnoauth_verifier');
-	delete_option('xyz_smap_lnoauth_token');
-	delete_option('xyz_smap_lnoauth_secret');
+// 	delete_option('xyz_smap_lnoauth_verifier');
+// 	delete_option('xyz_smap_lnoauth_token');
+// 	delete_option('xyz_smap_lnoauth_secret');
 	delete_option('xyz_smap_lnpost_permission');
 	delete_option('xyz_smap_lnpost_image_permission');
 	delete_option('xyz_smap_lnaf');
 	delete_option('xyz_smap_lnmessage');
-	
+	delete_option('xyz_smap_std_future_to_publish');
+	delete_option('xyz_smap_std_apply_filters');
 	delete_option('xyz_smap_free_version');
 	
 	delete_option('xyz_smap_include_pages');

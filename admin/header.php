@@ -44,11 +44,11 @@ if(get_option('xyz_credit_link')=="0"){
 	?>
 <div style="float:left;background-color: #FFECB3;border-radius:5px;padding: 0px 5px;margin-top: 10px;border: 1px solid #E0AB1B" id="xyz_backlink_div">
 
-	Please do a favour by enabling backlink to our site. <a id="xyz_smap_backlink" style="cursor: pointer;" >Okay, Enable</a>.
+	Please do a favour by enabling backlink to our site. <a class="xyz_smap_backlink" style="cursor: pointer;" >Okay, Enable</a>.
 <script type="text/javascript">
 jQuery(document).ready(function() {
 
-	jQuery('#xyz_smap_backlink').click(function() {
+	jQuery('.xyz_smap_backlink').click(function() {
 
 		var dataString = { 
 				action: 'xyz_smap_ajax_backlink', 
@@ -56,6 +56,7 @@ jQuery(document).ready(function() {
 			};
 
 		jQuery.post(ajaxurl, dataString, function(response) {
+			jQuery('.xyz_smap_backlink').hide();
 			jQuery("#xyz_backlink_div").html('Thank you for enabling backlink !');
 			jQuery("#xyz_backlink_div").css('background-color', '#D8E8DA');
 			jQuery("#xyz_backlink_div").css('border', '1px solid #0F801C');

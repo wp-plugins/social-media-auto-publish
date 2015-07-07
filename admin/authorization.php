@@ -2,7 +2,7 @@
 $app_id = get_option('xyz_smap_application_id');
 $app_secret = get_option('xyz_smap_application_secret');
 $redirecturl=admin_url('admin.php?page=social-media-auto-publish-settings&auth=1');
-$lnredirecturl=admin_url('admin.php?page=social-media-auto-publish-settings&auth=3');
+// $lnredirecturl=admin_url('admin.php?page=social-media-auto-publish-settings&auth=3');
 $my_url=urlencode($redirecturl);
 
 session_start();
@@ -114,72 +114,39 @@ else {
 	//exit();
 }
 
+$state=md5(get_home_url());
 
-if(isset($_POST['lnauth']))
-{
-	
-	$redirecturl=admin_url('admin.php?page=social-media-auto-publish-settings&auth=3');
+$redirecturl=urlencode(admin_url('admin.php?page=social-media-auto-publish-settings'));
+
 	$lnappikey=get_option('xyz_smap_lnapikey');
 	$lnapisecret=get_option('xyz_smap_lnapisecret');
-	
-	# First step is to initialize with your consumer key and secret. We'll use an out-of-band oauth_callback
-	$API_CONFIG = array(
-	'appKey'       => $lnappikey,
-	'appSecret'    => $lnapisecret,
-	'callbackUrl'  => $redirecturl
-	);
-
-	$OBJ_linkedin = new SMAPLinkedIn($API_CONFIG);
-	$response = $OBJ_linkedin->retrieveTokenRequest();
-	
-	if(isset($response['error']))
+	if(isset($_POST['lnauth']))
+	{
+		if(!isset($_GET['code']))
+		{
+			$linkedin_auth_url='https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id='.$lnappikey.'&redirect_uri='.$redirecturl.'&state='.$state.'&scope=w_share+rw_company_admin';//rw_groups not included as it requires linkedin partnership agreement
+			wp_redirect($linkedin_auth_url);
+			echo '<script>document.location.href="'.$linkedin_auth_url.'"</script>';
+			die;
+		
+		}
+	}
+	if( isset($_GET['error']) && isset($_GET['error_description']) )//if any error
 	{
 		header("Location:".admin_url('admin.php?page=social-media-auto-publish-settings&msg=1'));
 		exit();
 	}
+	else if(isset($_GET['code']) && isset($_GET['state']) && $_GET['state']==$state)
+	{
 
-	$lnoathtoken=$response['linkedin']['oauth_token'];
-	$lnoathseret=$response['linkedin']['oauth_token_secret'];
-	
-
-	# Now we retrieve a request token. It will be set as $linkedin->request_token
-
-	update_option('xyz_smap_lnoauth_token', $lnoathtoken);
-	update_option('xyz_smap_lnoauth_secret',$lnoathseret);
-
-	wp_redirect( SMAPLinkedIn::_URL_AUTH . $response['linkedin']['oauth_token']);
-echo "<script>document.location.href='".SMAPLinkedIn::_URL_AUTH . $response['linkedin']['oauth_token']."'</script>";
-	die;
-}
-
-if(isset($_GET['auth']) && $_GET['auth']==3)
-{
-	if(isset($_GET['auth_problem']))
-		break;
-	$lnoathtoken=get_option('xyz_smap_lnoauth_token');
-	$lnoathseret=get_option('xyz_smap_lnoauth_secret');
-	 
-	$lnappikey=get_option('xyz_smap_lnapikey');
-	$lnapisecret=get_option('xyz_smap_lnapisecret');
-
-	$lnoauth_verifier=$_GET['oauth_verifier'];
-
-
-	update_option('xyz_smap_lnoauth_verifier',$lnoauth_verifier);
-
-	$API_CONFIG = array(
-			'appKey'       => $lnappikey,
-			'appSecret'    => $lnapisecret,
-			'callbackUrl'  => $lnredirecturl
-	);
-
-	$OBJ_linkedin = new SMAPLinkedIn($API_CONFIG);
-	$response = $OBJ_linkedin->retrieveTokenAccess($lnoathtoken, $lnoathseret, $lnoauth_verifier);
-
-	# Now we retrieve a request token. It will be set as $linkedin->request_token
-	update_option('xyz_smap_application_lnarray', $response['linkedin']);	
-	update_option('xyz_smap_lnaf',0);
-
-}
+		$fields='grant_type=authorization_code&code='.$_GET['code'].'&redirect_uri='.$redirecturl.'&client_id='.$lnappikey.'&client_secret='.$lnapisecret;
+		$ln_acc_tok_json=xyzsmap_getpage('https://www.linkedin.com/uas/oauth2/accessToken', '', false, $fields);
+		$ln_acc_tok_json=$ln_acc_tok_json['content'];
+		
+		update_option('xyz_smap_application_lnarray', $ln_acc_tok_json);
+		update_option('xyz_smap_lnaf',0);
+		header("Location:".admin_url('admin.php?page=social-media-auto-publish-settings&msg=4'));
+		exit();
+	}
 
 ?>

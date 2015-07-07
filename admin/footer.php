@@ -51,7 +51,7 @@
 <script language="javascript">
 function check_email(emailString)
 {
-    var mailPattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    var mailPattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,})$/;
     var matchArray = emailString.match(mailPattern);
     if (emailString.length == 0)
     return false;

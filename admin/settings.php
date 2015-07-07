@@ -13,6 +13,26 @@ $redirecturl=admin_url('admin.php?page=social-media-auto-publish-settings&auth=1
 
 require( dirname( __FILE__ ) . '/authorization.php' );
 
+if($_GET['smap_notice'] == 'hide')
+{
+	update_option('xyz_smap_dnt_shw_notice', "hide");
+	?>
+<style type='text/css'>
+#smap_notice_td
+{
+display:none;
+}
+</style>
+<div class="system_notice_area_style1" id="system_notice_area">
+Thanks again for using the plugin. We will never show the message again.
+ &nbsp;&nbsp;&nbsp;<span
+		id="system_notice_area_dismiss">Dismiss</span>
+</div>
+
+<?php
+}
+
+
 $erf=0;
 if(isset($_POST['fb']))
 {
@@ -279,6 +299,13 @@ if(isset($_GET['msg']) && $_GET['msg']==3) //response['body'] not set
 <div class="system_notice_area_style0" id="system_notice_area">
 Unable to authorize the facebook application. Please check your curl/fopen and firewall settings. &nbsp;&nbsp;&nbsp;<span
 		id="system_notice_area_dismiss">Dismiss</span>
+</div>
+<?php
+}if(isset($_GET['msg']) && $_GET['msg'] == 4){
+?>
+<div class="system_notice_area_style1" id="system_notice_area">
+Account has been authenticated successfully.&nbsp;&nbsp;&nbsp;<span
+id="system_notice_area_dismiss">Dismiss</span>
 </div>
 <?php 	
 }
@@ -732,7 +759,7 @@ function drpdisplay()
 
 	
 	<h2>
-		 <img	src="<?php echo plugins_url()?>/social-media-auto-publish/admin/images/linkedin.png" height="16px"> Linkedin Settings
+		 <img	src="<?php echo plugins_url()?>/social-media-auto-publish/admin/images/linkedin.gif" height="16px"> Linkedin Settings
 	</h2>
 	
 
@@ -791,6 +818,8 @@ if(isset($_GET['auth']) && $_GET['auth']==3)
 		<b><a href="https://www.linkedin.com/secure/developer?newapp" target="_blank">Click here</a></b> to create new Linkedin application. 
 		<br>Specify the website url for the application as : 
 		<span style="color: red;"><?php echo  (is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST']; ?></span>
+		<br>Specify the authorized redirect url as :  
+		<span style="color: red;"><?php echo  admin_url().'admin.php'; ?></span>
 <br>For detailed step by step instructions <b><a href="http://docs.xyzscripts.com/wordpress-plugins/social-media-auto-publish/creating-linkedin-application/" target="_blank">Click here</a></b>.
 	</div>
 
@@ -810,14 +839,14 @@ if(isset($_GET['auth']) && $_GET['auth']==3)
 	
 	<table class="widefat xyz_smap_widefat_table" style="width: 99%">
 	<tr valign="top">
-	<td width="50%">Api key </td>					
+	<td width="50%">Client ID </td>					
 	<td>
 		<input id="xyz_smap_lnapikey" name="xyz_smap_lnapikey" type="text" value="<?php if($lms1=="") {echo esc_html(get_option('xyz_smap_lnapikey'));}?>"/>
 		<a href="http://docs.xyzscripts.com/wordpress-plugins/social-media-auto-publish/creating-linkedin-application" target="_blank">How can I create a Linkedin Application?</a>
 	</td></tr>
 	
 
-	<tr valign="top"><td>Api secret</td>
+	<tr valign="top"><td>Client Secret</td>
 	<td>
 		<input id="xyz_smap_lnapisecret" name="xyz_smap_lnapisecret" type="text" value="<?php if($lms2=="") { echo esc_html(get_option('xyz_smap_lnapisecret')); }?>" />
 	</td></tr>
@@ -911,9 +940,13 @@ No</option><option value="1" <?php  if(get_option('xyz_smap_lnpost_permission')=
         $xyz_smap_peer_verification=$_POST['xyz_smap_peer_verification'];
         $xyz_smap_premium_version_ads=$_POST['xyz_smap_premium_version_ads'];
         $xyz_smap_default_selection_edit=$_POST['xyz_smap_default_selection_edit'];
-        
+        $xyz_smap_future_to_publish=$_POST['xyz_smap_future_to_publish'];
 		$smap_customtype_ids="";
-
+		
+		$xyz_smap_applyfilters="";
+		if(isset($_POST['xyz_smap_applyfilters']))
+			$xyz_smap_applyfilters=$_POST['xyz_smap_applyfilters'];
+		
 		if($xyz_customtypes!="")
 		{
 			for($i=0;$i<count($xyz_customtypes);$i++)
@@ -924,24 +957,39 @@ No</option><option value="1" <?php  if(get_option('xyz_smap_lnpost_permission')=
 		}
 		$smap_customtype_ids=rtrim($smap_customtype_ids,',');
 
+		$xyz_smap_applyfilters_val="";
+		if($xyz_smap_applyfilters!="")
+		{
+			for($i=0;$i<count($xyz_smap_applyfilters);$i++)
+			{
+			$xyz_smap_applyfilters_val.=$xyz_smap_applyfilters[$i].",";
+		}
+		
+		}
+		$xyz_smap_applyfilters_val=rtrim($xyz_smap_applyfilters_val,',');
+		
+		
 		update_option('xyz_smap_include_pages',$xyz_smap_include_pages);
 		update_option('xyz_smap_include_posts',$xyz_smap_include_posts);
 		if($xyz_smap_include_posts==0)
 			update_option('xyz_smap_include_categories',"All");
 		else
 			update_option('xyz_smap_include_categories',$smap_category_ids);
+		update_option('xyz_smap_std_apply_filters',$xyz_smap_applyfilters_val);
 		update_option('xyz_smap_include_customposttypes',$smap_customtype_ids);
 		update_option('xyz_smap_peer_verification',$xyz_smap_peer_verification);
 		update_option('xyz_smap_premium_version_ads',$xyz_smap_premium_version_ads);
 		update_option('xyz_smap_default_selection_edit',$xyz_smap_default_selection_edit);
-		
+		update_option('xyz_smap_std_future_to_publish',$xyz_smap_future_to_publish);
 	}
 
+	$xyz_smap_future_to_publish=get_option('xyz_smap_std_future_to_publish');
 	$xyz_credit_link=get_option('xyz_credit_link');
 	$xyz_smap_include_pages=get_option('xyz_smap_include_pages');
 	$xyz_smap_include_posts=get_option('xyz_smap_include_posts');
 	$xyz_smap_include_categories=get_option('xyz_smap_include_categories');
 	$xyz_smap_include_customposttypes=get_option('xyz_smap_include_customposttypes');
+	$xyz_smap_apply_filters=get_option('xyz_smap_std_apply_filters');
 	$xyz_smap_peer_verification=esc_html(get_option('xyz_smap_peer_verification'));
 	$xyz_smap_premium_version_ads=esc_html(get_option('xyz_smap_premium_version_ads'));
 	$xyz_smap_default_selection_edit=esc_html(get_option('xyz_smap_default_selection_edit'));
@@ -1088,7 +1136,50 @@ No</option><option value="1" <?php  if(get_option('xyz_smap_lnpost_permission')=
 					<option value ="0" <?php if($xyz_smap_peer_verification=='0') echo 'selected'; ?> >Disable </option>
 					</select> 
 					</td></tr>
-									
+					
+				<tr valign="top">
+					<td scope="row" colspan="1">Apply filters during publishing	</td>
+					<td>
+					<?php 
+					$ar2=explode(",",$xyz_smap_apply_filters);
+					for ($i=0;$i<3;$i++ ) {
+						$filVal=$i+1;
+						
+						if($filVal==1)
+							$filName='the_content';
+						else if($filVal==2)
+							$filName='the_excerpt';
+						else if($filVal==3)
+							$filName='the_title';
+						else $filName='';
+						
+						echo '<input type="checkbox" name="xyz_smap_applyfilters[]"  value="'.$filVal.'" ';
+						if(in_array($filVal, $ar2))
+						{
+							echo 'checked="checked"/>';
+						}
+						else
+							echo '/>';
+					
+						echo '<label>'.$filName.'</label><br/>';
+					
+					}
+					
+					?>
+					</td>
+				</tr>
+					
+				<tr valign="top">
+
+					<td scope="row" colspan="1">Enable "future_to_publish" hook	</td>
+					<td><select name="xyz_smap_future_to_publish" id="xyz_smap_future_to_publish" >
+					
+					<option value ="1" <?php if($xyz_smap_future_to_publish=='1') echo 'selected'; ?> >Yes </option>
+					
+					<option value ="2" <?php if($xyz_smap_future_to_publish=='2') echo 'selected'; ?> >No </option>
+					</select>
+					</td>
+				</tr>					
 
 				<tr valign="top">
 

@@ -2,7 +2,11 @@
 
 add_action('publish_post', 'xyz_link_publish');
 add_action('publish_page', 'xyz_link_publish');
-//add_action('future_to_publish', 'xyz_link_smap_future_to_publish');
+
+$xyz_smap_future_to_publish=get_option('xyz_smap_std_future_to_publish');
+
+if($xyz_smap_future_to_publish==1)
+	add_action('future_to_publish', 'xyz_link_smap_future_to_publish');
 
 function xyz_link_smap_future_to_publish($post){
 	$postid =$post->ID;
@@ -21,6 +25,21 @@ function xyz_link_publish($post_ID) {
 	
 	$_POST_CPY=$_POST;
 	$_POST=stripslashes_deep($_POST);
+	
+	$post_permissin=get_option('xyz_smap_post_permission');
+	if(isset($_POST['xyz_smap_post_permission']))
+		$post_permissin=$_POST['xyz_smap_post_permission'];
+	
+	if ($post_permissin != 1) {
+		$_POST=$_POST_CPY;
+		return ;
+	
+	} else if ( (isset($_POST['_inline_edit']) OR empty($_POST) ) AND (get_option('xyz_smap_default_selection_edit') == 0) ) {
+		$_POST=$_POST_CPY;
+		return;
+	}
+	
+	
 	
 // 	if(isset($_POST['xyz_smap_hidden_meta']) && $_POST['xyz_smap_hidden_meta']==1)
 // 	{$_POST=$_POST_CPY;return ;}
@@ -46,10 +65,8 @@ function xyz_link_publish($post_ID) {
 	if(isset($_POST['xyz_smap_twmessage']))
 		$messagetopost=$_POST['xyz_smap_twmessage'];
 	$appid=get_option('xyz_smap_application_id');
-	$post_permissin=get_option('xyz_smap_post_permission');
-	if(isset($_POST['xyz_smap_post_permission']))
-		$post_permissin=$_POST['xyz_smap_post_permission'];
-
+	
+	
 	$post_twitter_permission=get_option('xyz_smap_twpost_permission');
 	if(isset($_POST['xyz_smap_twpost_permission']))
 		$post_twitter_permission=$_POST['xyz_smap_twpost_permission'];
@@ -78,11 +95,8 @@ function xyz_link_publish($post_ID) {
 		
 	////////////linkedin////////////
 	
-	$lnoathtoken=get_option('xyz_smap_lnoauth_token');
-	$lnoathseret=get_option('xyz_smap_lnoauth_secret');
 	$lnappikey=get_option('xyz_smap_lnapikey');
 	$lnapisecret=get_option('xyz_smap_lnapisecret');
-	$lnoauthverifier=get_option('xyz_smap_lnoauth_verifier');
 	$lmessagetopost=get_option('xyz_smap_lnmessage');
 	if(isset($_POST['xyz_smap_lnmessage']))
 		$lmessagetopost=$_POST['xyz_smap_lnmessage'];
@@ -163,9 +177,24 @@ function xyz_link_publish($post_ID) {
 
 
 
-		$content = $postpp->post_content;$content = apply_filters('the_content', $content);
-
-		$excerpt = $postpp->post_excerpt;$excerpt = apply_filters('the_excerpt', $excerpt);
+		$xyz_smap_apply_filters=get_option('xyz_smap_std_apply_filters');
+		$ar2=explode(",",$xyz_smap_apply_filters);
+		$con_flag=$exc_flag=$tit_flag=0;
+		if(isset($ar2[0]))
+			if($ar2[0]==1) $con_flag=1;
+		if(isset($ar2[1]))
+			if($ar2[1]==2) $exc_flag=1;
+		if(isset($ar2[2]))
+			if($ar2[2]==3) $tit_flag=1;
+		
+		
+		$content = $postpp->post_content;
+		if($con_flag==1)
+			$content = apply_filters('the_content', $content);
+		$excerpt = $postpp->post_excerpt;
+		if($exc_flag==1)
+			$excerpt = apply_filters('the_excerpt', $excerpt);
+		
 		if($excerpt=="")
 		{
 			if($content!="")
@@ -191,10 +220,11 @@ function xyz_link_publish($post_ID) {
 		else
 			$image_found=0;
 		
-
-		$name = html_entity_decode(get_the_title($postpp->ID), ENT_QUOTES, get_bloginfo('charset'));
+		$name = $postpp->post_title;
+// 		$name = html_entity_decode(get_the_title($postpp->ID), ENT_QUOTES, get_bloginfo('charset'));
 		$caption = html_entity_decode(get_bloginfo('title'), ENT_QUOTES, get_bloginfo('charset'));
-		$name = apply_filters('the_title', $name);
+		if($tit_flag==1)
+			$name = apply_filters('the_title', $name);
 
 		$name=strip_tags($name);
 		$name=strip_shortcodes($name);
@@ -507,7 +537,7 @@ function xyz_link_publish($post_ID) {
 			update_option('xyz_smap_twap_post_logs', $post_tw_options);
 		}
 	   
-		if($lnappikey!="" && $lnapisecret!="" && $lnoathtoken!="" && $lnoathseret!="" && $lnpost_permission==1 && $lnoauthverifier!="" && $lnaf==0)
+		if($lnappikey!="" && $lnapisecret!=""  && $lnpost_permission==1 && $lnaf==0)
 		{	
 			$contentln=array();
 			
@@ -525,45 +555,55 @@ function xyz_link_publish($post_ID) {
 			$message5=str_replace("&nbsp;","",$message5);
 						
 				$contentln['comment'] =$message5;
-				$contentln['title'] = $name_li;
-				$contentln['submitted-url'] = $link;
+				$contentln['content']['title'] = $name_li;
+				$contentln['content']['submitted-url'] = $link;
 				if($attachmenturl!="" && $post_ln_image_permission==1)
-				$contentln['submitted-image-url'] = $attachmenturl;
-				$contentln['description'] = $description_li;
+				$contentln['content']['submitted-image-url'] = $attachmenturl;
+				$contentln['content']['description'] = $description_li;
 		
 		
-			$API_CONFIG = array(
-			'appKey'       => $lnappikey,
-			'appSecret'    => $lnapisecret
-			);
+// 			$API_CONFIG = array(
+// 			'appKey'       => $lnappikey,
+// 			'appSecret'    => $lnapisecret
+// 			);
 		
 			if($xyz_smap_ln_shareprivate==1)
 			{
-			$private = TRUE;
-		}
-		else
-		{
-		$private = FALSE;
-		}
+				$contentln['visibility']['code']='connections-only';
+			}
+			else
+			{
+			$contentln['visibility']['code']='anyone';
+			}
 		
-		$OBJ_linkedin = new SMAPLinkedIn($API_CONFIG);
+// 		$OBJ_linkedin = new SMAPLinkedIn($API_CONFIG);
 		$xyz_smap_application_lnarray=get_option('xyz_smap_application_lnarray');
 	
 		
-		$OBJ_linkedin->setTokenAccess($xyz_smap_application_lnarray);
+// 		$OBJ_linkedin->setTokenAccess($xyz_smap_application_lnarray);
 		
+		$ln_acc_tok_arr=json_decode($xyz_smap_application_lnarray);
+		$xyz_smap_application_lnarray=$ln_acc_tok_arr->access_token;
+		$ln_publish_status=array();
+
+		$ObjLinkedin = new SMAPLinkedInOAuth2($xyz_smap_application_lnarray);
+			
 		if($xyz_smap_ln_sharingmethod==0)
 		{
 				try{
-			$response2 = $OBJ_linkedin->share('new', $contentln,$private);
-			}
+				$arrResponse = $ObjLinkedin->shareStatus($contentln);
+						if ( isset($arrResponse['errorCode']) && isset($arrResponse['message']) && ($arrResponse['message']!='') ) {//as per old api ; need to confirm which is correct
+							$ln_publish_status["new"]=$arrResponse['message'];
+						}
+						if(isset($response2['error']) && $response2['error']!="")//as per new api ; need to confirm which is correct
+							$ln_publish_status["new"]=$response2['error'];
+
+				}
 			catch(Exception $e)
 			{
 				$ln_publish_status["new"]=$e->getMessage();
 			}
 			
-			if(isset($response2['error']) && $response2['error']!="")
-				$ln_publish_status["new"]=$response2['error'];
 		}
 		else
 		{ 
