@@ -34,22 +34,17 @@ function xyz_link_publish($post_ID) {
 		$_POST=$_POST_CPY;
 		return ;
 	
-	} else if ( (isset($_POST['_inline_edit']) OR empty($_POST) ) AND (get_option('xyz_smap_default_selection_edit') == 0) ) {
+	} else if (isset($_POST['_inline_edit']) AND (get_option('xyz_smap_default_selection_edit') == 0) ) {
 		$_POST=$_POST_CPY;
 		return;
 	}
 	
 	
 	
-// 	if(isset($_POST['xyz_smap_hidden_meta']) && $_POST['xyz_smap_hidden_meta']==1)
-// 	{$_POST=$_POST_CPY;return ;}
-	
 	$get_post_meta=get_post_meta($post_ID,"xyz_smap",true);
 	if($get_post_meta!=1)
 		add_post_meta($post_ID, "xyz_smap", "1");
-// 	else 
-// 	{$_POST=$_POST_CPY;return;}
-	
+
 	global $current_user;
 	get_currentuserinfo();
 	$af=get_option('xyz_smap_af');
@@ -221,7 +216,6 @@ function xyz_link_publish($post_ID) {
 			$image_found=0;
 		
 		$name = $postpp->post_title;
-// 		$name = html_entity_decode(get_the_title($postpp->ID), ENT_QUOTES, get_bloginfo('charset'));
 		$caption = html_entity_decode(get_bloginfo('title'), ENT_QUOTES, get_bloginfo('charset'));
 		if($tit_flag==1)
 			$name = apply_filters('the_title', $name);
@@ -265,7 +259,6 @@ function xyz_link_publish($post_ID) {
 						'secret' => $appsecret,
 						'cookie' => true
 				));
-				//$fb=new SMAPFacebook();
 				$message1=str_replace('{POST_TITLE}', $name, $message);
 				$message2=str_replace('{BLOG_TITLE}', $caption,$message1);
 				$message3=str_replace('{PERMALINK}', $link, $message2);
@@ -372,7 +365,23 @@ function xyz_link_publish($post_ID) {
 					'publishtime'	=>	$time,
 					'status'	=>	$fb_publish_status_insert
 			);
-			update_option('xyz_smap_fbap_post_logs', $post_fb_options);
+			
+			$smap_fb_update_opt_array=array();
+			
+			$smap_fb_arr_retrive=(get_option('xyz_smap_fbap_post_logs'));
+			
+			$smap_fb_update_opt_array[0]=isset($smap_fb_arr_retrive[0]) ? $smap_fb_arr_retrive[0] : '';
+			$smap_fb_update_opt_array[1]=isset($smap_fb_arr_retrive[1]) ? $smap_fb_arr_retrive[1] : '';
+			$smap_fb_update_opt_array[2]=isset($smap_fb_arr_retrive[2]) ? $smap_fb_arr_retrive[2] : '';
+			$smap_fb_update_opt_array[3]=isset($smap_fb_arr_retrive[3]) ? $smap_fb_arr_retrive[3] : '';
+			$smap_fb_update_opt_array[4]=isset($smap_fb_arr_retrive[4]) ? $smap_fb_arr_retrive[4] : '';
+			
+			array_shift($smap_fb_update_opt_array);
+			array_push($smap_fb_update_opt_array,$post_fb_options);
+			update_option('xyz_smap_fbap_post_logs', $smap_fb_update_opt_array);
+			
+			
+			
 			
 		}       
 
@@ -534,7 +543,21 @@ function xyz_link_publish($post_ID) {
 					'publishtime'	=>	$time,
 					'status'	=>	$tw_publish_status_insert
 			);
-			update_option('xyz_smap_twap_post_logs', $post_tw_options);
+			
+			$smap_tw_update_opt_array=array();
+			
+			$smap_tw_arr_retrive=(get_option('xyz_smap_twap_post_logs'));
+			
+			$smap_tw_update_opt_array[0]=isset($smap_tw_arr_retrive[0]) ? $smap_tw_arr_retrive[0] : '';
+			$smap_tw_update_opt_array[1]=isset($smap_tw_arr_retrive[1]) ? $smap_tw_arr_retrive[1] : '';
+			$smap_tw_update_opt_array[2]=isset($smap_tw_arr_retrive[2]) ? $smap_tw_arr_retrive[2] : '';
+			$smap_tw_update_opt_array[3]=isset($smap_tw_arr_retrive[3]) ? $smap_tw_arr_retrive[3] : '';
+			$smap_tw_update_opt_array[4]=isset($smap_tw_arr_retrive[4]) ? $smap_tw_arr_retrive[4] : '';
+			
+			array_shift($smap_tw_update_opt_array);
+			array_push($smap_tw_update_opt_array,$post_tw_options);
+			update_option('xyz_smap_twap_post_logs', $smap_tw_update_opt_array);
+			
 		}
 	   
 		if($lnappikey!="" && $lnapisecret!=""  && $lnpost_permission==1 && $lnaf==0)
@@ -562,10 +585,6 @@ function xyz_link_publish($post_ID) {
 				$contentln['content']['description'] = $description_li;
 		
 		
-// 			$API_CONFIG = array(
-// 			'appKey'       => $lnappikey,
-// 			'appSecret'    => $lnapisecret
-// 			);
 		
 			if($xyz_smap_ln_shareprivate==1)
 			{
@@ -576,11 +595,8 @@ function xyz_link_publish($post_ID) {
 			$contentln['visibility']['code']='anyone';
 			}
 		
-// 		$OBJ_linkedin = new SMAPLinkedIn($API_CONFIG);
 		$xyz_smap_application_lnarray=get_option('xyz_smap_application_lnarray');
 	
-		
-// 		$OBJ_linkedin->setTokenAccess($xyz_smap_application_lnarray);
 		
 		$ln_acc_tok_arr=json_decode($xyz_smap_application_lnarray);
 		$xyz_smap_application_lnarray=$ln_acc_tok_arr->access_token;
@@ -632,7 +648,20 @@ function xyz_link_publish($post_ID) {
 				'publishtime'	=>	$time,
 				'status'	=>	$ln_publish_status_insert
 		);
-		update_option('xyz_smap_lnap_post_logs', $post_ln_options);
+		
+		$smap_ln_update_opt_array=array();
+		
+		$smap_ln_arr_retrive=(get_option('xyz_smap_lnap_post_logs'));
+		
+		$smap_ln_update_opt_array[0]=isset($smap_ln_arr_retrive[0]) ? $smap_ln_arr_retrive[0] : '';
+		$smap_ln_update_opt_array[1]=isset($smap_ln_arr_retrive[1]) ? $smap_ln_arr_retrive[1] : '';
+		$smap_ln_update_opt_array[2]=isset($smap_ln_arr_retrive[2]) ? $smap_ln_arr_retrive[2] : '';
+		$smap_ln_update_opt_array[3]=isset($smap_ln_arr_retrive[3]) ? $smap_ln_arr_retrive[3] : '';
+		$smap_ln_update_opt_array[4]=isset($smap_ln_arr_retrive[4]) ? $smap_ln_arr_retrive[4] : '';
+		
+		array_shift($smap_ln_update_opt_array);
+		array_push($smap_ln_update_opt_array,$post_ln_options);
+		update_option('xyz_smap_lnap_post_logs', $smap_ln_update_opt_array);
 		
 		}
 	}

@@ -17,7 +17,7 @@ if(isset($_POST['fb_auth']))
 		
 		$dialog_url = "https://www.facebook.com/".XYZ_SMAP_FB_API_VERSION."/dialog/oauth?client_id="
 		. $app_id . "&redirect_uri=" . $my_url . "&state="
-		. $xyz_smap_session_state . "&scope=email,user_about_me,publish_pages,user_posts,publish_actions,manage_pages";
+		. $xyz_smap_session_state . "&scope=email,public_profile,publish_pages,user_posts,publish_actions,manage_pages";
 		
 		header("Location: " . $dialog_url);
 }
@@ -64,10 +64,10 @@ if(isset($_COOKIE['xyz_smap_session_state']) && isset($_REQUEST['state']) && ($_
 			else
 				break;
 			$offset += $limit;
-			if(!is_array($pagearray1->paging))
-				break;
-		}while(array_key_exists("next", $pagearray1->paging));
-		
+// 			if(!is_array($pagearray1->paging))
+// 				break;
+// 		}while(array_key_exists("next", $pagearray1->paging));
+		}while(isset($pagearray1->paging->next));
 		
 		
 		

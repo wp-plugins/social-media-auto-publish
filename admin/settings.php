@@ -539,10 +539,10 @@ function drpdisplay()
 						else
 							break;
 						$offset += $limit;
-						if(!is_array($pagearray1->paging))
-							break;
-					}while(array_key_exists("next", $pagearray1->paging));
-
+// 						if(!is_array($pagearray1->paging))
+// 							break;
+// 					}while(array_key_exists("next", $pagearray1->paging));
+					}while(isset($pagearray1->paging->next));
 
 
 
